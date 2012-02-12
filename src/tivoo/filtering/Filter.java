@@ -12,20 +12,26 @@ public class Filter
     /**
      * Finds all events with the given keyword in its title.
      */
-    public List<Event> filterByKeyword (String keyword, List<Event> current){
-    	List<Event> newList = new ArrayList<Event>();
-    	for(Event event : current){
+    public List<Event> filterByKeyword (String keyword, List<Event> eventList){
+    	List<Event> newEventList = new ArrayList<Event>();
+    	for(Event event : eventList){
     		if(event.getTitle().contains(keyword)){
-    			newList.add(event);
+    			newEventList.add(event);
     		}
     	}
-    	return newList;
+    	return newEventList;
     }
         
     /**
-     * Finds all events for a given week.
+     * Finds all events for a given timeframe.
      */
-    public List<Event> filterByTimeFrame (Calendar starttime, Calendar endtime, List<Event> current){
-    	return null;
+    public List<Event> filterByTimeFrame (Calendar startTime, Calendar endTime, List<Event> eventList){
+    	List<Event> newEventList = new ArrayList<Event>();
+    	for(Event event : eventList){
+    		if(event.getStartTime().after(startTime)&&event.getEndTime().before(endTime)){
+    			newEventList.add(event);
+    		}
+    	}
+    	return newEventList;
     }
 }
