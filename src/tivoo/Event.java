@@ -1,5 +1,7 @@
 package tivoo;
 
+import java.util.Calendar;
+
 public interface Event
 {
 
@@ -7,9 +9,9 @@ public interface Event
     
     public String getDescription ();
     
-    public String getStartTime ();
+    public Calendar getStartTime ();
     
-    public String getEndTime ();
+    public Calendar getEndTime ();
     
     public String getLocation ();
     
