@@ -1,8 +1,8 @@
 package tivoo;
 
+import java.util.Calendar;
 import java.util.List;
 import tivoo.filtering.Filter;
-import tivoo.filtering.FilterFactory;
 import tivoo.input.XMLParser;
 import tivoo.input.XMLParserFactory;
 
@@ -17,8 +17,13 @@ public class TivooSystem
     
     public void filterByKeyword(String keyword)
     {
-        Filter filter = FilterFactory.getFilter();
+        Filter filter = new Filter();
         myEvents = filter.filterByKeyword(keyword, myEvents);
+    }
+    
+    public void filterByTimeFrame(Calendar startTime, Calendar endTime){
+    	Filter filter = new Filter();
+    	myEvents = filter.filterByTimeFrame(startTime, endTime, myEvents);
     }
     
     public void outputSummaryAndDetailsPages(String summaryFileName, String detailPageDirectory)
