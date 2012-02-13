@@ -48,6 +48,34 @@ public class DukeCalParser implements XMLParser{
 		public void characters(char[] ch, int start, int length)
 				throws SAXException {
 			builder.append(ch, start, length);
+
+			if(isTitle){
+				event.setTitle(builder.toString());
+				isTitle = false;
+			}
+			if(isLocation) {
+				event.setLocation(builder.toString());
+				isLocation = false;
+			}
+			if(isDescription){
+				event.setDescription(builder.toString());
+				isDescription = false;
+			}
+			if(isTime){
+				try {
+					cal = getCalendar(builder.toString());
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				isTime = false;
+				if(isStart){
+					event.setStartTime(cal);
+					isStart = false;
+				}else if(isEnd){
+					event.setEndTime(cal);
+					isEnd = false;
+				}
+			}
 		}
 		@Override
 		public void startElement(String uri, String localName, String qName,
@@ -77,34 +105,6 @@ public class DukeCalParser implements XMLParser{
 				events.add(event);
 				isEvent = false;
 			}
-			if(isTitle){
-				event.setTitle(builder.toString());
-				isTitle = false;
-			}
-			if(isLocation) {
-				event.setLocation(builder.toString());
-				isLocation = false;
-			}
-			if(isDescription){
-				event.setDescription(builder.toString());
-				isDescription = false;
-			}
-			if(isTime){
-				try {
-					cal = getCalendar(builder.toString());
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				isTime = false;
-				if(isStart){
-					event.setStartTime(cal);
-					isStart = false;
-				}else if(isEnd){
-					event.setEndTime(cal);
-					isEnd = false;
-				}
-			}
 			builder.setLength(0);
 		}
  		private Calendar getCalendar(String utcDate) throws ParseException{
@@ -121,7 +121,6 @@ public class DukeCalParser implements XMLParser{
  			d.getTime();
  			Calendar cal = Calendar.getInstance();
  			cal.setTime(d);
-
  			return cal;
  		}
  	}
