@@ -1,7 +1,13 @@
 package tivoo;
 
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.List;
+
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
+
 import tivoo.filtering.Filter;
 import tivoo.input.XMLParser;
 import tivoo.input.XMLParserFactory;
@@ -10,7 +16,7 @@ public class TivooSystem
 {
     private List<Event> myEvents;
     
-    public void loadFile (String fileName) { 
+    public void loadFile (String fileName) throws SAXException, IOException, ParserConfigurationException { 
         XMLParser parser = XMLParserFactory.getParser();
         myEvents = parser.parse(fileName);
     }
