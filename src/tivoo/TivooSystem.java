@@ -10,7 +10,8 @@ public class TivooSystem
 {
     private List<Event> myEvents;
     
-    public void loadFile (String fileName) { 
+    public void loadFile (String fileName)
+	{ 
         XMLParser parser = XMLParserFactory.getParser();
         myEvents = parser.parse(fileName);
     }
@@ -21,7 +22,8 @@ public class TivooSystem
         myEvents = filter.filterByKeyword(keyword, myEvents);
     }
     
-    public void filterByTimeFrame(Calendar startTime, Calendar endTime){
+    public void filterByTimeFrame(Calendar startTime, Calendar endTime)
+	{
     	Filter filter = new Filter();
     	myEvents = filter.filterByTimeFrame(startTime, endTime, myEvents);
     }
