@@ -17,7 +17,7 @@ Started:  Feb 12
 Finished: Feb 13
 
 Project Length:
-- [Actual] 2 hours at group meeting + 4 hours Eric + 2 hours Siyang + *********
+- [Actual] 2 hours at group meeting + 4 hours Eric + 2 hours Siyang + 4 hours Hui*********
 - [Estimated] 10 hours
 
 Estimate evaluation:
@@ -41,7 +41,8 @@ Impressions:
 Input portion:
 Messing with Calendar is somewhat annoying. Also, our current code style is not the best, but this is only the prototype. Other than that, it wasn't especially hard.
 	- Siyang
-
+I have worked on the duke calendar parser, the parser part was not too hard. But I've got troubles in using java Calendar. Siyang was albe to fix the bugs in using the Calendar.
+	- Hui
 
 ??? (FILTERING)
 
