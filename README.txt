@@ -17,11 +17,10 @@ Started:  Feb 12
 Finished: Feb 13
 
 Project Length:
-- [Actual] 2 hours at group meeting + 4 hours Eric + 2 hours Siyang + 4 hours Hui*********
+- [Actual] 2 hours at group meeting + 4 hours Eric + 2 hours Siyang + 4 hours Hui + 1 hour Ian = 13
 - [Estimated] 10 hours
-
-Estimate evaluation:
-- ??? ******** last person gets to fill this in **********
+- [How good our estimate was] While our estimate wasn't too far off, learning the specifics of Gagawa, SAX, and Java Calendar contributed most of the time.
+		The programming itself for a prototype/first draft was fairly straight forward. 
 
 Discussed with:
 - UTA Mason Meier (assigned UTA)
@@ -44,7 +43,9 @@ Messing with Calendar is somewhat annoying. Also, our current code style is not 
 I have worked on the duke calendar parser, the parser part was not too hard. But I've got troubles in using java Calendar. Siyang was albe to fix the bugs in using the Calendar.
 	- Hui
 
-??? (FILTERING)
+Filtering:
+The filtering was very straight forward as we encapsulated each input feed into identical objects that could be easily sorted through.
+	-Ian
 
 Output portion:
 Creating the appropriate directories and files and generating HTML for the output stage took some experimentation, especially in terms of using the Gagawa library, but overall prototyping the output stage was a fairly straightforward process.
