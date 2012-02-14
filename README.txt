@@ -17,8 +17,8 @@ Started:  Feb 12
 Finished: Feb 13
 
 Project Length:
-- ??? [Actual] ******* 2 hours at group meeting + 4 hours Eric + ... **********
-- 10 hours [Estimated]
+- [Actual] 2 hours at group meeting + 4 hours Eric + 2 hours Siyang + *********
+- [Estimated] 10 hours
 
 Estimate evaluation:
 - ??? ******** last person gets to fill this in **********
@@ -38,9 +38,13 @@ Data / Resource Files Required:
 
 Impressions:
 
-??? (INPUT)
+Input portion:
+Messing with Calendar is somewhat annoying. Also, our current code style is not the best, but this is only the prototype. Other than that, it wasn't especially hard.
+	- Siyang
+
 
 ??? (FILTERING)
 
+Output portion:
 Creating the appropriate directories and files and generating HTML for the output stage took some experimentation, especially in terms of using the Gagawa library, but overall prototyping the output stage was a fairly straightforward process.
 	-Eric
