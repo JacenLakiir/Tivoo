@@ -25,19 +25,26 @@ public class WeekViewHTMLBuilder implements HTMLBuilder
                                   String detailPageDirectory,
                                   List<Event> eventList) throws IOException
     {
+        if (summaryPageFileName.contains("/"))
+        {
+            File outputDirectory =
+                new File(summaryPageFileName.substring(0, summaryPageFileName.lastIndexOf("/")));
+            outputDirectory.mkdirs();
+        }
         File summaryPage = new File(summaryPageFileName);
         summaryPage.createNewFile();
         String detailPageFolder =
-            detailPageDirectory.substring(detailPageDirectory.indexOf("/") + 1);
+            detailPageDirectory.substring(detailPageDirectory.lastIndexOf("/") + 1);
         writeSummaryPageHTML(summaryPage, detailPageFolder, eventList);
     }
 
+    
     @Override
     public void buildDetailsPages (String detailPageDirectory, List<Event> eventList)
         throws IOException
     {
         File detailsDirectory = new File(detailPageDirectory);
-        detailsDirectory.mkdir();
+        detailsDirectory.mkdirs();
         for (Event currentEvent : eventList)
         {
             String detailPageURL = createDetailsPageURL(currentEvent);
@@ -47,6 +54,7 @@ public class WeekViewHTMLBuilder implements HTMLBuilder
         }
     }
 
+    
     private void writeSummaryPageHTML (File summaryPage,
                                        String detailPageFolder,
                                        List<Event> eventList) throws IOException
@@ -74,6 +82,7 @@ public class WeekViewHTMLBuilder implements HTMLBuilder
         out.close();
     }
 
+    
     private void writeDetailsPageHTML (Event currentEvent, File detailPage) throws IOException
     {
         FileOutputStream fos = new FileOutputStream(detailPage);
@@ -94,6 +103,7 @@ public class WeekViewHTMLBuilder implements HTMLBuilder
         out.close();
     }
 
+    
     private A linkToDetailsPage (String detailPageFolder, Event currentEvent)
     {
         StringBuilder link = new StringBuilder();
@@ -106,6 +116,7 @@ public class WeekViewHTMLBuilder implements HTMLBuilder
         return detailsLink;
     }
 
+    
     private String createDetailsPageURL (Event currentEvent)
     {
         StringBuilder url = new StringBuilder();
@@ -117,6 +128,7 @@ public class WeekViewHTMLBuilder implements HTMLBuilder
         return url.toString();
     }
 
+    
     private void createParagraphTag (Document doc, String contents)
     {
         P paragraph = new P();
@@ -124,6 +136,7 @@ public class WeekViewHTMLBuilder implements HTMLBuilder
         doc.body.appendChild(paragraph);
     }
 
+    
     private String formatTime (Event currentEvent)
     {
         StringBuilder eventTime = new StringBuilder();
