@@ -12,8 +12,10 @@ public class Main
     public static void main(String[] args) throws SAXException, IOException, ParserConfigurationException
     {
         TivooSystem s = new TivooSystem();
+        System.out.println("Loading XML input...");
         s.loadFile("data/dukecal.xml");
         //s.filterByKeyword("Lemur");
-        s.outputSummaryAndDetailsPages("data/summary.html", "data/details_dir");
+        System.out.println("Creating HTML output...");
+        s.outputSummaryAndDetailsPages("output/summary.html", "output/details_dir");
     }
 }

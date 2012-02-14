@@ -7,6 +7,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 import tivoo.filtering.Filter;
 import tivoo.input.CalendarParser;
+import tivoo.output.HTMLBuilder;
+import tivoo.output.WeekViewHTMLBuilder;
 
 
 public class TivooSystem
@@ -37,19 +39,12 @@ public class TivooSystem
     }
 
 
-    // TODO: Implement actual output. (Currently only outputs event titles.)
-    public void outputSummaryAndDetailsPages (String summaryFileName,
-                                              String detailPageDirectory)
+    public void outputSummaryAndDetailsPages (String summaryPageFileName,
+                                              String detailPageDirectory) throws IOException
     {
-        for (Event currentEvent : events)
-        {
-            Calendar start = currentEvent.getStartTime();
-            Calendar end = currentEvent.getEndTime();
-            System.out.println(start.get(Calendar.HOUR) + ":" +
-                               start.get(Calendar.MINUTE) + " " +
-                               end.get(Calendar.HOUR) + ":" +
-                               end.get(Calendar.MINUTE));
-        }
+        HTMLBuilder output = new WeekViewHTMLBuilder();
+        output.buildSummaryPage(summaryPageFileName, detailPageDirectory, events);
+        output.buildDetailsPages(detailPageDirectory, events);
     }
 
 }
