@@ -20,6 +20,12 @@ public class CalendarParser
     private static SAXParserFactory SAX_PARSER_FACTORY =
         SAXParserFactory.newInstance();
 
+    private final static Class<? extends TypeCheckHandler>[] TYPE_CHECKERS =
+        (Class<? extends TypeCheckHandler>[]) (new Class[] {});
+
+    private final static Class<? extends ParserHandler>[] PARSERS =
+        (Class<? extends ParserHandler>[]) (new Class[] { DukeCalParserHandler.class, TVParserHandler.class });
+
 
     private static InputSource getInputSource (String fileName)
         throws IOException
@@ -40,10 +46,27 @@ public class CalendarParser
     {	
 
         SAXParser parser = SAX_PARSER_FACTORY.newSAXParser();
-        
-//        DukeCalParserHandler handler = new DukeCalParserHandler();
-        ParserHandler handler = new TVParserHandler();
-        parser.parse(getInputSource(fileName), handler);
-        return handler.getEvents();
+        InputSource source = getInputSource(fileName);
+        for (int i = 0; i < TYPE_CHECKERS.length; i++)
+        {
+            try
+            {
+                TypeCheckHandler typeCheckHandler =
+                    TYPE_CHECKERS[i].newInstance();
+                parser.parse(source, typeCheckHandler);
+                parser.reset();
+                if (typeCheckHandler.isValid())
+                {
+                    ParserHandler parserHandler = PARSERS[i].newInstance();
+                    parser.parse(source, parserHandler);
+                    return parserHandler.getEvents();
+                }
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 }
