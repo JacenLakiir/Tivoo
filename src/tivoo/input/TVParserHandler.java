@@ -71,7 +71,6 @@ public class TVParserHandler extends ParserHandler{
         public void startElement (Attributes attributes)
         {
             currentEvent = new EventImpl();
-            currentEvent.setLocation("NA");
             
             String startTime = attributes.getValue("start");
             currentCalendar = Calendar.getInstance();
