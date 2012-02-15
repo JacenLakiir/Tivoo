@@ -37,9 +37,12 @@ public class CalendarParser
         throws SAXException,
             IOException,
             ParserConfigurationException
-    {
+    {	
+
         SAXParser parser = SAX_PARSER_FACTORY.newSAXParser();
-        DukeCalParserHandler handler = new DukeCalParserHandler();
+        
+//        DukeCalParserHandler handler = new DukeCalParserHandler();
+        ParserHandler handler = new TVParserHandler();
         parser.parse(getInputSource(fileName), handler);
         return handler.getEvents();
     }

@@ -102,6 +102,7 @@ public class DukeCalParserHandler extends ParserHandler
             currentEvent.setDescription(new String(ch, start, length));
         }
     }
+    
 
 
     public ElementHandler getElementHandler (String namespace,
