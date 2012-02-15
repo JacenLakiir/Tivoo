@@ -39,7 +39,7 @@ public class CalendarParser
             ParserConfigurationException
     {
         SAXParser parser = SAX_PARSER_FACTORY.newSAXParser();
-        DukeCalHandler handler = new DukeCalHandler();
+        DukeCalParserHandler handler = new DukeCalParserHandler();
         parser.parse(getInputSource(fileName), handler);
         return handler.getEvents();
     }
