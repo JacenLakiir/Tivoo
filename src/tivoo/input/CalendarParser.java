@@ -21,10 +21,12 @@ public class CalendarParser
         SAXParserFactory.newInstance();
 
     private final static Class<? extends TypeCheckHandler>[] TYPE_CHECKERS =
-        (Class<? extends TypeCheckHandler>[]) (new Class[] {});
+        (Class<? extends TypeCheckHandler>[]) (new Class[] { DukeCalTypeCheckHandler.class });
 
     private final static Class<? extends ParserHandler>[] PARSERS =
-        (Class<? extends ParserHandler>[]) (new Class[] { DukeCalParserHandler.class, TVParserHandler.class });
+        (Class<? extends ParserHandler>[]) (new Class[] {
+                DukeCalParserHandler.class,
+                TVParserHandler.class });
 
 
     private static InputSource getInputSource (String fileName)
@@ -43,22 +45,21 @@ public class CalendarParser
         throws SAXException,
             IOException,
             ParserConfigurationException
-    {	
+    {
 
         SAXParser parser = SAX_PARSER_FACTORY.newSAXParser();
-        InputSource source = getInputSource(fileName);
         for (int i = 0; i < TYPE_CHECKERS.length; i++)
         {
             try
             {
                 TypeCheckHandler typeCheckHandler =
                     TYPE_CHECKERS[i].newInstance();
-                parser.parse(source, typeCheckHandler);
+                parser.parse(getInputSource(fileName), typeCheckHandler);
                 parser.reset();
                 if (typeCheckHandler.isValid())
                 {
                     ParserHandler parserHandler = PARSERS[i].newInstance();
-                    parser.parse(source, parserHandler);
+                    parser.parse(getInputSource(fileName), parserHandler);
                     return parserHandler.getEvents();
                 }
             }
