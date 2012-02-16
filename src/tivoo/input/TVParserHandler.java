@@ -76,15 +76,14 @@ public class TVParserHandler extends ParserHandler
             setTime(currentCalendar, startTime);
             currentEvent.setStartTime(currentCalendar);
 
-            currentCalendar = Calendar.getInstance();
             String endTime = attributes.getValue("stop");
+            currentCalendar = Calendar.getInstance();
             setTime(currentCalendar, endTime);
             currentEvent.setEndTime(currentCalendar);
 
             String channelId = attributes.getValue("channel");
             currentEvent.setDescription("Channel: " +
                                         channelMap.get(channelId) + "<br>");
-            currentEvent.setLocation("NA");
         }
 
 
