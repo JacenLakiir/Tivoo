@@ -83,6 +83,7 @@ Impressions:
 
 Input portion:
 	- Siyang
+The main problems with parsing the xmltv files are: 1. There is a DOCTYPE in xmltv file and a way should be found to ignore it, otherwise there will be a filenotfound exception; 2. The channel names are stored separately from programmes, the programmes only has the id for the channel name.
 	- Hui
 
 Filtering:
