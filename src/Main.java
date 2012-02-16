@@ -17,7 +17,7 @@ public class Main
         s.loadFile("data/tv.xml");
         
         System.out.println("Filtering XML...");
-//        s.filterByKeyword("Lecture");
+        s.filterByKeyword("Hollywood");
         
         System.out.println("Creating HTML output...");
         s.outputSummaryAndDetailsPages("output/summary.html", "output/details_dir");

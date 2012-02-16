@@ -58,12 +58,12 @@ Part 1
 ========================================
 
 Started:  Feb 14
-Finished: ???
+Finished: Feb 15
 
 Project Length:
-- [Actual] ???
-- [Estimated] ???
-- [How good our estimate was] ???
+- [Actual] ??? 3 hours Eric + NEED IAN, SIYANG, & HUI TO INCLUDE THEIR TIME SPENT WORKING
+- [Estimated] 10 hours
+- [How good our estimate was] ??? LAST PERSON TO UPDATE README GETS TO WRITE THIS
 
 Discussed with:
 - UTA Mason Meier (assigned UTA)
@@ -77,17 +77,20 @@ Files Used to Start and Test:
 Data / Resource Files Required:
 - various XML files (included in the data folder)
 - gagawa-1.0.1 JAR (included in the lib folder)
-- ???
+- ??? LAST PERSON TO UPDATE README GETS TO REMOVE THE QUESTION MARKS
 
 Impressions:
 
 Input portion:
+???
 	- Siyang
 The main problems with parsing the xmltv files are: 1. There is a DOCTYPE in xmltv file and a way should be found to ignore it, otherwise there will be a filenotfound exception; 2. The channel names are stored separately from programmes, the programmes only has the id for the channel name.
 	- Hui
 
 Filtering:
+???
 	-Ian
 
 Output portion:
+Allowing for events to be shown on the summary page sorted by weekday took a fair amount of work due to the need to familiarize myself with the Calendar API. Fixing the formatting of event times to be consistent with normal clock displays (i.e. "12:00 PM" rather than "0:0") also took a bit of time since I needed to read through the Formatter API, which greatly reduced the amount of code I needed to write to accomplish this.
 	-Eric

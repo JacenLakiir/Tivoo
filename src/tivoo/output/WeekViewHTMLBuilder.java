@@ -71,10 +71,11 @@ public class WeekViewHTMLBuilder implements HTMLBuilder
         Map<String, List<Event>> sortedEvents = sortByDayOfWeek(eventList);
 
         Div weekInfo = new Div();
+        weekInfo.setId("week");
         for (String day : daysList)
         {
             Div dayInfo = new Div();
-            dayInfo.setId("dayInfo");
+            dayInfo.setId("day");
 
             P titleP = new P();
             titleP.appendChild(new B().appendText(day));
@@ -86,7 +87,7 @@ public class WeekViewHTMLBuilder implements HTMLBuilder
                 for (Event currentEvent : eventsOnThisDay)
                 {
                     Div eventInfo = new Div();
-                    eventInfo.setId("eventInfo");
+                    eventInfo.setId("event");
                     P eventP = new P();
                     eventP.appendChild(linkToDetailsPage(detailPageFolder, currentEvent));
                     eventP.appendChild(new Br());
