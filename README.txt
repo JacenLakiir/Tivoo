@@ -61,7 +61,7 @@ Started:  Feb 14
 Finished: Feb 15
 
 Project Length:
-- [Actual] ??? 3 hours Eric + NEED IAN, SIYANG, & HUI TO INCLUDE THEIR TIME SPENT WORKING
+- [Actual] ??? 3 hours Eric + 2.5 hours + NEED IAN, SIYANG, TO INCLUDE THEIR TIME SPENT WORKING
 - [Estimated] 10 hours
 - [How good our estimate was] ??? LAST PERSON TO UPDATE README GETS TO WRITE THIS
 
