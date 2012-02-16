@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.LinkedList;
 import java.util.List;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -60,7 +61,6 @@ public class CalendarParser
                 parser.reset();
                 if (typeCheckHandler.isValid())
                 {
-                    System.out.println(i);
                     ParserHandler parserHandler = PARSERS[i].newInstance();
                     parser.parse(getInputSource(fileName), parserHandler);
                     return parserHandler.getEvents();
@@ -71,6 +71,7 @@ public class CalendarParser
                 e.printStackTrace();
             }
         }
-        return null;
+        System.err.println("Invalid File Type");
+        return new LinkedList<Event>();
     }
 }
