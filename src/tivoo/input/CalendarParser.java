@@ -21,7 +21,9 @@ public class CalendarParser
         SAXParserFactory.newInstance();
 
     private final static Class<? extends TypeCheckHandler>[] TYPE_CHECKERS =
-        (Class<? extends TypeCheckHandler>[]) (new Class[] { DukeCalTypeCheckHandler.class });
+        (Class<? extends TypeCheckHandler>[]) (new Class[] {
+                DukeCalTypeCheckHandler.class,
+                TVTypeCheckHandler.class });
 
     private final static Class<? extends ParserHandler>[] PARSERS =
         (Class<? extends ParserHandler>[]) (new Class[] {
@@ -58,6 +60,7 @@ public class CalendarParser
                 parser.reset();
                 if (typeCheckHandler.isValid())
                 {
+                    System.out.println(i);
                     ParserHandler parserHandler = PARSERS[i].newInstance();
                     parser.parse(getInputSource(fileName), parserHandler);
                     return parserHandler.getEvents();

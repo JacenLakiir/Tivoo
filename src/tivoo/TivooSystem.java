@@ -40,10 +40,13 @@ public class TivooSystem
 
 
     public void outputSummaryAndDetailsPages (String summaryPageFileName,
-                                              String detailPageDirectory) throws IOException
+                                              String detailPageDirectory)
+        throws IOException
     {
         HTMLBuilder output = new WeekViewHTMLBuilder();
-        output.buildSummaryPage(summaryPageFileName, detailPageDirectory, events);
+        output.buildSummaryPage(summaryPageFileName,
+                                detailPageDirectory,
+                                events);
         output.buildDetailsPages(detailPageDirectory, events);
     }
 

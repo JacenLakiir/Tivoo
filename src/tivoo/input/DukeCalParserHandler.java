@@ -25,9 +25,9 @@ public class DukeCalParserHandler extends ParserHandler
         elementHandlerMap.put("description", DescriptionElementHandler.class);
     }
 
+    private List<Event> events = new LinkedList<Event>();
     private EventImpl currentEvent;
     private Calendar currentCalendar;
-    private List<Event> events = new LinkedList<Event>();
 
     protected class EventElementHandler extends ElementHandler
     {
@@ -102,7 +102,6 @@ public class DukeCalParserHandler extends ParserHandler
             currentEvent.setDescription(new String(ch, start, length));
         }
     }
-    
 
 
     public ElementHandler getElementHandler (String namespace,
@@ -117,7 +116,7 @@ public class DukeCalParserHandler extends ParserHandler
             if (handlerClass != null)
             {
                 handler =
-                    handlerClass.getDeclaredConstructor(DukeCalParserHandler.class)
+                    handlerClass.getDeclaredConstructor(this.getClass())
                                 .newInstance(this);
             }
             else

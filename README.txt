@@ -61,7 +61,7 @@ Started:  Feb 14
 Finished: ???
 
 Project Length:
-- [Actual] ???
+- [Actual] (7 hours) Siyang
 - [Estimated] ???
 - [How good our estimate was] ???
 
@@ -82,6 +82,7 @@ Data / Resource Files Required:
 Impressions:
 
 Input portion:
+SAX parser conventions are somewhat annoying. Also, I'm not entirely satisfied with the way typechecking/parsing design, but it works.
 	- Siyang
 	- Hui
 

@@ -1,7 +1,11 @@
 package tivoo.input;
 
+import java.io.IOException;
+import java.io.StringReader;
 import java.util.LinkedList;
 import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 
@@ -23,8 +27,8 @@ public abstract class SAXHandler extends DefaultHandler
     {
         ElementHandler currentHandler =
             getElementHandler(namespace, localName, qualifiedName);
-		currentHandler.startElement(attributes);
-		elementStack.push(currentHandler);
+        currentHandler.startElement(attributes);
+        elementStack.push(currentHandler);
     }
 
 
@@ -41,5 +45,14 @@ public abstract class SAXHandler extends DefaultHandler
     {
         ElementHandler currentHandler = elementStack.poll();
         currentHandler.endElement();
+    }
+
+
+    @Override
+    public InputSource resolveEntity (String publicId, String systemId)
+        throws IOException,
+            SAXException
+    {
+        return new InputSource(new StringReader(""));
     }
 }

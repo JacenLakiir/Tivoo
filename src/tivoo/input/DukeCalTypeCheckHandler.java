@@ -106,7 +106,7 @@ public class DukeCalTypeCheckHandler extends TypeCheckHandler
                 if (handlerClass != null)
                 {
                     handler =
-                        handlerClass.getDeclaredConstructor(DukeCalTypeCheckHandler.class)
+                        handlerClass.getDeclaredConstructor(this.getClass())
                                     .newInstance(this);
                 }
                 else

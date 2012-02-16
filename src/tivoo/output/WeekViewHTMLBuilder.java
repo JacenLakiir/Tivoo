@@ -25,6 +25,7 @@ public class WeekViewHTMLBuilder implements HTMLBuilder
 
     private final List<String> daysList = initializeDayList();
 
+
     @Override
     public void buildSummaryPage (String summaryPageFileName,
                                   String detailPageDirectory,
@@ -33,7 +34,8 @@ public class WeekViewHTMLBuilder implements HTMLBuilder
         if (summaryPageFileName.contains("/"))
         {
             File outputDirectory =
-                new File(summaryPageFileName.substring(0, summaryPageFileName.lastIndexOf("/")));
+                new File(summaryPageFileName.substring(0,
+                                                       summaryPageFileName.lastIndexOf("/")));
             outputDirectory.mkdirs();
         }
         File summaryPage = new File(summaryPageFileName);
@@ -43,24 +45,28 @@ public class WeekViewHTMLBuilder implements HTMLBuilder
         writeSummaryPageHTML(summaryPage, detailPageFolder, eventList);
     }
 
+
     @Override
-    public void buildDetailsPages (String detailPageDirectory, List<Event> eventList)
-        throws IOException
+    public void buildDetailsPages (String detailPageDirectory,
+                                   List<Event> eventList) throws IOException
     {
         File detailsDirectory = new File(detailPageDirectory);
         detailsDirectory.mkdirs();
         for (Event currentEvent : eventList)
         {
             String detailPageURL = createDetailsPageURL(currentEvent);
-            File detailPage = new File(detailPageDirectory + "/" + detailPageURL);
+            File detailPage =
+                new File(detailPageDirectory + "/" + detailPageURL);
             detailPage.createNewFile();
             writeDetailsPageHTML(currentEvent, detailPage);
         }
     }
 
+
     private void writeSummaryPageHTML (File summaryPage,
                                        String detailPageFolder,
-                                       List<Event> eventList) throws IOException
+                                       List<Event> eventList)
+        throws IOException
     {
         FileOutputStream fos = new FileOutputStream(summaryPage);
         OutputStreamWriter out = new OutputStreamWriter(fos, "UTF-8");
@@ -88,7 +94,8 @@ public class WeekViewHTMLBuilder implements HTMLBuilder
                     Div eventInfo = new Div();
                     eventInfo.setId("eventInfo");
                     P eventP = new P();
-                    eventP.appendChild(linkToDetailsPage(detailPageFolder, currentEvent));
+                    eventP.appendChild(linkToDetailsPage(detailPageFolder,
+                                                         currentEvent));
                     eventP.appendChild(new Br());
                     eventP.appendText(getEventTimespan(currentEvent));
                     eventInfo.appendChild(eventP);
@@ -102,7 +109,9 @@ public class WeekViewHTMLBuilder implements HTMLBuilder
         out.close();
     }
 
-    private void writeDetailsPageHTML (Event currentEvent, File detailPage) throws IOException
+
+    private void writeDetailsPageHTML (Event currentEvent, File detailPage)
+        throws IOException
     {
         FileOutputStream fos = new FileOutputStream(detailPage);
         OutputStreamWriter out = new OutputStreamWriter(fos, "UTF-8");
@@ -122,6 +131,7 @@ public class WeekViewHTMLBuilder implements HTMLBuilder
         out.close();
     }
 
+
     private A linkToDetailsPage (String detailPageFolder, Event currentEvent)
     {
         StringBuilder link = new StringBuilder();
@@ -134,6 +144,7 @@ public class WeekViewHTMLBuilder implements HTMLBuilder
         return detailsLink;
     }
 
+
     private String createDetailsPageURL (Event currentEvent)
     {
         StringBuilder url = new StringBuilder();
@@ -145,12 +156,14 @@ public class WeekViewHTMLBuilder implements HTMLBuilder
         return url.toString();
     }
 
+
     private void createParagraphTag (Document doc, String contents)
     {
         P paragraph = new P();
         paragraph.appendText(contents);
         doc.body.appendChild(paragraph);
     }
+
 
     private String getEventTimespan (Event currentEvent)
     {
@@ -160,24 +173,28 @@ public class WeekViewHTMLBuilder implements HTMLBuilder
         eventTimeSpan.append(getClockTime(currentEvent.getEndTime()));
         return eventTimeSpan.toString();
     }
-    
+
+
     private String getClockTime (Calendar cal)
     {
         return String.format("%1$tl:%<tM %<Tp", cal);
     }
 
+
     private Map<String, List<Event>> sortByDayOfWeek (List<Event> eventList)
     {
-        Map<String, List<Event>> sortedEvents = new TreeMap<String, List<Event>>();
+        Map<String, List<Event>> sortedEvents =
+            new TreeMap<String, List<Event>>();
         for (Event currentEvent : eventList)
         {
             String eventDay = getDayOfWeek(currentEvent);
-            if (!sortedEvents.containsKey(eventDay))
-                sortedEvents.put(eventDay, new ArrayList<Event>());
+            if (!sortedEvents.containsKey(eventDay)) sortedEvents.put(eventDay,
+                                                                      new ArrayList<Event>());
             sortedEvents.get(eventDay).add(currentEvent);
         }
         return sortedEvents;
     }
+
 
     private String getDayOfWeek (Event currentEvent)
     {
@@ -186,6 +203,7 @@ public class WeekViewHTMLBuilder implements HTMLBuilder
         eventDay.append(daysList.get(start.get(Calendar.DAY_OF_WEEK) - 1));
         return (eventDay.toString());
     }
+
 
     private static List<String> initializeDayList ()
     {

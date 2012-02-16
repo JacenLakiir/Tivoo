@@ -1,31 +1,20 @@
 package tivoo.input;
 
-import java.io.IOException;
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.TimeZone;
 import org.xml.sax.Attributes;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 import tivoo.Event;
 import tivoo.EventImpl;
 
 
 public class TVParserHandler extends ParserHandler
 {
-    private List<Event> events = new ArrayList<Event>();
-    private EventImpl currentEvent = new EventImpl();
-    private Calendar currentCalendar;
-    private HashMap<String, String> channelMap = new HashMap<String, String>();
-
     private static HashMap<String, Class<? extends ElementHandler>> elementHandlerMap =
         new HashMap<String, Class<? extends ElementHandler>>();
-
-
-    public TVParserHandler ()
+    static
     {
         elementHandlerMap.put("programme", EventElementHandler.class);
         elementHandlerMap.put("title", TitleElementHandler.class);
@@ -34,6 +23,11 @@ public class TVParserHandler extends ParserHandler
         elementHandlerMap.put("channel", ChannelElementHandler.class);
         elementHandlerMap.put("display-name", ProgrammeNameElementHandler.class);
     }
+
+    private List<Event> events = new ArrayList<Event>();
+    private EventImpl currentEvent = new EventImpl();
+    private Calendar currentCalendar;
+    private HashMap<String, String> channelMap = new HashMap<String, String>();
 
 
     public List<Event> getEvents ()
@@ -55,7 +49,7 @@ public class TVParserHandler extends ParserHandler
             if (handlerClass != null)
             {
                 handler =
-                    handlerClass.getDeclaredConstructor(TVParserHandler.class)
+                    handlerClass.getDeclaredConstructor(this.getClass())
                                 .newInstance(this);
             }
             else
@@ -125,19 +119,6 @@ public class TVParserHandler extends ParserHandler
             currentEvent.setDescription(currentEvent.getDescription() +
                                         new String(ch, start, length));
         }
-    }
-
-
-    @Override
-    public InputSource resolveEntity (String publicId, String systemId)
-        throws IOException,
-            SAXException
-    {
-        if (systemId.contains("xmltv.dtd"))
-        {
-            return new InputSource(new StringReader(""));
-        }
-        else return null;
     }
 
     private String channelId = "";
