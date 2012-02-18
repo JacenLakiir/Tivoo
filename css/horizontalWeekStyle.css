@@ -1,0 +1,39 @@
+table {
+	border: 2px solid;
+}
+
+th.day {
+    background: #CCCCCC;
+    border-right: 1px solid;
+    border-bottom: 1px solid;
+    border-top: 1px solid;
+    border-left: 1px solid;
+    padding: 6px 6px 6px 2px;
+    text-align: center;
+}
+
+td.gr1 {
+    vertical-align: top;
+    background-color: #EEEEEE;
+   	font-size: 11pt;
+    width: 300px;
+    height: 100px;
+    border-right: 1px solid;
+    border-bottom: 1px solid;
+    border-top: 1px solid;
+    border-left: 1px solid;
+    text-align: left;
+}
+
+td.gr1alt {
+    vertical-align: top;
+    background-color: #FFFFFF;
+    font-size: 11pt;
+    width: 300px;
+    height: 100px;
+    border-right: 1px solid;
+    border-bottom: 1px solid;
+    border-top: 1px solid;
+    border-left: 1px solid;
+    text-align: left;
+}

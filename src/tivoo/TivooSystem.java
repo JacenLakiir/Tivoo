@@ -8,7 +8,7 @@ import org.xml.sax.SAXException;
 import tivoo.filtering.Filter;
 import tivoo.input.CalendarParser;
 import tivoo.output.HTMLBuilder;
-import tivoo.output.WeekViewHTMLBuilder;
+import tivoo.output.HorizontalWeekHTMLBuilder;
 
 
 public class TivooSystem
@@ -43,11 +43,10 @@ public class TivooSystem
                                               String detailPageDirectory)
         throws IOException
     {
-        HTMLBuilder output = new WeekViewHTMLBuilder();
-        output.buildSummaryPage(summaryPageFileName,
-                                detailPageDirectory,
-                                events);
-        output.buildDetailsPages(detailPageDirectory, events);
+        HTMLBuilder output = new HorizontalWeekHTMLBuilder(summaryPageFileName,
+                                                           detailPageDirectory);
+        output.buildSummaryPage(events);
+        output.buildDetailsPages(events);
     }
 
 }

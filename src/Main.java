@@ -16,7 +16,7 @@ public class Main
         System.out.println("Loading XML input...");
         s.loadFile("data/tv.xml");
 
-        System.out.println("Filtering XML...");
+        System.out.println("Filtering events...");
         s.filterByKeyword("Hollywood");
 
         System.out.println("Creating HTML output...");
