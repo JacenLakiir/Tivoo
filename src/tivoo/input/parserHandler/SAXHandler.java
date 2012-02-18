@@ -1,4 +1,4 @@
-package tivoo.input;
+package tivoo.input.parserHandler;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -7,6 +7,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
+
 
 
 public abstract class SAXHandler extends DefaultHandler

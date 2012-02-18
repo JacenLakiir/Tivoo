@@ -1,7 +1,9 @@
-package tivoo.input;
+package tivoo.input.typeChecker;
 
 import java.util.HashMap;
 import java.util.HashSet;
+
+import tivoo.input.parserHandler.ElementHandler;
 
 
 public class TVTypeCheckHandler extends TypeCheckHandler

@@ -14,6 +14,12 @@ import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import tivoo.Event;
+import tivoo.input.parserHandler.DukeCalParserHandler;
+import tivoo.input.parserHandler.ParserHandler;
+import tivoo.input.parserHandler.TVParserHandler;
+import tivoo.input.typeChecker.DukeCalTypeCheckHandler;
+import tivoo.input.typeChecker.TVTypeCheckHandler;
+import tivoo.input.typeChecker.TypeCheckHandler;
 
 
 public class CalendarParser

@@ -1,4 +1,4 @@
-package tivoo.input;
+package tivoo.input.parserHandler;
 
 import java.util.ArrayList;
 import java.util.Calendar;

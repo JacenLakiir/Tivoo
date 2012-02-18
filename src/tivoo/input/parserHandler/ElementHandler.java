@@ -1,4 +1,4 @@
-package tivoo.input;
+package tivoo.input.parserHandler;
 
 import org.xml.sax.Attributes;
 
