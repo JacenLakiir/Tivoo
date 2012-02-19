@@ -7,7 +7,6 @@ import java.util.LinkedList;
 import java.util.TimeZone;
 import org.xml.sax.Attributes;
 import tivoo.Event;
-import tivoo.EventImpl;
 
 
 public class DukeCalParserHandler extends ParserHandler
@@ -26,14 +25,14 @@ public class DukeCalParserHandler extends ParserHandler
     }
 
     private List<Event> events = new LinkedList<Event>();
-    private EventImpl currentEvent;
+    private Event currentEvent;
     private Calendar currentCalendar;
 
     protected class EventElementHandler extends ElementHandler
     {
         public void startElement (Attributes attributes)
         {
-            currentEvent = new EventImpl();
+            currentEvent = new Event();
         }
 
 

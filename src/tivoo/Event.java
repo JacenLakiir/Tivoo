@@ -3,19 +3,72 @@ package tivoo;
 import java.util.Calendar;
 
 
-public interface Event
+public class Event
 {
-    public String getTitle ();
+    private String title;
+    private String description;
+    private Calendar startTime;
+    private Calendar endTime;
+    private String location;
 
 
-    public String getDescription ();
+    public String getTitle ()
+    {
+        return title;
+    }
 
 
-    public Calendar getStartTime ();
+    public String getDescription ()
+    {
+        return description;
+    }
 
 
-    public Calendar getEndTime ();
+    public Calendar getStartTime ()
+    {
+        return startTime;
+    }
 
 
-    public String getLocation ();
+    public Calendar getEndTime ()
+    {
+        return endTime;
+    }
+
+
+    public String getLocation ()
+    {
+        return location;
+    }
+
+
+    public void setTitle (String title)
+    {
+        this.title = title;
+    }
+
+
+    public void setDescription (String description)
+    {
+        this.description = description;
+    }
+
+
+    public void setStartTime (Calendar startTime)
+    {
+        this.startTime = startTime;
+    }
+
+
+    public void setEndTime (Calendar endTime)
+    {
+        this.endTime = endTime;
+    }
+
+
+    public void setLocation (String location)
+    {
+        this.location = location;
+    }
+
 }

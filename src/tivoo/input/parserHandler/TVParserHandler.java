@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.TimeZone;
 import org.xml.sax.Attributes;
 import tivoo.Event;
-import tivoo.EventImpl;
 
 
 public class TVParserHandler extends ParserHandler
@@ -25,7 +24,7 @@ public class TVParserHandler extends ParserHandler
     }
 
     private List<Event> events = new ArrayList<Event>();
-    private EventImpl currentEvent = new EventImpl();
+    private Event currentEvent = new Event();
     private Calendar currentCalendar;
     private HashMap<String, String> channelMap = new HashMap<String, String>();
 
@@ -68,7 +67,7 @@ public class TVParserHandler extends ParserHandler
     {
         public void startElement (Attributes attributes)
         {
-            currentEvent = new EventImpl();
+            currentEvent = new Event();
             currentEvent.setLocation("NA");
 
             String startTime = attributes.getValue("start");
