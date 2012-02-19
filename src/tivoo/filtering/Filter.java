@@ -15,9 +15,8 @@ public class Filter {
 	public List<Event> filterByKeyword(String keyword, List<Event> eventList) {
 		List<Event> newEventList = new LinkedList<Event>();
 		for (Event event : eventList) {
-			if (event.getDescription().equals(keyword)
-					|| event.getTitle().equals(keyword)
-					|| event.getLocation().equals(keyword)) {
+			if (event.getDescription().contains(keyword)
+					|| event.getTitle().contains(keyword)) {
 				newEventList.add(event);
 				continue;
 			}
@@ -27,6 +26,27 @@ public class Filter {
 					break;
 				}
 			}
+		}
+		return newEventList;
+	}
+	
+	/**
+	 * Finds all events without the given keyword.
+	 */
+	public List<Event> filterByNonKeyword(String keyword, List<Event> eventList) {
+		List<Event> newEventList = new LinkedList<Event>();
+		for (Event event : eventList) {
+			boolean inEvent = false;
+			if (event.getDescription().contains(keyword)
+					|| event.getTitle().contains(keyword)) {
+				inEvent = true;
+			}
+			for (String value : event.values()) {
+				if (value.contains(keyword)) {
+					inEvent = true;
+				}
+			}
+			if (!inEvent) newEventList.add(event);
 		}
 		return newEventList;
 	}

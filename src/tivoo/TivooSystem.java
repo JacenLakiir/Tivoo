@@ -42,12 +42,17 @@ public class TivooSystem
         events = filter.filterByKeyword(keyword, events);
     }
     
-    public void filterByKeword (String attribute, String keyword)
+    public void filterByKeyword (String attribute, String keyword)
     {
     	Filter filter = new Filter();
     	events = filter.filterByKeyword(attribute, keyword, events);
     }
 
+    public void filterByNonKeyword (String keyword)
+    {
+    	Filter filter = new Filter();
+    	events = filter.filterByNonKeyword(keyword, events);
+    }
 
     public void filterByTimeFrame (Calendar startTime, Calendar endTime)
     {
