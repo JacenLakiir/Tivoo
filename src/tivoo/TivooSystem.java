@@ -63,25 +63,19 @@ public class TivooSystem
     public void sortByTitle (boolean reversed)
     {
     	Filter filter = new Filter();
-    	int revValue = 1;
-    	if (reversed) revValue = -1;
-    	filter.sortByTitle(events, revValue);
+    	filter.sortByTitle(events, reversed);
     }
     
     public void sortByStartTime (boolean reversed)
     {
     	Filter filter = new Filter();
-    	int revValue = 1;
-    	if (reversed) revValue = -1;
-    	filter.sortByStartTime(events, revValue);
+    	filter.sortByStartTime(events, reversed);
     }
     
     public void sortByEndTime (boolean reversed)
     {
     	Filter filter = new Filter();
-    	int revValue = 1;
-    	if(reversed) revValue = -1;
-    	filter.sortByEndTime(events, revValue);
+    	filter.sortByEndTime(events, reversed);
     }
 
 

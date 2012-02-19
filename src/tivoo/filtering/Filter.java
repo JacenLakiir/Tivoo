@@ -86,11 +86,12 @@ public class Filter {
 	/**
 	 * Sorts events by name in ascending order
 	 */
-	public void sortByTitle(List<Event> eventList, final int reversed) {
+	public void sortByTitle(List<Event> eventList, boolean reversed) {
+		final int coeff = reversed ? -1 : 1;
 		Collections.sort(eventList, new Comparator<Event>() {
 
 			public int compare(Event event1, Event event2) {
-				return reversed*event1.getTitle().compareTo(event2.getTitle());
+				return coeff*event1.getTitle().compareTo(event2.getTitle());
 			}
 
 		});
@@ -100,11 +101,12 @@ public class Filter {
 	/**
 	 * Sorts events by start time in ascending order 
 	 */
-	public void sortByStartTime(List<Event> eventList, final int reversed){
+	public void sortByStartTime(List<Event> eventList, boolean reversed){
+		final int coeff = reversed ? -1 : 1;
 		Collections.sort(eventList, new Comparator<Event>() {
 
 			public int compare(Event event1, Event event2) {
-				return reversed*event1.getStartTime().compareTo(event2.getStartTime());
+				return coeff*event1.getStartTime().compareTo(event2.getStartTime());
 			}
 		});
 	}
@@ -112,11 +114,12 @@ public class Filter {
 	/**
 	 * Sorts events by start time in ascending order 
 	 */
-	public void sortByEndTime(List<Event> eventList, final int reversed){
+	public void sortByEndTime(List<Event> eventList, boolean reversed){
+		final int coeff = reversed ? -1 : 1;
 		Collections.sort(eventList, new Comparator<Event>() {
 
 			public int compare(Event event1, Event event2) {
-				return reversed*event1.getEndTime().compareTo(event2.getEndTime());
+				return coeff*event1.getEndTime().compareTo(event2.getEndTime());
 			}
 		});
 	}
