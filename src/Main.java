@@ -18,9 +18,12 @@ public class Main
 
         System.out.println("Filtering events...");
         s.filterByKeyword("Hollywood");
+        //s.sortByTitle(false);
+        s.sortByStartTime(false);
 
         System.out.println("Creating HTML output...");
-        s.outputVerticalWeekView("output/summary.html", "output/details_dir");
+        s.outputHorizontalWeekView("output/horiz_summary.html", "output/horiz_dir");
+        s.outputVerticalWeekView("output/vert_summary.html", "output/vert_dir");
         s.outputSortedView("output/sorted.html");
 
         System.out.println("Done!");

@@ -57,29 +57,6 @@ public abstract class HTMLBuilder
         return tivooStyle;
     }
     
-    protected String createDetailsPageURL (Event currentEvent)
-    {
-        StringBuilder url = new StringBuilder();
-        url.append(currentEvent.getTitle()
-                               .replaceAll("\\s+", "_")
-                               .replaceAll("[^A-z_0-9]", "")
-                               .trim());
-        url.append(".html");
-        return url.toString();
-    }
-    
-    protected A linkToDetailsPage (String detailPageFolder, Event currentEvent)
-    {
-        StringBuilder link = new StringBuilder();
-        link.append(detailPageFolder + "/");
-        link.append(createDetailsPageURL(currentEvent));
-
-        A detailsLink = new A();
-        detailsLink.appendText(currentEvent.getTitle());
-        detailsLink.setHref(link.toString());
-        return detailsLink;
-    }
-    
     protected void createParagraphTag (Div div, String category, String contents)
     {
         P paragraph = new P();
@@ -92,23 +69,52 @@ public abstract class HTMLBuilder
         div.appendChild(paragraph);
     }
     
-    
-    protected String getEventTimespan (Event currentEvent)
+    protected boolean isAllOnOneDay(Calendar start, Calendar end)
     {
-        StringBuilder eventTimeSpan = new StringBuilder();
-        eventTimeSpan.append(getClockTime(currentEvent.getStartTime()));
-        eventTimeSpan.append(" - ");
-        eventTimeSpan.append(getClockTime(currentEvent.getEndTime()));
-        return eventTimeSpan.toString();
+        return (start.get(Calendar.DAY_OF_WEEK) == end.get(Calendar.DAY_OF_WEEK));
+    }
+    
+    protected String formatDateTimespan (Event currentEvent)
+    {
+        StringBuilder timespan = new StringBuilder();
+        
+        Calendar start = currentEvent.getStartTime();
+        timespan.append(formatDate(start));
+        timespan.append(" - ");
+       
+        Calendar end = currentEvent.getEndTime();
+        if (isAllOnOneDay(start, end))
+        {
+            timespan.append(formatClockTime(end));
+        }
+        else
+        {
+            timespan.append(formatDate(end));
+        }
+            
+        return timespan.toString();
     }
     
     
-    protected String getClockTime (Calendar cal)
+    protected String formatClockTimespan (Event currentEvent)
+    {
+        StringBuilder clockTimespan = new StringBuilder();
+        clockTimespan.append(formatClockTime(currentEvent.getStartTime()));
+        clockTimespan.append(" - ");
+        clockTimespan.append(formatClockTime(currentEvent.getEndTime()));
+        return clockTimespan.toString();
+    }    
+    
+    protected String formatDate (Calendar cal)
+    {
+        return String.format("%1$ta %<tm/%<te at %<tl:%<tM %<Tp", cal);
+    }
+    
+    protected String formatClockTime (Calendar cal)
     {
         return String.format("%1$tl:%<tM %<Tp", cal);
     }
-    
-    
+     
     protected String getDayOfWeek (Event currentEvent)
     {
         StringBuilder eventDay = new StringBuilder();
