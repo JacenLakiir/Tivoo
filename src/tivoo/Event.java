@@ -83,7 +83,7 @@ public class Event
 
 	public void setAttribute(String attribute, String value)
 	{
-		attributes.set(attribute, value);
+		attributes.put(attribute, value);
 	}
 
 }
