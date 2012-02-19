@@ -14,13 +14,24 @@ import tivoo.Event;
 
 public abstract class WeekHTMLBuilder extends HTMLBuilder
 {
+    
+    protected String mySummaryPageFileName;
+    protected String myDetailPageDirectory;
+    protected String myDetailPageFolder;
         
     protected WeekHTMLBuilder(String summaryPageFileName, String detailPageDirectory)
     {
-        super(summaryPageFileName, detailPageDirectory);
+        mySummaryPageFileName = summaryPageFileName;
+        myDetailPageDirectory = detailPageDirectory;
+        myDetailPageFolder = detailPageDirectory.substring(myDetailPageDirectory.lastIndexOf("/") + 1);
+    }
+    
+    public void buildHTML(List<Event> eventList) throws IOException
+    {
+        buildSummaryPage(eventList);
+        buildDetailsPages(eventList);
     }
    
-    @Override
     public void buildSummaryPage (List<Event> eventList) throws IOException
     {
         if (mySummaryPageFileName.contains("/"))
@@ -34,7 +45,6 @@ public abstract class WeekHTMLBuilder extends HTMLBuilder
         writeSummaryPageHTML(summaryPage, eventList);
     }
 
-    @Override
     public void buildDetailsPages (List<Event> eventList) throws IOException
     {
         File detailsDirectory = new File(myDetailPageDirectory);

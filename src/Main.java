@@ -20,8 +20,7 @@ public class Main
         s.filterByKeyword("Hollywood");
 
         System.out.println("Creating HTML output...");
-        s.outputSummaryAndDetailsPages("output/summary.html",
-                                       "output/details_dir");
+        s.outputHorizontalWeekView("output/summary.html", "output/details_dir");
 
         System.out.println("Done!");
     }

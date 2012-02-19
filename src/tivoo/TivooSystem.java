@@ -10,6 +10,7 @@ import tivoo.filtering.Filter;
 import tivoo.input.CalendarParser;
 import tivoo.output.HTMLBuilder;
 import tivoo.output.HorizontalWeekHTMLBuilder;
+import tivoo.output.VerticalWeekHTMLBuilder;
 
 
 public class TivooSystem
@@ -46,15 +47,43 @@ public class TivooSystem
     }
 
 
-    public void outputSummaryAndDetailsPages (String summaryPageFileName,
-                                              String detailPageDirectory)
+    public void outputHorizontalWeekView (String summaryPageFileName,
+                                      String detailPageDirectory)
         throws IOException
     {
-        HTMLBuilder output =
-            new HorizontalWeekHTMLBuilder(summaryPageFileName,
-                                          detailPageDirectory);
-        output.buildSummaryPage(events);
-        output.buildDetailsPages(events);
+        HTMLBuilder output = new HorizontalWeekHTMLBuilder(summaryPageFileName,
+                                                           detailPageDirectory);
+        output.buildHTML(events);
     }
+    
+    public void outputVerticalWeekView (String summaryPageFileName,
+                                    String detailPageDirectory)
+        throws IOException
+    {
+        HTMLBuilder output = new VerticalWeekHTMLBuilder(summaryPageFileName,
+                                                         detailPageDirectory);
+        output.buildHTML(events);
+    }
+    
+//    public void outputSortedView (String summaryPageFileName,
+//                                  String detailPageDirectory)
+//        throws IOException
+//    {
+//        HTMLBuilder output = new SortedViewHTMLBuilder(pageFileName);
+//        output.buildHTML(events);
+//    }
+//    
+//    public void outputConflictView (String pageFileName)
+//        throws IOException
+//    {
+//        HTMLBuilder output = new ConflictViewHTMLBuilder(pageFileName);
+//        output.buildHTML(events);
+//    }
+//    
+//    public void outputCalendarView (String pageFileName)
+//    {
+//        HTMLBuilder output = new CalendarViewHTMLBuilder(pageFileName);
+//        output.buildHTML(events);
+//    }
 
 }
