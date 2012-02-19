@@ -8,8 +8,11 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 import tivoo.filtering.Filter;
 import tivoo.input.CalendarParser;
+import tivoo.output.CalendarViewHTMLBuilder;
+import tivoo.output.ConflictViewHTMLBuilder;
 import tivoo.output.HTMLBuilder;
 import tivoo.output.HorizontalWeekHTMLBuilder;
+import tivoo.output.SortedViewHTMLBuilder;
 import tivoo.output.VerticalWeekHTMLBuilder;
 
 
@@ -65,25 +68,25 @@ public class TivooSystem
         output.buildHTML(events);
     }
     
-//    public void outputSortedView (String summaryPageFileName,
-//                                  String detailPageDirectory)
-//        throws IOException
-//    {
-//        HTMLBuilder output = new SortedViewHTMLBuilder(pageFileName);
-//        output.buildHTML(events);
-//    }
-//    
-//    public void outputConflictView (String pageFileName)
-//        throws IOException
-//    {
-//        HTMLBuilder output = new ConflictViewHTMLBuilder(pageFileName);
-//        output.buildHTML(events);
-//    }
-//    
-//    public void outputCalendarView (String pageFileName)
-//    {
-//        HTMLBuilder output = new CalendarViewHTMLBuilder(pageFileName);
-//        output.buildHTML(events);
-//    }
+    public void outputSortedView (String pageFileName)
+        throws IOException
+    {
+        HTMLBuilder output = new SortedViewHTMLBuilder(pageFileName);
+        output.buildHTML(events);
+    }
+    
+    public void outputConflictView (String pageFileName)
+        throws IOException
+    {
+        HTMLBuilder output = new ConflictViewHTMLBuilder(pageFileName);
+        output.buildHTML(events);
+    }
+    
+    public void outputCalendarView (String pageFileName)
+        throws IOException
+    {
+        HTMLBuilder output = new CalendarViewHTMLBuilder(pageFileName);
+        output.buildHTML(events);
+    }
 
 }
