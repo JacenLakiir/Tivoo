@@ -2,6 +2,7 @@ package tivoo;
 
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.LinkedList;
 import java.util.List;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
@@ -13,7 +14,7 @@ import tivoo.output.HorizontalWeekHTMLBuilder;
 
 public class TivooSystem
 {
-    private List<Event> events;
+    private List<Event> events = new LinkedList<Event>();
 
 
     public void loadFile (String fileName)
@@ -21,7 +22,13 @@ public class TivooSystem
             IOException,
             ParserConfigurationException
     {
-        events = CalendarParser.parse(fileName);
+        events.addAll(CalendarParser.parse(fileName));
+    }
+
+
+    public void clearEvents ()
+    {
+        events.clear();
     }
 
 
@@ -43,8 +50,9 @@ public class TivooSystem
                                               String detailPageDirectory)
         throws IOException
     {
-        HTMLBuilder output = new HorizontalWeekHTMLBuilder(summaryPageFileName,
-                                                           detailPageDirectory);
+        HTMLBuilder output =
+            new HorizontalWeekHTMLBuilder(summaryPageFileName,
+                                          detailPageDirectory);
         output.buildSummaryPage(events);
         output.buildDetailsPages(events);
     }
