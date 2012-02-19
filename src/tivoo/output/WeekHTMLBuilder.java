@@ -18,7 +18,7 @@ public abstract class WeekHTMLBuilder extends HTMLBuilder
     protected String mySummaryPageFileName;
     protected String myDetailPageDirectory;
     protected String myDetailPageFolder;
-        
+            
     protected WeekHTMLBuilder(String summaryPageFileName, String detailPageDirectory)
     {
         mySummaryPageFileName = summaryPageFileName;
@@ -29,10 +29,10 @@ public abstract class WeekHTMLBuilder extends HTMLBuilder
     public void buildHTML(List<Event> eventList) throws IOException
     {
         buildSummaryPage(eventList);
-        buildDetailsPages(eventList);
+        buildDetailPages(eventList);
     }
    
-    public void buildSummaryPage (List<Event> eventList) throws IOException
+    protected void buildSummaryPage (List<Event> eventList) throws IOException
     {
         if (mySummaryPageFileName.contains("/"))
         {
@@ -45,23 +45,23 @@ public abstract class WeekHTMLBuilder extends HTMLBuilder
         writeSummaryPageHTML(summaryPage, eventList);
     }
 
-    public void buildDetailsPages (List<Event> eventList) throws IOException
+    protected void buildDetailPages (List<Event> eventList) throws IOException
     {
         File detailsDirectory = new File(myDetailPageDirectory);
         detailsDirectory.mkdirs();
         for (Event currentEvent : eventList)
         {
-            String detailPageURL = createDetailsPageURL(currentEvent);
+            String detailPageURL = createDetailPageURL(currentEvent);
             File detailPage = new File(myDetailPageDirectory + "/" + detailPageURL);
             detailPage.createNewFile();
-            writeDetailsPageHTML(currentEvent, detailPage);
+            writeDetailPageHTML(currentEvent, detailPage);
         }
     }
     
     protected abstract void writeSummaryPageHTML (File summaryPage,
                                                   List<Event> eventList) throws IOException;
     
-    protected void writeDetailsPageHTML (Event currentEvent, File detailPage) throws IOException
+    protected void writeDetailPageHTML (Event currentEvent, File detailPage) throws IOException
     {
         FileOutputStream fos = new FileOutputStream(detailPage);
         OutputStreamWriter out = new OutputStreamWriter(fos, "UTF-8");
@@ -80,11 +80,34 @@ public abstract class WeekHTMLBuilder extends HTMLBuilder
         Div content = new Div().setCSSClass("content");
         content.appendChild(new H4().appendText(currentEvent.getTitle()));
 
-        createParagraphTag(content, "Time", getEventTimespan(currentEvent));
+        createParagraphTag(content, "Time", formatDateTimespan(currentEvent));
         createParagraphTag(content, "Location", currentEvent.getLocation());
         createParagraphTag(content, "Description", currentEvent.getDescription());
         
         doc.body.appendChild(content);
+    }
+    
+    protected String createDetailPageURL (Event currentEvent)
+    {
+        StringBuilder url = new StringBuilder();
+        url.append(currentEvent.getTitle()
+                               .replaceAll("\\s+", "_")
+                               .replaceAll("[^A-z_0-9]", "")
+                               .trim());
+        url.append(".html");
+        return url.toString();
+    }
+    
+    protected A linkToDetailPage (String detailPageFolder, Event currentEvent)
+    {
+        StringBuilder link = new StringBuilder();
+        link.append(detailPageFolder + "/");
+        link.append(createDetailPageURL(currentEvent));
+
+        A detailsLink = new A();
+        detailsLink.appendText(currentEvent.getTitle());
+        detailsLink.setHref(link.toString());
+        return detailsLink;
     }
     
     protected Div constructEventDiv (Event currentEvent)
@@ -92,9 +115,9 @@ public abstract class WeekHTMLBuilder extends HTMLBuilder
         Div eventInfo = new Div().setId("event");
         
         P eventP = new P();
-        eventP.appendChild(linkToDetailsPage(myDetailPageFolder, currentEvent));
+        eventP.appendChild(linkToDetailPage(myDetailPageFolder, currentEvent));
         eventP.appendChild(new Br());
-        eventP.appendText(getEventTimespan(currentEvent));
+        eventP.appendText(formatClockTimespan(currentEvent));
         
         eventInfo.appendChild(eventP);
         return eventInfo;

@@ -26,7 +26,7 @@ public class HorizontalWeekHTMLBuilder extends WeekHTMLBuilder
         FileOutputStream fos = new FileOutputStream(summaryPage);
         OutputStreamWriter out = new OutputStreamWriter(fos, "UTF-8");
 
-        Document doc = initializeHTMLDocument("Summary", "");
+        Document doc = initializeHTMLDocument("Horizontal Week View", "");
         doc.head.appendChild(insertCSS("../css/horizontalWeekStyle.css"));
 
         writeHeader(doc);    
@@ -88,7 +88,7 @@ public class HorizontalWeekHTMLBuilder extends WeekHTMLBuilder
 
     private Td buildDayCalendar (String day, List<Event> eventsOnThisDay)
     {
-        boolean columnClass = daysList.indexOf(day) % 2 == 0;
+        boolean columnClass = (daysList.indexOf(day) % 2 == 0);
         Td dayCal = columnClass ? new Td().setCSSClass("gr1") : new Td().setCSSClass("gr1alt");
         Div dayDiv = constructDayDiv(eventsOnThisDay);
         dayCal.appendChild(dayDiv);

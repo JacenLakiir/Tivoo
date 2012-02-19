@@ -26,7 +26,7 @@ public class VerticalWeekHTMLBuilder extends WeekHTMLBuilder
         FileOutputStream fos = new FileOutputStream(summaryPage);
         OutputStreamWriter out = new OutputStreamWriter(fos, "UTF-8");
 
-        Document doc = initializeHTMLDocument("Summary", "");
+        Document doc = initializeHTMLDocument("Vertical Week View", "");
         doc.head.appendChild(insertCSS("../css/verticalWeekStyle.css"));
         
         writeHeader(doc);    

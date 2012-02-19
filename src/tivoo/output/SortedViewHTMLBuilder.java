@@ -29,7 +29,7 @@ public class SortedViewHTMLBuilder extends HTMLBuilder
         FileOutputStream fos = new FileOutputStream(myPageFileName);
         OutputStreamWriter out = new OutputStreamWriter(fos, "UTF-8");
 
-        Document doc = initializeHTMLDocument("Sorted Summary", "");
+        Document doc = initializeHTMLDocument("Sorted View", "");
         doc.head.appendChild(insertCSS("../css/sortedViewStyle.css"));
         
         writeHeader(doc);    
@@ -68,7 +68,7 @@ public class SortedViewHTMLBuilder extends HTMLBuilder
         eventInfo.appendChild(new Hr());
         eventInfo.appendChild(new H4().appendText(currentEvent.getTitle()));
         
-        createParagraphTag(eventInfo, "Time", getEventTimespan(currentEvent));
+        createParagraphTag(eventInfo, "Time", formatDateTimespan(currentEvent));
         createParagraphTag(eventInfo, "Location", currentEvent.getLocation());
         createParagraphTag(eventInfo, "Description", currentEvent.getDescription());
         
