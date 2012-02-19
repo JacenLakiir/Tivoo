@@ -15,20 +15,7 @@ public abstract class HTMLBuilder
     
     protected static final List<String> daysList = initializeDayList();
     
-    protected String mySummaryPageFileName;
-    protected String myDetailPageDirectory;
-    protected String myDetailPageFolder;
-    
-    protected HTMLBuilder(String summaryPageFileName, String detailPageDirectory)
-    {
-        mySummaryPageFileName = summaryPageFileName;
-        myDetailPageDirectory = detailPageDirectory;
-        myDetailPageFolder = detailPageDirectory.substring(myDetailPageDirectory.lastIndexOf("/") + 1);
-    }
-    
-    public abstract void buildSummaryPage (List<Event> eventList) throws IOException;
-
-    public abstract void buildDetailsPages (List<Event> eventList) throws IOException;   
+    public abstract void buildHTML(List<Event> eventList) throws IOException; 
 
     protected Document initializeHTMLDocument (String title, String cssFilePathExtender)
     {
