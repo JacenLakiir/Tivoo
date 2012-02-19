@@ -41,12 +41,42 @@ public class TivooSystem
         Filter filter = new Filter();
         events = filter.filterByKeyword(keyword, events);
     }
+    
+    public void filterByKeword (String attribute, String keyword)
+    {
+    	Filter filter = new Filter();
+    	events = filter.filterByKeyword(attribute, keyword, events);
+    }
 
 
     public void filterByTimeFrame (Calendar startTime, Calendar endTime)
     {
         Filter filter = new Filter();
         events = filter.filterByTimeFrame(startTime, endTime, events);
+    }
+    
+    public void sortByTitle (boolean reversed)
+    {
+    	Filter filter = new Filter();
+    	int revValue = 1;
+    	if (reversed) revValue = -1;
+    	filter.sortByTitle(events, revValue);
+    }
+    
+    public void sortByStartTime (boolean reversed)
+    {
+    	Filter filter = new Filter();
+    	int revValue = 1;
+    	if (reversed) revValue = -1;
+    	filter.sortByStartTime(events, revValue);
+    }
+    
+    public void sortByEndTime (boolean reversed)
+    {
+    	Filter filter = new Filter();
+    	int revValue = 1;
+    	if(reversed) revValue = -1;
+    	filter.sortByEndTime(events, revValue);
     }
 
 
