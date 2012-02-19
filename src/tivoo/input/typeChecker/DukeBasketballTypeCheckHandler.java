@@ -5,19 +5,20 @@ import java.util.HashSet;
 import tivoo.input.parserHandler.ElementHandler;
 
 
-public class DukeCalTypeCheckHandler extends TypeCheckHandler
+public class DukeBasketballTypeCheckHandler extends TypeCheckHandler
 {
     private static HashMap<String, Class<? extends ElementHandler>> elementHandlerMap =
         new HashMap<String, Class<? extends ElementHandler>>();
     static
     {
-        elementHandlerMap.put("event", EventElementHandler.class);
-        elementHandlerMap.put("summary", TitleElementHandler.class);
-        elementHandlerMap.put("start", StartElementHandler.class);
-        elementHandlerMap.put("end", EndElementHandler.class);
-        elementHandlerMap.put("utcdate", TimeElementHandler.class);
-        elementHandlerMap.put("address", LocationElementHandler.class);
-        elementHandlerMap.put("description", DescriptionElementHandler.class);
+        elementHandlerMap.put("Calendar", EventElementHandler.class);
+        elementHandlerMap.put("Subject", TitleElementHandler.class);
+        elementHandlerMap.put("StartDate", StartDateElementHandler.class);
+        elementHandlerMap.put("StartTime", StartTimeElementHandler.class);
+        elementHandlerMap.put("EndDate", EndDateElementHandler.class);
+        elementHandlerMap.put("EndTime", EndTimeElementHandler.class);
+        elementHandlerMap.put("Location", LocationElementHandler.class);
+        elementHandlerMap.put("Description", DescriptionElementHandler.class);
     }
 
     private HashSet<String> seen = new HashSet<String>();
@@ -27,8 +28,9 @@ public class DukeCalTypeCheckHandler extends TypeCheckHandler
     {
         public void endElement ()
         {
-            if (seen.contains("title") && seen.contains("start") &&
-                seen.contains("end") && seen.contains("location") &&
+            if (seen.contains("title") && seen.contains("start date") &&
+                seen.contains("start time") && seen.contains("end date") &&
+                seen.contains("end time") && seen.contains("location") &&
                 seen.contains("description"))
             {
                 valid = true;
@@ -44,35 +46,35 @@ public class DukeCalTypeCheckHandler extends TypeCheckHandler
         }
     }
 
-    protected class StartElementHandler extends ElementHandler
+    protected class StartDateElementHandler extends ElementHandler
     {
         public void endElement ()
         {
-            if (seen.contains("time"))
-            {
-                seen.add("start");
-                seen.remove("time");
-            }
+            seen.add("start date");
         }
     }
 
-    protected class EndElementHandler extends ElementHandler
+    protected class StartTimeElementHandler extends ElementHandler
     {
         public void endElement ()
         {
-            if (seen.contains("time"))
-            {
-                seen.add("end");
-                seen.remove("time");
-            }
+            seen.add("start time");
         }
     }
 
-    protected class TimeElementHandler extends ElementHandler
+    protected class EndDateElementHandler extends ElementHandler
     {
         public void endElement ()
         {
-            seen.add("time");
+            seen.add("end date");
+        }
+    }
+
+    protected class EndTimeElementHandler extends ElementHandler
+    {
+        public void endElement ()
+        {
+            seen.add("end time");
         }
     }
 

@@ -46,7 +46,7 @@ public class DukeCalParserHandler extends ParserHandler
     {
         public void characters (char[] ch, int start, int length)
         {
-            currentEvent.setTitle(new String(ch, start, length));
+            currentEvent.setTitle(new String(ch, start, length).trim());
         }
     }
 
