@@ -5,14 +5,13 @@ import java.util.Map;
 import java.util.HashMap;
 
 
-public class Event
+public class Event extends HashMap<String,String>
 {
     private String title;
     private String description;
     private Calendar startTime;
     private Calendar endTime;
     private String location;
-	private Map<String,String> attributes = new HashMap<String,String>();
 
 
     public String getTitle ()
@@ -43,13 +42,7 @@ public class Event
     {
         return location;
     }
-
-
-	public String getAttribute(String attribute)
-	{
-		return attributes.get(attribute);
-	}
-
+	
 
     public void setTitle (String title)
     {
@@ -79,11 +72,4 @@ public class Event
     {
         this.location = location;
     }
-
-
-	public void setAttribute(String attribute, String value)
-	{
-		attributes.set(attribute, value);
-	}
-
 }
