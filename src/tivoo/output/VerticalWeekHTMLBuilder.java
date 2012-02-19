@@ -72,13 +72,13 @@ public class VerticalWeekHTMLBuilder extends WeekHTMLBuilder
         {
             for (Event currentEvent : eventsOnThisDay)
             {
-                Div eventInfo = constructEventDiv(dayInfo, currentEvent);
+                Div eventInfo = constructEventDiv(currentEvent);
                 dayInfo.appendChild(eventInfo);
             }
         }
         else
         {
-            dayInfo.appendText("None");
+            dayInfo.appendChild(new P().appendText("None"));
         }
         return dayInfo;
     }

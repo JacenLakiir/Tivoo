@@ -87,30 +87,7 @@ public abstract class WeekHTMLBuilder extends HTMLBuilder
         doc.body.appendChild(content);
     }
     
-    protected String createDetailsPageURL (Event currentEvent)
-    {
-        StringBuilder url = new StringBuilder();
-        url.append(currentEvent.getTitle()
-                               .replaceAll("\\s+", "_")
-                               .replaceAll("[^A-z_0-9]", "")
-                               .trim());
-        url.append(".html");
-        return url.toString();
-    }
-    
-    protected A linkToDetailsPage (String detailPageFolder, Event currentEvent)
-    {
-        StringBuilder link = new StringBuilder();
-        link.append(detailPageFolder + "/");
-        link.append(createDetailsPageURL(currentEvent));
-
-        A detailsLink = new A();
-        detailsLink.appendText(currentEvent.getTitle());
-        detailsLink.setHref(link.toString());
-        return detailsLink;
-    }
-    
-    protected Div constructEventDiv (Div dayEvents, Event currentEvent)
+    protected Div constructEventDiv (Event currentEvent)
     {
         Div eventInfo = new Div().setId("event");
         

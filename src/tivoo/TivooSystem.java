@@ -51,7 +51,7 @@ public class TivooSystem
 
 
     public void outputHorizontalWeekView (String summaryPageFileName,
-                                      String detailPageDirectory)
+                                          String detailPageDirectory)
         throws IOException
     {
         HTMLBuilder output = new HorizontalWeekHTMLBuilder(summaryPageFileName,
@@ -60,7 +60,7 @@ public class TivooSystem
     }
     
     public void outputVerticalWeekView (String summaryPageFileName,
-                                    String detailPageDirectory)
+                                        String detailPageDirectory)
         throws IOException
     {
         HTMLBuilder output = new VerticalWeekHTMLBuilder(summaryPageFileName,

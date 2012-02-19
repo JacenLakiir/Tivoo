@@ -103,7 +103,7 @@ public class HorizontalWeekHTMLBuilder extends WeekHTMLBuilder
         {
             for (Event currentEvent : eventsOnThisDay)
             {
-                Div eventInfo = constructEventDiv(dayEvents, currentEvent);
+                Div eventInfo = constructEventDiv(currentEvent);
                 dayEvents.appendChild(eventInfo);
             }
         }
