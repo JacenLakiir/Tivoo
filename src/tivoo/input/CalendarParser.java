@@ -14,10 +14,14 @@ import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import tivoo.Event;
+import tivoo.input.parserHandler.DukeBasketballCalHandler;
 import tivoo.input.parserHandler.DukeCalParserHandler;
+import tivoo.input.parserHandler.NFLCalParserHandler;
 import tivoo.input.parserHandler.ParserHandler;
 import tivoo.input.parserHandler.TVParserHandler;
+import tivoo.input.typeChecker.DukeBasketballTypeCheckHandler;
 import tivoo.input.typeChecker.DukeCalTypeCheckHandler;
+import tivoo.input.typeChecker.NFLTypeCheckHandler;
 import tivoo.input.typeChecker.TVTypeCheckHandler;
 import tivoo.input.typeChecker.TypeCheckHandler;
 
@@ -30,12 +34,16 @@ public class CalendarParser
     private final static Class<? extends TypeCheckHandler>[] TYPE_CHECKERS =
         (Class<? extends TypeCheckHandler>[]) (new Class[] {
                 DukeCalTypeCheckHandler.class,
-                TVTypeCheckHandler.class });
+                TVTypeCheckHandler.class,
+                DukeBasketballTypeCheckHandler.class,
+                NFLTypeCheckHandler.class});
 
     private final static Class<? extends ParserHandler>[] PARSERS =
         (Class<? extends ParserHandler>[]) (new Class[] {
                 DukeCalParserHandler.class,
-                TVParserHandler.class });
+                TVParserHandler.class,
+                DukeBasketballCalHandler.class,
+                NFLCalParserHandler.class});
 
 
     private static InputSource getInputSource (String fileName)

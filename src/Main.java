@@ -14,10 +14,10 @@ public class Main
         TivooSystem s = new TivooSystem();
 
         System.out.println("Loading XML input...");
-        s.loadFile("data/tv.xml");
+        s.loadFile("data/DukeBasketBall.xml");
 
         System.out.println("Filtering events...");
-        s.filterByKeyword("Hollywood");
+        s.filterByKeyword("Duke");
         //s.sortByTitle(false);
         s.sortByStartTime(false);
 
