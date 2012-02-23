@@ -23,7 +23,6 @@ public class DukeBasketballTypeCheckHandler extends TypeCheckHandler
     }
 
     private HashSet<String> seen = new HashSet<String>();
-    private boolean valid = false;
 
     protected class EventElementHandler extends ElementHandler
     {
@@ -34,8 +33,7 @@ public class DukeBasketballTypeCheckHandler extends TypeCheckHandler
                 seen.contains("end time") && seen.contains("location") &&
                 seen.contains("description"))
             {
-                valid = true;
-                throw new SAXException();
+                throw new TypeMatchedException();
             }
         }
     }
@@ -124,9 +122,4 @@ public class DukeBasketballTypeCheckHandler extends TypeCheckHandler
         return handler;
     }
 
-
-    public boolean isValid ()
-    {
-        return valid;
-    }
 }

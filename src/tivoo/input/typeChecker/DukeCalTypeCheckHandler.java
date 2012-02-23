@@ -22,7 +22,6 @@ public class DukeCalTypeCheckHandler extends TypeCheckHandler
     }
 
     private HashSet<String> seen = new HashSet<String>();
-    private boolean valid = false;
 
     protected class EventElementHandler extends ElementHandler
     {
@@ -32,8 +31,7 @@ public class DukeCalTypeCheckHandler extends TypeCheckHandler
                 seen.contains("end") && seen.contains("location") &&
                 seen.contains("description"))
             {
-                valid = true;
-                throw new SAXException();
+                throw new TypeMatchedException();
             }
         }
     }
@@ -120,11 +118,5 @@ public class DukeCalTypeCheckHandler extends TypeCheckHandler
             e.printStackTrace();
         }
         return handler;
-    }
-
-
-    public boolean isValid ()
-    {
-        return valid;
     }
 }

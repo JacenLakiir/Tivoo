@@ -18,14 +18,7 @@ public class TVTypeCheckHandler extends TypeCheckHandler
         elementHandlerMap.put("sub-title", SubTitleElementHandler.class);
     }
 
-    private boolean valid = false;
     private HashSet<String> seen = new HashSet<String>();
-
-
-    public boolean isValid ()
-    {
-        return valid;
-    }
 
 
     public ElementHandler getElementHandler (String namespace,
@@ -62,8 +55,7 @@ public class TVTypeCheckHandler extends TypeCheckHandler
             if (seen.contains("title") && seen.contains("subtitle") &&
                 seen.contains("description"))
             {
-                valid = true;
-                throw new SAXException();
+                throw new TypeMatchedException();
             }
         }
     }

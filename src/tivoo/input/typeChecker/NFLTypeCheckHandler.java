@@ -20,7 +20,6 @@ public class NFLTypeCheckHandler extends TypeCheckHandler
     }
 
     private HashSet<String> seen = new HashSet<String>();
-    private boolean valid = false;
 
     protected class EventElementHandler extends ElementHandler
     {
@@ -29,8 +28,7 @@ public class NFLTypeCheckHandler extends TypeCheckHandler
             if (seen.contains("title") && seen.contains("start") &&
                 seen.contains("end") && seen.contains("location"))
             {
-                valid = true;
-                throw new SAXException();
+                throw new TypeMatchedException();
             }
         }
     }
@@ -93,11 +91,5 @@ public class NFLTypeCheckHandler extends TypeCheckHandler
             e.printStackTrace();
         }
         return handler;
-    }
-
-
-    public boolean isValid ()
-    {
-        return valid;
     }
 }

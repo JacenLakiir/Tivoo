@@ -24,6 +24,7 @@ import tivoo.input.typeChecker.DukeCalTypeCheckHandler;
 import tivoo.input.typeChecker.NFLTypeCheckHandler;
 import tivoo.input.typeChecker.TVTypeCheckHandler;
 import tivoo.input.typeChecker.TypeCheckHandler;
+import tivoo.input.typeChecker.TypeMatchedException;
 
 
 public class CalendarParser
@@ -36,14 +37,14 @@ public class CalendarParser
                 DukeCalTypeCheckHandler.class,
                 TVTypeCheckHandler.class,
                 DukeBasketballTypeCheckHandler.class,
-                NFLTypeCheckHandler.class});
+                NFLTypeCheckHandler.class });
 
     private final static Class<? extends ParserHandler>[] PARSERS =
         (Class<? extends ParserHandler>[]) (new Class[] {
                 DukeCalParserHandler.class,
                 TVParserHandler.class,
                 DukeBasketballCalHandler.class,
-                NFLCalParserHandler.class});
+                NFLCalParserHandler.class });
 
 
     private static InputSource getInputSource (String fileName)
@@ -67,18 +68,20 @@ public class CalendarParser
         SAXParser parser = SAX_PARSER_FACTORY.newSAXParser();
         for (int i = 0; i < TYPE_CHECKERS.length; i++)
         {
+            TypeCheckHandler typeCheckHandler = null;
+            ParserHandler parserHandler = null;
             try
             {
-                TypeCheckHandler typeCheckHandler =
-                    TYPE_CHECKERS[i].newInstance();
-                parser.parse(getInputSource(fileName), typeCheckHandler);
+                typeCheckHandler = TYPE_CHECKERS[i].newInstance();
+                parserHandler = PARSERS[i].newInstance();
                 parser.reset();
-                if (typeCheckHandler.isValid())
-                {
-                    ParserHandler parserHandler = PARSERS[i].newInstance();
-                    parser.parse(getInputSource(fileName), parserHandler);
-                    return parserHandler.getEvents();
-                }
+                parser.parse(getInputSource(fileName), typeCheckHandler);
+            }
+            catch (TypeMatchedException e)
+            {
+                parser.reset();
+                parser.parse(getInputSource(fileName), parserHandler);
+                return parserHandler.getEvents();
             }
             catch (Exception e)
             {
