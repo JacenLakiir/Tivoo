@@ -2,6 +2,7 @@ package tivoo.input.typeChecker;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import org.xml.sax.SAXException;
 import tivoo.input.parserHandler.ElementHandler;
 
 
@@ -23,12 +24,13 @@ public class NFLTypeCheckHandler extends TypeCheckHandler
 
     protected class EventElementHandler extends ElementHandler
     {
-        public void endElement ()
+        public void endElement () throws SAXException
         {
             if (seen.contains("title") && seen.contains("start") &&
                 seen.contains("end") && seen.contains("location"))
             {
                 valid = true;
+                throw new SAXException();
             }
         }
     }
@@ -71,31 +73,24 @@ public class NFLTypeCheckHandler extends TypeCheckHandler
                                              String qualifiedName)
     {
         ElementHandler handler = null;
-        if (!valid)
+        try
         {
-            try
+            Class<? extends ElementHandler> handlerClass =
+                elementHandlerMap.get(qualifiedName);
+            if (handlerClass != null)
             {
-                Class<? extends ElementHandler> handlerClass =
-                    elementHandlerMap.get(qualifiedName);
-                if (handlerClass != null)
-                {
-                    handler =
-                        handlerClass.getDeclaredConstructor(this.getClass())
-                                    .newInstance(this);
-                }
-                else
-                {
-                    handler = new ElementHandler();
-                }
+                handler =
+                    handlerClass.getDeclaredConstructor(this.getClass())
+                                .newInstance(this);
             }
-            catch (Exception e)
+            else
             {
-                e.printStackTrace();
+                handler = new ElementHandler();
             }
         }
-        else
+        catch (Exception e)
         {
-            handler = new ElementHandler();
+            e.printStackTrace();
         }
         return handler;
     }
