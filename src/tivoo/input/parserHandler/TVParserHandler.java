@@ -21,6 +21,9 @@ public class TVParserHandler extends ParserHandler
         elementHandlerMap.put("sub-title", SubTitleElementHandler.class);
         elementHandlerMap.put("channel", ChannelElementHandler.class);
         elementHandlerMap.put("display-name", ProgrammeNameElementHandler.class);
+        elementHandlerMap.put("director", DirectorElementHandler.class);
+        elementHandlerMap.put("actor", ActorElementHandler.class);
+        elementHandlerMap.put("category", CategoryElementHandler.class);
     }
 
     private List<Event> events = new ArrayList<Event>();
@@ -98,6 +101,34 @@ public class TVParserHandler extends ParserHandler
         {
             currentEvent.setTitle(new String(ch, start, length).trim());
         }
+    }
+    
+    protected class DirectorElementHandler extends ElementHandler
+    {
+    	public void characters (char[] ch, int start, int length)
+    	{
+    		currentEvent.put("director", new String(ch, start, length));
+    	}
+    }
+    
+    protected class ActorElementHandler extends ElementHandler
+    {
+    	public void characters (char[] ch, int start, int length)
+    	{
+    		String str = currentEvent.get("actor");
+    		if(str != null){
+    			currentEvent.put("actor", str + " " +new String(ch, start, length));
+    		}else
+    			currentEvent.put(str, new String(ch, start, length));
+    	}
+    }
+    
+    protected class CategoryElementHandler extends ElementHandler
+    {
+    	public void characters (char[] ch, int start, int length)
+    	{
+    		currentEvent.put("category", new String(ch, start, length));
+    	}
     }
 
     protected class SubTitleElementHandler extends ElementHandler
