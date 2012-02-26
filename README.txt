@@ -127,7 +127,7 @@ Impressions:
 Input portion:
 Adding the input formats were pretty straightforward, with the framework we set up. The only issue was with Google calendar.
 	- Siyang
-???
+The recurring event in Google calendar was annoying, since we cannot obtain the information on how often the event recur or the exact date of the event. 
 	- Hui
 
 Filtering:
