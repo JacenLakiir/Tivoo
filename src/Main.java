@@ -14,16 +14,18 @@ public class Main
         TivooSystem s = new TivooSystem();
 
         System.out.println("Loading XML input...");
-        s.loadFile("data/DukeBasketBall.xml");
+        s.loadFile("data/tv.xml");
 
         System.out.println("Filtering events...");
-        s.filterByKeyword("Duke");
-        s.sortByStartTime(false);
+        s.filterByKeyword("Hollywood");
+        s.sortByTitle(false);
 
         System.out.println("Creating HTML output...");
-        s.outputHorizontalWeekView("output/horiz_summary.html");
-        s.outputVerticalWeekView("output/vert_summary.html");
+        s.outputHorizontalWeekView("output/horiz.html");
+        s.outputVerticalWeekView("output/vert.html");
         s.outputSortedView("output/sorted.html");
+        s.outputConflictView("output/conflict.html");
+//        s.outputCalendarView("output/calendar.html");
 
         System.out.println("Done!");
     }

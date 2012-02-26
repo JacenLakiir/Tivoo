@@ -78,7 +78,6 @@ public class TivooSystem
     	filter.sortByEndTime(events, reversed);
     }
 
-
     public void outputHorizontalWeekView (String summaryPageFileName) throws IOException
     {
         HTMLBuilder output = new HorizontalWeekHTMLBuilder(summaryPageFileName);

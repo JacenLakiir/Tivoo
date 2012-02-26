@@ -1,10 +1,6 @@
 package tivoo.output;
 
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 import com.hp.gagawa.java.Document;
 import com.hp.gagawa.java.Node;
 import com.hp.gagawa.java.elements.*;
@@ -46,31 +42,5 @@ public abstract class WeekHTMLBuilder extends HTMLBuilder
     }
     
     protected abstract Node buildWeekCalendar (List<Event> eventList);
-   
-    protected Div constructWeekEventDiv (Event currentEvent)
-    {
-        Div eventInfo = new Div().setId("event");
-        
-        P eventP = new P();
-        eventP.appendChild(linkToDetailsPage(DETAIL_PAGE_FOLDER, currentEvent));
-        eventP.appendChild(new Br());
-        eventP.appendText(formatDateTimespan(currentEvent));
-        
-        eventInfo.appendChild(eventP);
-        return eventInfo;
-    }
-
-    protected Map<String, List<Event>> sortByDayOfWeek (List<Event> eventList)
-    {
-        Map<String, List<Event>> sortedEvents = new TreeMap<String, List<Event>>();
-        for (Event currentEvent : eventList)
-        {
-            String eventDay = getDayOfWeek(currentEvent);
-            if (!sortedEvents.containsKey(eventDay))
-                sortedEvents.put(eventDay, new ArrayList<Event>());
-            sortedEvents.get(eventDay).add(currentEvent);
-        }
-        return sortedEvents;
-    }
    
 }
