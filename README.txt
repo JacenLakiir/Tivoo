@@ -100,12 +100,12 @@ Allowing for events to be shown on the summary page sorted by weekday took a fai
 Part 2
 ========================================
 
-Started:  ???
-Finished: ???
+Started:  Feb 23
+Finished: Feb 26
 
 Project Length:
-- [Actual] ???
-- [Estimated] ???
+- [Actual] 2 hours (Siyang) + ???
+- [Estimated] 10 hrs
 - [How good our estimate was] ???
 
 Discussed with:
@@ -125,7 +125,7 @@ Data / Resource Files Required:
 Impressions:
 
 Input portion:
-???
+Adding the input formats were pretty straightforward, with the framework we set up. The only issue was with Google calendar.
 	- Siyang
 ???
 	- Hui
