@@ -21,7 +21,7 @@ public class HorizontalWeekHTMLBuilder extends WeekHTMLBuilder
     protected Table buildWeekCalendar (List<Event> eventList)
     {
         Table weekView = new Table();
-        weekView.setTitle("Week View");
+        weekView.setTitle("horizontalView");
         weekView.setCellspacing("0");
         
         Tr tableHeading = buildTableHeading();
@@ -85,7 +85,7 @@ public class HorizontalWeekHTMLBuilder extends WeekHTMLBuilder
         {
             for (Event currentEvent : eventsOnThisDay)
             {
-                Div eventInfo = constructWeekEventDiv(currentEvent);
+                Div eventInfo = constructEventDiv(currentEvent);
                 dayEvents.appendChild(eventInfo);
             }
         }

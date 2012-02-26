@@ -20,7 +20,7 @@ public class VerticalWeekHTMLBuilder extends WeekHTMLBuilder
     @Override
     protected Div buildWeekCalendar (List<Event> eventList)
     {
-        Div weekView = new Div().setId("Week View");
+        Div weekView = new Div().setId("verticalView");
         Map<String, List<Event>> sortedEvents = sortByDayOfWeek(eventList);
         for (String day : daysList)
         {
@@ -53,7 +53,7 @@ public class VerticalWeekHTMLBuilder extends WeekHTMLBuilder
         {
             for (Event currentEvent : eventsOnThisDay)
             {
-                Div eventInfo = constructWeekEventDiv(currentEvent);
+                Div eventInfo = constructEventDiv(currentEvent);
                 dayInfo.appendChild(eventInfo);
             }
         }

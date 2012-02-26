@@ -42,7 +42,7 @@ public class SortedViewHTMLBuilder extends HTMLBuilder
 
     private Div constructSortedDiv (List<Event> eventList)
     {
-        Div sortedView = new Div().setCSSClass("Sorted View");
+        Div sortedView = new Div().setCSSClass("sortedView");
         for (Event e : eventList)
         {
             Div eventInfo = constructSortedEventDiv(e);

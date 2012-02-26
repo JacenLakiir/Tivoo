@@ -7,6 +7,8 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import com.hp.gagawa.java.Document;
 import com.hp.gagawa.java.DocumentType;
 import com.hp.gagawa.java.elements.*;
@@ -21,6 +23,7 @@ public abstract class HTMLBuilder
     private static final String UNIQUE_CSS = "";
     
     protected static final List<String> daysList = initializeDayList();
+    protected static final List<String> monthList = initializeMonthList();
     protected static final String DETAIL_PAGE_FOLDER = "details_dir";
     protected String mySummaryPageFileName;
     protected String myDetailPageDirectory;
@@ -82,10 +85,10 @@ public abstract class HTMLBuilder
         doc.body.appendChild(content);
     }
     
-    protected A linkToDetailsPage (String detailPageFolder, Event currentEvent)
+    protected A linkToDetailsPage (Event currentEvent)
     {
-        StringBuilder link = new StringBuilder();
-        link.append(detailPageFolder + "/");
+        StringBuilder link = new StringBuilder(DETAIL_PAGE_FOLDER);
+        link.append("/");
         link.append(createDetailsPageURL(currentEvent));
 
         A detailsLink = new A();
@@ -115,6 +118,19 @@ public abstract class HTMLBuilder
         }
         paragraph.appendText(contents);
         div.appendChild(paragraph);
+    }
+    
+    protected Div constructEventDiv (Event currentEvent)
+    {
+        Div eventInfo = new Div().setId("event");
+        
+        P eventP = new P();
+        eventP.appendChild(linkToDetailsPage(currentEvent));
+        eventP.appendChild(new Br());
+        eventP.appendText(formatDateTimespan(currentEvent));
+        
+        eventInfo.appendChild(eventP);
+        return eventInfo;
     }
     
     protected void writeFooter (Document doc)
@@ -170,13 +186,41 @@ public abstract class HTMLBuilder
     {
         return String.format("%1$tl:%<tM %<Tp", cal);
     }
-     
-    protected String getDayOfWeek (Event currentEvent)
+    
+    protected String getDay (Event currentEvent)
     {
-        StringBuilder eventDay = new StringBuilder();
-        Calendar start = currentEvent.getStartTime();
-        eventDay.append(daysList.get(start.get(Calendar.DAY_OF_WEEK) - 1));
-        return (eventDay.toString());
+        return String.format("%1$tA", currentEvent.getStartTime());
+    }
+    
+    protected String getDate (Event currentEvent)
+    {
+        return String.format("%1$tm/%<te", currentEvent.getStartTime());
+    }
+    
+    protected Map<String, List<Event>> sortByDayOfWeek (List<Event> eventList)
+    {
+        Map<String, List<Event>> sortedEvents = new TreeMap<String, List<Event>>();
+        for (Event currentEvent : eventList)
+        {
+            String eventDay = getDay(currentEvent);
+            if (!sortedEvents.containsKey(eventDay))
+                sortedEvents.put(eventDay, new ArrayList<Event>());
+            sortedEvents.get(eventDay).add(currentEvent);
+        }
+        return sortedEvents;
+    }
+    
+    protected Map<String, List<Event>> sortByDate (List<Event> eventList)
+    {
+        Map<String, List<Event>> sortedEvents = new TreeMap<String, List<Event>>();
+        for (Event currentEvent : eventList)
+        {
+            String eventDay = getDate(currentEvent);
+            if (!sortedEvents.containsKey(eventDay))
+                sortedEvents.put(eventDay, new ArrayList<Event>());
+            sortedEvents.get(eventDay).add(currentEvent);
+        }
+        return sortedEvents;
     }
     
     protected String getTitle ()
@@ -189,7 +233,7 @@ public abstract class HTMLBuilder
         return UNIQUE_CSS;
     }
     
-    protected static List<String> initializeDayList ()
+    private static List<String> initializeDayList ()
     {
         String[] days =
             new String[] {
@@ -206,6 +250,28 @@ public abstract class HTMLBuilder
         return dayList;
     }
     
+    private static List<String> initializeMonthList ()
+    {
+        String[] months =
+            new String[] {
+                    "January",
+                    "February",
+                    "March",
+                    "April",
+                    "May",
+                    "June",
+                    "July",
+                    "August",
+                    "September",
+                    "October",
+                    "November",
+                    "December" };
+        List<String> monthList = new ArrayList<String>();
+        for (String m : months)
+            monthList.add(m);
+        return monthList;
+    }
+
     private String determineDetailPageDirectory (String summaryPageFileName)
     {
         StringBuilder detailPageDirectory = new StringBuilder();
