@@ -104,7 +104,7 @@ Started:  Feb 23
 Finished: Feb 26
 
 Project Length:
-- [Actual] 2 hours (Siyang) + ???
+- [Actual] 2 hours (Siyang) + 1 hour (Ian) + ???
 - [Estimated] 10 hrs
 - [How good our estimate was] ???
 
@@ -131,7 +131,7 @@ Adding the input formats were pretty straightforward, with the framework we set 
 	- Hui
 
 Filtering:
-???
+Filtering was almost identical to part 1, and sorting was fairly simple, as both Calendars and strings have a compareTo method. The only issue was dealing with reversed.
 	-Ian
 
 Output portion:

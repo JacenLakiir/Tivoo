@@ -79,6 +79,9 @@ public class Filter {
 					newEventList.add(event);
 				}
 			}
+			else{
+				newEventList.add(event);
+			}
 		}
 		return newEventList;
 	}
