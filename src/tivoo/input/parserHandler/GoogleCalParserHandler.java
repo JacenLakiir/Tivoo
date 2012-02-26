@@ -21,6 +21,7 @@ public class GoogleCalParserHandler extends ParserHandler{
             elementHandlerMap.put("entry", EventElementHandler.class);
             elementHandlerMap.put("title", TitleElementHandler.class);
             elementHandlerMap.put("content", ContentElementHandler.class);
+            elementHandlerMap.put("name", AuthorElementHanlder.class);
         }
 
         private List<Event> events = new LinkedList<Event>();
@@ -78,6 +79,13 @@ public class GoogleCalParserHandler extends ParserHandler{
 	}
 	
 	private String recurringTime;
+	
+	protected class AuthorElementHanlder extends ElementHandler {
+		public void characters(char[] ch, int start, int length) {
+			if(currentEvent != null)
+				currentEvent.put("author", new String(ch, start , length));
+		}
+	}
 	
 	protected class ContentElementHandler extends ElementHandler {
 
