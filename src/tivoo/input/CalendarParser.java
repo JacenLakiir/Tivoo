@@ -14,18 +14,8 @@ import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import tivoo.Event;
-import tivoo.input.parserHandler.DukeBasketballCalHandler;
-import tivoo.input.parserHandler.DukeCalParserHandler;
-import tivoo.input.parserHandler.GoogleCalParserHandler;
-import tivoo.input.parserHandler.NFLCalParserHandler;
-import tivoo.input.parserHandler.ParserHandler;
-import tivoo.input.parserHandler.TVParserHandler;
-import tivoo.input.typeChecker.DukeBasketballTypeCheckHandler;
-import tivoo.input.typeChecker.DukeCalTypeCheckHandler;
-import tivoo.input.typeChecker.NFLTypeCheckHandler;
-import tivoo.input.typeChecker.TVTypeCheckHandler;
-import tivoo.input.typeChecker.TypeCheckHandler;
-import tivoo.input.typeChecker.TypeMatchedException;
+import tivoo.input.parserHandler.*;
+import tivoo.input.typeChecker.*;
 
 
 public class CalendarParser
@@ -38,14 +28,16 @@ public class CalendarParser
                 DukeCalTypeCheckHandler.class,
                 TVTypeCheckHandler.class,
                 DukeBasketballTypeCheckHandler.class,
-                NFLTypeCheckHandler.class });
+                NFLTypeCheckHandler.class,
+                GoogleCalTypeCheckHandler.class });
 
     private final static Class<? extends ParserHandler>[] PARSERS =
         (Class<? extends ParserHandler>[]) (new Class[] {
                 DukeCalParserHandler.class,
                 TVParserHandler.class,
                 DukeBasketballCalHandler.class,
-                NFLCalParserHandler.class });
+                NFLCalParserHandler.class,
+                GoogleCalParserHandler.class });
 
 
     private static InputSource getInputSource (String fileName)
@@ -79,7 +71,7 @@ public class CalendarParser
                 parser.parse(getInputSource(fileName), typeCheckHandler);
             }
             catch (TypeMatchedException e)
-            {	
+            {
                 parser.reset();
                 parser.parse(getInputSource(fileName), parserHandler);
                 return parserHandler.getEvents();
