@@ -9,7 +9,6 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 
-
 public abstract class SAXHandler extends DefaultHandler
 {
     private LinkedList<ElementHandler> elementStack =
@@ -24,7 +23,7 @@ public abstract class SAXHandler extends DefaultHandler
     public void startElement (String namespace,
                               String localName,
                               String qualifiedName,
-                              Attributes attributes)
+                              Attributes attributes) throws SAXException
     {
         ElementHandler currentHandler =
             getElementHandler(namespace, localName, qualifiedName);
@@ -34,6 +33,7 @@ public abstract class SAXHandler extends DefaultHandler
 
 
     public void characters (char[] ch, int start, int length)
+        throws SAXException
     {
         ElementHandler currentHandler = elementStack.peek();
         currentHandler.characters(ch, start, length);
@@ -42,7 +42,7 @@ public abstract class SAXHandler extends DefaultHandler
 
     public void endElement (String namespace,
                             String localName,
-                            String qualifiedName)
+                            String qualifiedName) throws SAXException
     {
         ElementHandler currentHandler = elementStack.poll();
         currentHandler.endElement();

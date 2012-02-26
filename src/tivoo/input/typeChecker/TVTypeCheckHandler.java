@@ -2,7 +2,7 @@ package tivoo.input.typeChecker;
 
 import java.util.HashMap;
 import java.util.HashSet;
-
+import org.xml.sax.SAXException;
 import tivoo.input.parserHandler.ElementHandler;
 
 
@@ -18,14 +18,7 @@ public class TVTypeCheckHandler extends TypeCheckHandler
         elementHandlerMap.put("sub-title", SubTitleElementHandler.class);
     }
 
-    private boolean valid = false;
     private HashSet<String> seen = new HashSet<String>();
-
-
-    public boolean isValid ()
-    {
-        return valid;
-    }
 
 
     public ElementHandler getElementHandler (String namespace,
@@ -33,43 +26,36 @@ public class TVTypeCheckHandler extends TypeCheckHandler
                                              String qualifiedName)
     {
         ElementHandler handler = null;
-        if (!valid)
+        try
         {
-            try
+            Class<? extends ElementHandler> handlerClass =
+                elementHandlerMap.get(qualifiedName);
+            if (handlerClass != null)
             {
-                Class<? extends ElementHandler> handlerClass =
-                    elementHandlerMap.get(qualifiedName);
-                if (handlerClass != null)
-                {
-                    handler =
-                        handlerClass.getDeclaredConstructor(this.getClass())
-                                    .newInstance(this);
-                }
-                else
-                {
-                    handler = new ElementHandler();
-                }
+                handler =
+                    handlerClass.getDeclaredConstructor(this.getClass())
+                                .newInstance(this);
             }
-            catch (Exception e)
+            else
             {
-                e.printStackTrace();
+                handler = new ElementHandler();
             }
         }
-        else
+        catch (Exception e)
         {
-            handler = new ElementHandler();
+            e.printStackTrace();
         }
         return handler;
     }
 
     protected class EventElementHandler extends ElementHandler
     {
-        public void endElement ()
+        public void endElement () throws SAXException
         {
             if (seen.contains("title") && seen.contains("subtitle") &&
                 seen.contains("description"))
             {
-                valid = true;
+                throw new TypeMatchedException();
             }
         }
     }
