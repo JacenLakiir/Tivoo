@@ -38,7 +38,6 @@ public class DukeBasketballCalHandler extends ParserHandler
         return events;
     }
 
-
     @Override
     public ElementHandler getElementHandler (String namespace,
                                              String localName,

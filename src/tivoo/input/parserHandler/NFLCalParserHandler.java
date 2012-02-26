@@ -27,7 +27,6 @@ public class NFLCalParserHandler extends ParserHandler{
     }
 	@Override
 	public List<Event> getEvents() {
-		// TODO Auto-generated method stub
 		return events;
 	}
 

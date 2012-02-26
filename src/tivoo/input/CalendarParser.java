@@ -16,6 +16,7 @@ import org.xml.sax.SAXException;
 import tivoo.Event;
 import tivoo.input.parserHandler.DukeBasketballCalHandler;
 import tivoo.input.parserHandler.DukeCalParserHandler;
+import tivoo.input.parserHandler.GoogleCalParserHandler;
 import tivoo.input.parserHandler.NFLCalParserHandler;
 import tivoo.input.parserHandler.ParserHandler;
 import tivoo.input.parserHandler.TVParserHandler;
@@ -78,7 +79,7 @@ public class CalendarParser
                 parser.parse(getInputSource(fileName), typeCheckHandler);
             }
             catch (TypeMatchedException e)
-            {
+            {	
                 parser.reset();
                 parser.parse(getInputSource(fileName), parserHandler);
                 return parserHandler.getEvents();
