@@ -104,7 +104,7 @@ Started:  Feb 23
 Finished: Feb 26
 
 Project Length:
-- [Actual] 2 hours (Siyang) + 1 hour (Ian) + ???
+- [Actual] 2 hours (Siyang) + 1 hour (Ian) + 4 hours (Hui) + ???
 - [Estimated] 10 hrs
 - [How good our estimate was] ???
 
