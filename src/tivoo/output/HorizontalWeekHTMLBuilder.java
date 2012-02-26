@@ -1,54 +1,24 @@
 package tivoo.output;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.util.List;
 import java.util.Map;
 import tivoo.Event;
-import com.hp.gagawa.java.*;
 import com.hp.gagawa.java.elements.*;
 
 
 public class HorizontalWeekHTMLBuilder extends WeekHTMLBuilder
 {
-
-    public HorizontalWeekHTMLBuilder (String summaryPageFileName, String detailPageDirectory)
-    {
-        super(summaryPageFileName, detailPageDirectory);
-    }
     
+    private static final String TITLE = "Horizontal Week View";
+    private static final String UNIQUE_CSS = "../css/horizontalWeekStyle.css";
+
+    public HorizontalWeekHTMLBuilder (String summaryPageFileName)
+    {
+        super(summaryPageFileName);
+    }
+
     @Override
-    protected void writeSummaryPageHTML (File summaryPage,
-                                         List<Event> eventList) throws IOException
-    {
-        FileOutputStream fos = new FileOutputStream(summaryPage);
-        OutputStreamWriter out = new OutputStreamWriter(fos, "UTF-8");
-
-        Document doc = initializeHTMLDocument("Horizontal Week View", "");
-        doc.head.appendChild(insertCSS("../css/horizontalWeekStyle.css"));
-
-        writeHeader(doc);    
-        writeSummaryPageContent(eventList, doc);   
-        writeFooter(doc);
-        
-        out.write(doc.write());
-        out.close();
-    }
-
-    private void writeSummaryPageContent (List<Event> eventList, Document doc)
-    {
-        Div content = new Div().setCSSClass("content");     
-        content.appendChild(new H3().appendText("Horizontal Week View"));
-        
-        Table weekView = buildWeekCalendar(eventList);   
-        content.appendChild(weekView);
-        
-        doc.body.appendChild(content);
-    }
-
-    private Table buildWeekCalendar (List<Event> eventList)
+    protected Table buildWeekCalendar (List<Event> eventList)
     {
         Table weekView = new Table();
         weekView.setTitle("Week View");
@@ -61,6 +31,18 @@ public class HorizontalWeekHTMLBuilder extends WeekHTMLBuilder
         Tr tableRow = buildTableRow(sortedEvents);
         weekView.appendChild(tableRow);
         return weekView;
+    }
+    
+    @Override
+    protected String getTitle ()
+    {
+        return TITLE;
+    }
+    
+    @Override
+    protected String getUniqueCSS ()
+    {
+        return UNIQUE_CSS;
     }
 
     private Tr buildTableHeading ()
@@ -103,7 +85,7 @@ public class HorizontalWeekHTMLBuilder extends WeekHTMLBuilder
         {
             for (Event currentEvent : eventsOnThisDay)
             {
-                Div eventInfo = constructEventDiv(currentEvent);
+                Div eventInfo = constructWeekEventDiv(currentEvent);
                 dayEvents.appendChild(eventInfo);
             }
         }

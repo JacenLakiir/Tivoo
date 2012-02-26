@@ -1,6 +1,9 @@
 package tivoo.output;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -12,21 +15,49 @@ import tivoo.Event;
 
 public abstract class HTMLBuilder
 {
+
+    private static final String TITLE = "Generic View";
+    private static final String TIVOO_CSS = "../css/tivooStyle.css";
+    private static final String UNIQUE_CSS = "";
     
     protected static final List<String> daysList = initializeDayList();
+    protected static final String DETAIL_PAGE_FOLDER = "details_dir";
+    protected String mySummaryPageFileName;
+    protected String myDetailPageDirectory;
     
-    public abstract void buildHTML(List<Event> eventList) throws IOException; 
-
+    protected HTMLBuilder (String summaryPageFileName)
+    {
+        mySummaryPageFileName = summaryPageFileName;
+        myDetailPageDirectory = determineDetailPageDirectory(summaryPageFileName);
+    }
+    
+    public void buildHTML(List<Event> eventList) throws IOException
+    {
+        buildSummaryPage(eventList);
+        buildDetailPages(eventList);
+    }
+    
+    protected abstract void writeSummaryPageContent(Document doc, List<Event> eventList);
+    
     protected Document initializeHTMLDocument (String title, String cssFilePathExtender)
     {
         Document doc = new Document(DocumentType.HTMLTransitional);
         doc.head.appendChild(new Title().appendText(title));
         
         StringBuilder cssFilePath = new StringBuilder(cssFilePathExtender);
-        cssFilePath.append("../css/tivooStyle.css");
+        cssFilePath.append(TIVOO_CSS);
         doc.head.appendChild(insertCSS(cssFilePath.toString()));
         
         return doc;
+    }
+    
+    protected Link insertCSS (String filePath)
+    {
+        Link tivooStyle = new Link();
+        tivooStyle.setRel("stylesheet");
+        tivooStyle.setType("text/css");
+        tivooStyle.setHref(filePath);
+        return tivooStyle;
     }
     
     protected void writeHeader (Document doc)
@@ -39,22 +70,39 @@ public abstract class HTMLBuilder
         doc.body.appendChild(header);
     }
     
-    protected void writeFooter (Document doc)
+    protected void writeDetailsPageContent (Event currentEvent, Document doc)
     {
-        Div footer = new Div().setCSSClass("footer");
-        footer.appendText("Designed by Siyang, Hui, Ian, & Eric");
-        footer.appendChild(new Br());
-        footer.appendText("&copy; 2012");
-        doc.body.appendChild(footer);
+        Div content = new Div().setCSSClass("content");
+        content.appendChild(new H4().appendText(currentEvent.getTitle()));
+
+        createParagraphTag(content, "Time", formatDateTimespan(currentEvent));
+        createParagraphTag(content, "Location", currentEvent.getLocation());
+        createParagraphTag(content, "Description", currentEvent.getDescription());
+        
+        doc.body.appendChild(content);
     }
     
-    protected Link insertCSS (String filePath)
+    protected A linkToDetailsPage (String detailPageFolder, Event currentEvent)
     {
-        Link tivooStyle = new Link();
-        tivooStyle.setRel("stylesheet");
-        tivooStyle.setType("text/css");
-        tivooStyle.setHref(filePath);
-        return tivooStyle;
+        StringBuilder link = new StringBuilder();
+        link.append(detailPageFolder + "/");
+        link.append(createDetailsPageURL(currentEvent));
+
+        A detailsLink = new A();
+        detailsLink.appendText(currentEvent.getTitle());
+        detailsLink.setHref(link.toString());
+        return detailsLink;
+    }
+    
+    protected String createDetailsPageURL (Event currentEvent)
+    {
+        StringBuilder url = new StringBuilder();
+        url.append(currentEvent.getTitle()
+                               .replaceAll("\\s+", "_")
+                               .replaceAll("[^A-z_0-9]", "")
+                               .trim());
+        url.append(".html");
+        return url.toString();
     }
     
     protected void createParagraphTag (Div div, String category, String contents)
@@ -67,6 +115,15 @@ public abstract class HTMLBuilder
         }
         paragraph.appendText(contents);
         div.appendChild(paragraph);
+    }
+    
+    protected void writeFooter (Document doc)
+    {
+        Div footer = new Div().setCSSClass("footer");
+        footer.appendText("Designed by Siyang, Hui, Ian, & Eric");
+        footer.appendChild(new Br());
+        footer.appendText("&copy; 2012");
+        doc.body.appendChild(footer);
     }
     
     protected boolean isAllOnOneDay(Calendar start, Calendar end)
@@ -95,7 +152,6 @@ public abstract class HTMLBuilder
         return timespan.toString();
     }
     
-    
     protected String formatClockTimespan (Event currentEvent)
     {
         StringBuilder clockTimespan = new StringBuilder();
@@ -122,7 +178,16 @@ public abstract class HTMLBuilder
         eventDay.append(daysList.get(start.get(Calendar.DAY_OF_WEEK) - 1));
         return (eventDay.toString());
     }
-
+    
+    protected String getTitle ()
+    {
+        return TITLE;
+    }
+    
+    protected String getUniqueCSS ()
+    {
+        return UNIQUE_CSS;
+    }
     
     protected static List<String> initializeDayList ()
     {
@@ -139,6 +204,82 @@ public abstract class HTMLBuilder
         for (String d : days)
             dayList.add(d);
         return dayList;
+    }
+    
+    private String determineDetailPageDirectory (String summaryPageFileName)
+    {
+        StringBuilder detailPageDirectory = new StringBuilder();
+        if (summaryPageFileName.contains("/"))
+        {
+            int lastFolder = summaryPageFileName.lastIndexOf("/");
+            detailPageDirectory.append(summaryPageFileName.substring(0, lastFolder + 1));
+            detailPageDirectory.append(DETAIL_PAGE_FOLDER);
+        }
+        else
+        {
+            detailPageDirectory.append(DETAIL_PAGE_FOLDER);
+        }
+        return detailPageDirectory.toString();
+    }
+    
+    private void buildSummaryPage (List<Event> eventList) throws IOException
+    {
+        if (mySummaryPageFileName.contains("/"))
+        {
+            File outputDirectory = new File(myDetailPageDirectory);
+            outputDirectory.mkdirs();
+        }
+        File summaryPage = new File(mySummaryPageFileName);
+        summaryPage.createNewFile();
+        writeSummaryPageHTML(summaryPage, eventList);
+    }
+    
+    private void buildDetailPages (List<Event> eventList) throws IOException
+    {
+        File detailsDirectory = new File(myDetailPageDirectory);
+        detailsDirectory.mkdirs();
+        for (Event currentEvent : eventList)
+        {
+            String detailPageURL = createDetailsPageURL(currentEvent);
+            File detailPage = new File(myDetailPageDirectory + "/" + detailPageURL);
+            detailPage.createNewFile();
+            writeDetailsPageHTML(currentEvent, detailPage);
+        }
+    }
+    
+    private void writeSummaryPageHTML (File summaryPage, List<Event> eventList) throws IOException
+    {
+        FileOutputStream fos = new FileOutputStream(summaryPage);
+        OutputStreamWriter out = new OutputStreamWriter(fos, "UTF-8");
+
+        Document doc = initializeHTMLDocument(getTitle(), "");
+        
+        String uniqueCSS = getUniqueCSS();
+        if (uniqueCSS.length() > 0)
+        {
+            doc.head.appendChild(insertCSS(uniqueCSS));
+        }
+        
+        writeHeader(doc);    
+        writeSummaryPageContent(doc, eventList);
+        writeFooter(doc);
+        
+        out.write(doc.write());
+        out.close();
+    }
+    
+    private void writeDetailsPageHTML (Event currentEvent, File detailPage) throws IOException
+    {
+        FileOutputStream fos = new FileOutputStream(detailPage);
+        OutputStreamWriter out = new OutputStreamWriter(fos, "UTF-8");
+
+        Document doc = initializeHTMLDocument("Details", "../");
+        writeHeader(doc);
+        writeDetailsPageContent(currentEvent, doc);
+        writeFooter(doc);
+        
+        out.write(doc.write());
+        out.close();
     }
     
 }

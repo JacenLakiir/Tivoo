@@ -18,12 +18,11 @@ public class Main
 
         System.out.println("Filtering events...");
         s.filterByKeyword("Duke");
-        //s.sortByTitle(false);
         s.sortByStartTime(false);
 
         System.out.println("Creating HTML output...");
-        s.outputHorizontalWeekView("output/horiz_summary.html", "output/horiz_dir");
-        s.outputVerticalWeekView("output/vert_summary.html", "output/vert_dir");
+        s.outputHorizontalWeekView("output/horiz_summary.html");
+        s.outputVerticalWeekView("output/vert_summary.html");
         s.outputSortedView("output/sorted.html");
 
         System.out.println("Done!");
