@@ -9,7 +9,7 @@ public class SortedViewHTMLBuilder extends HTMLBuilder
 {
     
     private static final String TITLE = "Sorted View";
-    private static final String UNIQUE_CSS = "../css/sortedViewStyle.css";
+    private static final String UNIQUE_CSS = "../css/sortedStyle.css";
     
     public SortedViewHTMLBuilder (String summaryPageFileName)
     {

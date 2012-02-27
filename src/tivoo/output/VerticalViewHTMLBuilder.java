@@ -10,7 +10,7 @@ public class VerticalViewHTMLBuilder extends HTMLBuilder
 {
 
     private static final String TITLE = "Vertical Week View";
-    private static final String UNIQUE_CSS = "../css/verticalWeekStyle.css";
+    private static final String UNIQUE_CSS = "../css/verticalStyle.css";
     
     public VerticalViewHTMLBuilder (String summaryPageFileName)
     {

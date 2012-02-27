@@ -10,7 +10,7 @@ public class HorizontalViewHTMLBuilder extends HTMLBuilder
 {
     
     private static final String TITLE = "Horizontal Week View";
-    private static final String UNIQUE_CSS = "../css/horizontalWeekStyle.css";
+    private static final String UNIQUE_CSS = "../css/horizontalStyle.css";
 
     public HorizontalViewHTMLBuilder (String summaryPageFileName)
     {
