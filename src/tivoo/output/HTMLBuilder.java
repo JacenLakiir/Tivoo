@@ -22,9 +22,10 @@ public abstract class HTMLBuilder
     private static final String TIVOO_CSS = "../css/tivooStyle.css";
     private static final String UNIQUE_CSS = "";
     
-    protected static final List<String> daysList = initializeDayList();
-    protected static final List<String> monthList = initializeMonthList();
+    protected static final List<String> DAYS_LIST = initializeDaysList();
+    protected static final List<String> MONTHS_LIST = initializeMonthsList();
     protected static final String DETAIL_PAGE_FOLDER = "details_dir";
+    
     protected String mySummaryPageFileName;
     protected String myDetailPageDirectory;
     
@@ -233,7 +234,7 @@ public abstract class HTMLBuilder
         return UNIQUE_CSS;
     }
     
-    private static List<String> initializeDayList ()
+    private static List<String> initializeDaysList ()
     {
         String[] days =
             new String[] {
@@ -250,7 +251,7 @@ public abstract class HTMLBuilder
         return dayList;
     }
     
-    private static List<String> initializeMonthList ()
+    private static List<String> initializeMonthsList ()
     {
         String[] months =
             new String[] {
