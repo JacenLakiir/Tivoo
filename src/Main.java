@@ -15,7 +15,7 @@ public class Main
 
         System.out.println("Loading XML input...");
         s.loadFile("data/dukecal.xml");
-
+        
         System.out.println("Filtering events...");
         s.filterByKeyword("Lecture");
         s.sortByTitle(false);

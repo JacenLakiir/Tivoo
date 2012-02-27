@@ -1,40 +1,15 @@
-table {
-	border: 2px solid;
-	margin: auto;
+body {
+	
 }
 
-th.heading {
-    background: #CCCCCC;
-    border-right: 1px solid;
-    border-bottom: 1px solid;
-    border-top: 1px solid;
-    border-left: 1px solid;
-    padding: 6px 6px 6px 2px;
-    text-align: center;
+h4 {
+	text-align: left;
 }
 
-td.gr1 {
-    vertical-align: top;
-    background-color: #EEEEEE;
-    font-size: 11pt;
-    width: 300px;
-    height: 100px;
-    border-right: 1px solid;
-    border-bottom: 1px solid;
-    border-top: 1px solid;
-    border-left: 1px solid;
-    text-align: left;
+ul {
+	text-align: left;
 }
 
-td.gr1alt {
-    vertical-align: top;
-    background-color: #FFFFFF;
-    font-size: 11pt;
-    width: 300px;
-    height: 100px;
-    border-right: 1px solid;
-    border-bottom: 1px solid;
-    border-top: 1px solid;
-    border-left: 1px solid;
-    text-align: left;
+li {
+	text-align: left;
 }
