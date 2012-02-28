@@ -19,34 +19,7 @@ public class GoogleCalTypeCheckHandler extends TypeCheckHandler
 
     private HashSet<String> seen = new HashSet<String>();
 
-
-    public ElementHandler getElementHandler (String namespace,
-                                             String localName,
-                                             String qualifiedName)
-    {
-        ElementHandler handler = null;
-        try
-        {
-            Class<? extends ElementHandler> handlerClass =
-                elementHandlerMap.get(qualifiedName);
-            if (handlerClass != null)
-            {
-                handler =
-                    handlerClass.getDeclaredConstructor(this.getClass())
-                                .newInstance(this);
-            }
-            else
-            {
-                handler = new ElementHandler();
-            }
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        return handler;
-    }
-
+    
     protected class EventElementHandler extends ElementHandler
     {
         public void endElement () throws TypeMatchedException
@@ -82,4 +55,10 @@ public class GoogleCalTypeCheckHandler extends TypeCheckHandler
             seen.add("content");
         }
     }
+
+	@Override
+	public HashMap<String, Class<? extends ElementHandler>> getElementHandlerMap() {
+		// TODO Auto-generated method stub
+		return elementHandlerMap;
+	}
 }

@@ -11,14 +11,14 @@ import tivoo.Event;
 
 public class DukeBasketballCalHandler extends ParserHandler
 {
+    private static HashMap<String, Class<? extends ElementHandler>> elementHandlerMap = new HashMap<String, Class<? extends ElementHandler>>();
+
     private Event currentEvent;
     private List<Event> events = new LinkedList<Event>();
     private String currentDate;
     private String currentTime;
     private Calendar currentCalendar;
 
-    private static HashMap<String, Class<? extends ElementHandler>> elementHandlerMap =
-        new HashMap<String, Class<? extends ElementHandler>>();
     static
     {
         elementHandlerMap.put("Calendar", EventElementHandler.class);
@@ -36,34 +36,6 @@ public class DukeBasketballCalHandler extends ParserHandler
     public List<Event> getEvents ()
     {
         return events;
-    }
-
-    @Override
-    public ElementHandler getElementHandler (String namespace,
-                                             String localName,
-                                             String qualifiedName)
-    {
-        ElementHandler handler = null;
-        try
-        {
-            Class<? extends ElementHandler> handlerClass =
-                elementHandlerMap.get(qualifiedName);
-            if (handlerClass != null)
-            {
-                handler =
-                    handlerClass.getDeclaredConstructor(this.getClass())
-                                .newInstance(this);
-            }
-            else
-            {
-                handler = new ElementHandler();
-            }
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        return handler;
     }
 
     protected class EventElementHandler extends ElementHandler
@@ -188,5 +160,12 @@ public class DukeBasketballCalHandler extends ParserHandler
         cal.set(year, month, day, hour, minuete, second);
         cal.setTimeZone(TimeZone.getTimeZone("UTC"));
     }
+
+
+	@Override
+	public HashMap<String, Class<? extends ElementHandler>> getElementHandlerMap() {
+		// TODO Auto-generated method stub
+		return elementHandlerMap;
+	}
 
 }

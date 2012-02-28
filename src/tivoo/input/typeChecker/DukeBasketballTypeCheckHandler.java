@@ -94,32 +94,10 @@ public class DukeBasketballTypeCheckHandler extends TypeCheckHandler
         }
     }
 
-
-    public ElementHandler getElementHandler (String namespace,
-                                             String localName,
-                                             String qualifiedName)
-    {
-        ElementHandler handler = null;
-        try
-        {
-            Class<? extends ElementHandler> handlerClass =
-                elementHandlerMap.get(qualifiedName);
-            if (handlerClass != null)
-            {
-                handler =
-                    handlerClass.getDeclaredConstructor(this.getClass())
-                                .newInstance(this);
-            }
-            else
-            {
-                handler = new ElementHandler();
-            }
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        return handler;
-    }
+	@Override
+	public HashMap<String, Class<? extends ElementHandler>> getElementHandlerMap() {
+	
+		return elementHandlerMap;
+	}
 
 }

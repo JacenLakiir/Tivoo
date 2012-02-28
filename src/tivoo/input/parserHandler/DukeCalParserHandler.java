@@ -11,8 +11,8 @@ import tivoo.Event;
 
 public class DukeCalParserHandler extends ParserHandler
 {
-    private static HashMap<String, Class<? extends ElementHandler>> elementHandlerMap =
-        new HashMap<String, Class<? extends ElementHandler>>();
+    protected static HashMap<String, Class<? extends ElementHandler>> elementHandlerMap = new HashMap<String, Class<? extends ElementHandler>>();
+
     static
     {
         elementHandlerMap.put("event", EventElementHandler.class);
@@ -103,33 +103,6 @@ public class DukeCalParserHandler extends ParserHandler
     }
 
 
-    public ElementHandler getElementHandler (String namespace,
-                                             String localName,
-                                             String qualifiedName)
-    {
-        ElementHandler handler = null;
-        try
-        {
-            Class<? extends ElementHandler> handlerClass =
-                elementHandlerMap.get(qualifiedName);
-            if (handlerClass != null)
-            {
-                handler =
-                    handlerClass.getDeclaredConstructor(this.getClass())
-                                .newInstance(this);
-            }
-            else
-            {
-                handler = new ElementHandler();
-            }
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        return handler;
-    }
-
 
     public List<Event> getEvents ()
     {
@@ -148,4 +121,11 @@ public class DukeCalParserHandler extends ParserHandler
         cal.set(year, month, day, hour, minute, second);
         cal.setTimeZone(TimeZone.getTimeZone("UTC"));
     }
+
+
+	@Override
+	public HashMap<String, Class<? extends ElementHandler>> getElementHandlerMap() {
+		// TODO Auto-generated method stub
+		return elementHandlerMap;
+	}
 }

@@ -12,9 +12,10 @@ import tivoo.Event;
 
 
 public class GoogleCalParserHandler extends ParserHandler
-{
-    private static HashMap<String, Class<? extends ElementHandler>> elementHandlerMap =
-        new HashMap<String, Class<? extends ElementHandler>>();
+{	
+	
+    private static HashMap<String, Class<? extends ElementHandler>> elementHandlerMap = new HashMap<String, Class<? extends ElementHandler>>();
+
     static
     {
         elementHandlerMap.put("entry", EventElementHandler.class);
@@ -35,34 +36,6 @@ public class GoogleCalParserHandler extends ParserHandler
         return events;
     }
 
-
-    @Override
-    public ElementHandler getElementHandler (String namespace,
-                                             String localName,
-                                             String qualifiedName)
-    {
-        ElementHandler handler = null;
-        try
-        {
-            Class<? extends ElementHandler> handlerClass =
-                elementHandlerMap.get(qualifiedName);
-            if (handlerClass != null)
-            {
-                handler =
-                    handlerClass.getDeclaredConstructor(this.getClass())
-                                .newInstance(this);
-            }
-            else
-            {
-                handler = new ElementHandler();
-            }
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        return handler;
-    }
 
     protected class EventElementHandler extends ElementHandler
     {
@@ -238,4 +211,11 @@ public class GoogleCalParserHandler extends ParserHandler
         endCal.set(Calendar.HOUR_OF_DAY, endHour);
         endCal.set(Calendar.MINUTE, endMinute);
     }
+
+
+	@Override
+	public HashMap<String, Class<? extends ElementHandler>> getElementHandlerMap() {
+		// TODO Auto-generated method stub
+		return elementHandlerMap;
+	}
 }
