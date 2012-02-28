@@ -8,12 +8,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 import tivoo.filtering.Filter;
 import tivoo.input.CalendarParser;
-import tivoo.output.CalendarViewHTMLBuilder;
-import tivoo.output.ConflictViewHTMLBuilder;
-import tivoo.output.HTMLBuilder;
-import tivoo.output.HorizontalWeekHTMLBuilder;
-import tivoo.output.SortedViewHTMLBuilder;
-import tivoo.output.VerticalWeekHTMLBuilder;
+import tivoo.output.*;
 
 
 public class TivooSystem
@@ -72,15 +67,15 @@ public class TivooSystem
     	filter.sortByEndTime(events, reversed);
     }
 
-    public void outputHorizontalWeekView (String summaryPageFileName) throws IOException
+    public void outputHorizontalView (String summaryPageFileName) throws IOException
     {
-        HTMLBuilder output = new HorizontalWeekHTMLBuilder(summaryPageFileName);
+        HTMLBuilder output = new HorizontalViewHTMLBuilder(summaryPageFileName);
         output.buildHTML(events);
     }
     
-    public void outputVerticalWeekView (String summaryPageFileName) throws IOException
+    public void outputVerticalView (String summaryPageFileName) throws IOException
     {
-        HTMLBuilder output = new VerticalWeekHTMLBuilder(summaryPageFileName);
+        HTMLBuilder output = new VerticalViewHTMLBuilder(summaryPageFileName);
         output.buildHTML(events);
     }
     

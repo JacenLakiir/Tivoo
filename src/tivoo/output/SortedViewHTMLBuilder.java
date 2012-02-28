@@ -9,7 +9,7 @@ public class SortedViewHTMLBuilder extends HTMLBuilder
 {
     
     private static final String TITLE = "Sorted View";
-    private static final String UNIQUE_CSS = "../css/sortedViewStyle.css";
+    private static final String UNIQUE_CSS = "../css/sortedStyle.css";
     
     public SortedViewHTMLBuilder (String summaryPageFileName)
     {
@@ -45,23 +45,11 @@ public class SortedViewHTMLBuilder extends HTMLBuilder
         Div sortedView = new Div().setCSSClass("sortedView");
         for (Event e : eventList)
         {
-            Div eventInfo = constructSortedEventDiv(e);
+            sortedView.appendChild(new Hr());
+            Div eventInfo = constructEventDiv(e);
             sortedView.appendChild(eventInfo);
         }
         return sortedView;
-    }
-    
-    private Div constructSortedEventDiv (Event currentEvent)
-    {
-        Div eventInfo = new Div().setCSSClass("event");
-        eventInfo.appendChild(new Hr());
-        eventInfo.appendChild(new H4().appendText(currentEvent.getTitle()));
-        
-        createParagraphTag(eventInfo, "Time", formatDateTimespan(currentEvent));
-        createParagraphTag(eventInfo, "Location", currentEvent.getLocation());
-        createParagraphTag(eventInfo, "Description", currentEvent.getDescription());
-        
-        return eventInfo;
     }
 
 }

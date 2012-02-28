@@ -3,33 +3,30 @@ package tivoo.output;
 import java.util.List;
 import java.util.Map;
 import tivoo.Event;
+import com.hp.gagawa.java.Document;
 import com.hp.gagawa.java.elements.*;
 
-
-public class VerticalWeekHTMLBuilder extends WeekHTMLBuilder
+public class VerticalViewHTMLBuilder extends HTMLBuilder
 {
 
     private static final String TITLE = "Vertical Week View";
-    private static final String UNIQUE_CSS = "../css/verticalWeekStyle.css";
+    private static final String UNIQUE_CSS = "../css/verticalStyle.css";
     
-    public VerticalWeekHTMLBuilder (String summaryPageFileName)
+    public VerticalViewHTMLBuilder (String summaryPageFileName)
     {
         super(summaryPageFileName);
     }
-
+    
     @Override
-    protected Div buildWeekCalendar (List<Event> eventList)
+    protected void writeSummaryPageContent (Document doc, List<Event> eventList)
     {
-        Div weekView = new Div().setId("verticalView");
-        Map<String, List<Event>> sortedEvents = sortByDayOfWeek(eventList);
-        for (String day : daysList)
-        {
-            List<Event> eventsOnThisDay = sortedEvents.get(day);
-            Div dayInfo = constructDayDiv(day, eventsOnThisDay);
-            weekView.appendChild(dayInfo);
-        }
+        Div content = new Div().setCSSClass("content");     
+        content.appendChild(new H3().appendText(getTitle()));
         
-        return weekView;
+        Div verticalView = buildWeekCalendar(eventList);
+        content.appendChild(verticalView);
+        
+        doc.body.appendChild(content);
     }
     
     @Override
@@ -42,6 +39,20 @@ public class VerticalWeekHTMLBuilder extends WeekHTMLBuilder
     protected String getUniqueCSS ()
     {
         return UNIQUE_CSS;
+    }
+    
+    private Div buildWeekCalendar (List<Event> eventList)
+    {
+        Div weekView = new Div().setId("verticalView");
+        Map<String, List<Event>> sortedEvents = sortByDayOfWeek(eventList);
+        for (String day : DAYS_LIST)
+        {
+            List<Event> eventsOnThisDay = sortedEvents.get(day);
+            Div dayInfo = constructDayDiv(day, eventsOnThisDay);
+            weekView.appendChild(dayInfo);
+        }
+        
+        return weekView;
     }
 
     private Div constructDayDiv (String day, List<Event> eventsOnThisDay)

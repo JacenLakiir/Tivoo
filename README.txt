@@ -104,9 +104,9 @@ Started:  Feb 23
 Finished: Feb 26
 
 Project Length:
-- [Actual] 2 hours (Siyang) + 1 hour (Ian) + ???
+- [Actual] 2 hours (Siyang) + 1 hour (Ian) + 4 hours (Hui) + 4 hours (Eric) = 11 hours total
 - [Estimated] 10 hrs
-- [How good our estimate was] ???
+- [How good our estimate was] Slightly underestimated the actual length
 
 Discussed with:
 - UTA Mason Meier (assigned UTA)
@@ -120,14 +120,13 @@ Files Used to Start and Test:
 Data / Resource Files Required:
 - various XML files (included in the data folder)
 - gagawa-1.0.1 JAR (included in the lib folder)
-- ???
 
 Impressions:
 
 Input portion:
 Adding the input formats were pretty straightforward, with the framework we set up. The only issue was with Google calendar.
 	- Siyang
-???
+The recurring event in Google calendar was annoying, since we cannot obtain the information on how often the event recur or the exact date of the event. 
 	- Hui
 
 Filtering:
@@ -135,5 +134,5 @@ Filtering was almost identical to part 1, and sorting was fairly simple, as both
 	-Ian
 
 Output portion:
-???
+Adding sorted view was incredibly straightforward while implementing the algorithm for finding conflicting events took a fair amount of work. Checking the type of content to be created and keeping track of list tags for the calendar view were tedious.
 	-Eric
