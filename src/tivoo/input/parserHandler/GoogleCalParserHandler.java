@@ -3,7 +3,6 @@ package tivoo.input.parserHandler;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.TimeZone;
@@ -12,22 +11,21 @@ import tivoo.Event;
 
 
 public class GoogleCalParserHandler extends ParserHandler
-{	
-	
-    private static HashMap<String, Class<? extends ElementHandler>> elementHandlerMap = new HashMap<String, Class<? extends ElementHandler>>();
-
-    static
-    {
-        elementHandlerMap.put("entry", EventElementHandler.class);
-        elementHandlerMap.put("title", TitleElementHandler.class);
-        elementHandlerMap.put("content", ContentElementHandler.class);
-        elementHandlerMap.put("name", AuthorElementHanlder.class);
-    }
-
-    private List<Event> events = new LinkedList<Event>();
+{
+    private List<Event> events;
     private Event currentEvent;
     private Calendar startCalendar;
     private Calendar endCalendar;
+
+
+    public GoogleCalParserHandler ()
+    {
+        addElementHandler("entry", new EventElementHandler());
+        addElementHandler("title", new TitleElementHandler());
+        addElementHandler("content", new ContentElementHandler());
+        addElementHandler("name", new AuthorElementHanlder());
+        events = new LinkedList<Event>();
+    }
 
 
     @Override
@@ -36,15 +34,16 @@ public class GoogleCalParserHandler extends ParserHandler
         return events;
     }
 
-
-    protected class EventElementHandler extends ElementHandler
+    private class EventElementHandler extends ElementHandler
     {
+        @Override
         public void startElement (Attributes attributes)
         {
             currentEvent = new Event();
         }
 
 
+        @Override
         public void endElement ()
         {
             if (currentEvent.getDescription() == null)
@@ -59,7 +58,7 @@ public class GoogleCalParserHandler extends ParserHandler
         }
     }
 
-    protected class TitleElementHandler extends ElementHandler
+    private class TitleElementHandler extends ElementHandler
     {
         @Override
         public void characters (char[] ch, int start, int length)
@@ -72,8 +71,9 @@ public class GoogleCalParserHandler extends ParserHandler
 
     private String recurringTime;
 
-    protected class AuthorElementHanlder extends ElementHandler
+    private class AuthorElementHanlder extends ElementHandler
     {
+        @Override
         public void characters (char[] ch, int start, int length)
         {
             if (currentEvent != null) currentEvent.put("author",
@@ -83,9 +83,8 @@ public class GoogleCalParserHandler extends ParserHandler
         }
     }
 
-    protected class ContentElementHandler extends ElementHandler
+    private class ContentElementHandler extends ElementHandler
     {
-
         @Override
         public void startElement (Attributes attributes)
         {
@@ -211,11 +210,4 @@ public class GoogleCalParserHandler extends ParserHandler
         endCal.set(Calendar.HOUR_OF_DAY, endHour);
         endCal.set(Calendar.MINUTE, endMinute);
     }
-
-
-	@Override
-	public HashMap<String, Class<? extends ElementHandler>> getElementHandlerMap() {
-		// TODO Auto-generated method stub
-		return elementHandlerMap;
-	}
 }

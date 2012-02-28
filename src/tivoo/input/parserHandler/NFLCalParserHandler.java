@@ -1,7 +1,6 @@
 package tivoo.input.parserHandler;
 
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.TimeZone;
@@ -11,19 +10,19 @@ import tivoo.Event;
 
 public class NFLCalParserHandler extends ParserHandler
 {
-    protected static HashMap<String, Class<? extends ElementHandler>> elementHandlerMap = new HashMap<String, Class<? extends ElementHandler>>();
-
     private Event currentEvent;
-    private List<Event> events = new LinkedList<Event>();
+    private List<Event> events;
     private Calendar currentCalendar;
 
-    static
+
+    public NFLCalParserHandler ()
     {
-        elementHandlerMap.put("row", EventElementHandler.class);
-        elementHandlerMap.put("Col1", TitleElementHandler.class);
-        elementHandlerMap.put("Col8", StartTimeElementHandler.class);
-        elementHandlerMap.put("Col9", EndTimeElementHandler.class);
-        elementHandlerMap.put("Col15", LocationElementHandler.class);
+        addElementHandler("row", new EventElementHandler());
+        addElementHandler("Col1", new TitleElementHandler());
+        addElementHandler("Col8", new StartTimeElementHandler());
+        addElementHandler("Col9", new EndTimeElementHandler());
+        addElementHandler("Col15", new LocationElementHandler());
+        events = new LinkedList<Event>();
     }
 
 
@@ -33,10 +32,8 @@ public class NFLCalParserHandler extends ParserHandler
         return events;
     }
 
-
-    protected class EventElementHandler extends ElementHandler
+    private class EventElementHandler extends ElementHandler
     {
-
         @Override
         public void startElement (Attributes attributes)
         {
@@ -49,11 +46,10 @@ public class NFLCalParserHandler extends ParserHandler
         {
             currentEvent.setDescription("N/A");
             events.add(currentEvent);
-
         }
     }
 
-    protected class TitleElementHandler extends ElementHandler
+    private class TitleElementHandler extends ElementHandler
     {
         @Override
         public void characters (char[] ch, int start, int length)
@@ -62,9 +58,8 @@ public class NFLCalParserHandler extends ParserHandler
         }
     }
 
-    protected class StartTimeElementHandler extends ElementHandler
+    private class StartTimeElementHandler extends ElementHandler
     {
-
         @Override
         public void startElement (Attributes attributes)
         {
@@ -85,7 +80,7 @@ public class NFLCalParserHandler extends ParserHandler
         }
     }
 
-    protected class EndTimeElementHandler extends ElementHandler
+    private class EndTimeElementHandler extends ElementHandler
     {
         @Override
         public void startElement (Attributes attributes)
@@ -101,15 +96,15 @@ public class NFLCalParserHandler extends ParserHandler
         }
 
 
+        @Override
         public void characters (char[] ch, int start, int length)
         {
             setTime(currentCalendar, new String(ch, start, length));
         }
     }
 
-    protected class LocationElementHandler extends ElementHandler
+    private class LocationElementHandler extends ElementHandler
     {
-
         @Override
         public void characters (char[] ch, int start, int length)
         {
@@ -131,12 +126,4 @@ public class NFLCalParserHandler extends ParserHandler
         cal.set(year, month, day, hour, minute, second);
         cal.setTimeZone(TimeZone.getTimeZone("UTC"));
     }
-
-
-	@Override
-	public HashMap<String, Class<? extends ElementHandler>> getElementHandlerMap() {
-		// TODO Auto-generated method stub
-		return elementHandlerMap;
-	}
-
 }

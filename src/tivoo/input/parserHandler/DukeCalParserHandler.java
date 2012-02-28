@@ -1,7 +1,6 @@
 package tivoo.input.parserHandler;
 
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
 import java.util.LinkedList;
 import java.util.TimeZone;
@@ -11,91 +10,101 @@ import tivoo.Event;
 
 public class DukeCalParserHandler extends ParserHandler
 {
-    protected static HashMap<String, Class<? extends ElementHandler>> elementHandlerMap = new HashMap<String, Class<? extends ElementHandler>>();
-
-    static
-    {
-        elementHandlerMap.put("event", EventElementHandler.class);
-        elementHandlerMap.put("summary", TitleElementHandler.class);
-        elementHandlerMap.put("start", StartElementHandler.class);
-        elementHandlerMap.put("end", EndElementHandler.class);
-        elementHandlerMap.put("utcdate", TimeElementHandler.class);
-        elementHandlerMap.put("address", LocationElementHandler.class);
-        elementHandlerMap.put("description", DescriptionElementHandler.class);
-    }
-
-    private List<Event> events = new LinkedList<Event>();
+    private List<Event> events;
     private Event currentEvent;
     private Calendar currentCalendar;
 
-    protected class EventElementHandler extends ElementHandler
+
+    public DukeCalParserHandler ()
     {
+        addElementHandler("event", new EventElementHandler());
+        addElementHandler("summary", new TitleElementHandler());
+        addElementHandler("start", new StartElementHandler());
+        addElementHandler("end", new EndElementHandler());
+        addElementHandler("utcdate", new TimeElementHandler());
+        addElementHandler("address", new LocationElementHandler());
+        addElementHandler("description", new DescriptionElementHandler());
+        events = new LinkedList<Event>();
+    }
+
+    private class EventElementHandler extends ElementHandler
+    {
+        @Override
         public void startElement (Attributes attributes)
         {
             currentEvent = new Event();
         }
 
 
+        @Override
         public void endElement ()
         {
             events.add(currentEvent);
         }
     }
 
-    protected class TitleElementHandler extends ElementHandler
+    private class TitleElementHandler extends ElementHandler
     {
+        @Override
         public void characters (char[] ch, int start, int length)
         {
             currentEvent.setTitle(new String(ch, start, length).trim());
         }
     }
 
-    protected class StartElementHandler extends ElementHandler
+    private class StartElementHandler extends ElementHandler
     {
+        @Override
         public void startElement (Attributes attributes)
         {
             currentCalendar = Calendar.getInstance();
         }
 
 
+        @Override
         public void endElement ()
         {
             currentEvent.setStartTime(currentCalendar);
         }
     }
 
-    protected class EndElementHandler extends ElementHandler
+    private class EndElementHandler extends ElementHandler
     {
+        @Override
         public void startElement (Attributes attributes)
         {
             currentCalendar = Calendar.getInstance();
         }
 
 
+        @Override
         public void endElement ()
         {
             currentEvent.setEndTime(currentCalendar);
         }
     }
 
-    protected class TimeElementHandler extends ElementHandler
+    private class TimeElementHandler extends ElementHandler
     {
+        @Override
         public void characters (char[] ch, int start, int length)
         {
             setTime(currentCalendar, new String(ch, start, length));
         }
     }
 
-    protected class LocationElementHandler extends ElementHandler
+    private class LocationElementHandler extends ElementHandler
     {
+        @Override
         public void characters (char[] ch, int start, int length)
         {
             currentEvent.setLocation(new String(ch, start, length));
         }
     }
 
-    protected class DescriptionElementHandler extends ElementHandler
+    private class DescriptionElementHandler extends ElementHandler
     {
+        @Override
         public void characters (char[] ch, int start, int length)
         {
             currentEvent.setDescription(new String(ch, start, length));
@@ -103,7 +112,7 @@ public class DukeCalParserHandler extends ParserHandler
     }
 
 
-
+    @Override
     public List<Event> getEvents ()
     {
         return events;
@@ -121,11 +130,4 @@ public class DukeCalParserHandler extends ParserHandler
         cal.set(year, month, day, hour, minute, second);
         cal.setTimeZone(TimeZone.getTimeZone("UTC"));
     }
-
-
-	@Override
-	public HashMap<String, Class<? extends ElementHandler>> getElementHandlerMap() {
-		// TODO Auto-generated method stub
-		return elementHandlerMap;
-	}
 }

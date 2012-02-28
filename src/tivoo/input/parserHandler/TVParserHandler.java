@@ -11,35 +11,37 @@ import tivoo.Event;
 
 public class TVParserHandler extends ParserHandler
 {
-    protected static HashMap<String, Class<? extends ElementHandler>> elementHandlerMap = new HashMap<String, Class<? extends ElementHandler>>();
+    private List<Event> events;
+    private Event currentEvent;
+    private Calendar currentCalendar;
+    private HashMap<String, String> channelMap;
 
-    static
+
+    public TVParserHandler ()
     {
-        elementHandlerMap.put("programme", EventElementHandler.class);
-        elementHandlerMap.put("title", TitleElementHandler.class);
-        elementHandlerMap.put("desc", DescriptionElementHandler.class);
-        elementHandlerMap.put("sub-title", SubTitleElementHandler.class);
-        elementHandlerMap.put("channel", ChannelElementHandler.class);
-        elementHandlerMap.put("display-name", ProgrammeNameElementHandler.class);
-        elementHandlerMap.put("director", DirectorElementHandler.class);
-        elementHandlerMap.put("actor", ActorElementHandler.class);
-        elementHandlerMap.put("category", CategoryElementHandler.class);
+        addElementHandler("programme", new EventElementHandler());
+        addElementHandler("title", new TitleElementHandler());
+        addElementHandler("desc", new DescriptionElementHandler());
+        addElementHandler("sub-title", new SubTitleElementHandler());
+        addElementHandler("channel", new ChannelElementHandler());
+        addElementHandler("display-name", new ProgrammeNameElementHandler());
+        addElementHandler("director", new DirectorElementHandler());
+        addElementHandler("actor", new ActorElementHandler());
+        addElementHandler("category", new CategoryElementHandler());
+        channelMap = new HashMap<String, String>();
+        events = new ArrayList<Event>();
     }
 
-    private List<Event> events = new ArrayList<Event>();
-    private Event currentEvent = new Event();
-    private Calendar currentCalendar;
-    private HashMap<String, String> channelMap = new HashMap<String, String>();
 
-
+    @Override
     public List<Event> getEvents ()
     {
         return events;
     }
 
-
-    protected class EventElementHandler extends ElementHandler
+    private class EventElementHandler extends ElementHandler
     {
+        @Override
         public void startElement (Attributes attributes)
         {
             currentEvent = new Event();
@@ -61,50 +63,61 @@ public class TVParserHandler extends ParserHandler
         }
 
 
+        @Override
         public void endElement ()
         {
             events.add(currentEvent);
         }
     }
 
-    protected class TitleElementHandler extends ElementHandler
+    private class TitleElementHandler extends ElementHandler
     {
+        @Override
         public void characters (char[] ch, int start, int length)
         {
             currentEvent.setTitle(new String(ch, start, length).trim());
         }
     }
-    
-    protected class DirectorElementHandler extends ElementHandler
+
+    private class DirectorElementHandler extends ElementHandler
     {
-    	public void characters (char[] ch, int start, int length)
-    	{
-    		currentEvent.put("director", new String(ch, start, length));
-    	}
-    }
-    
-    protected class ActorElementHandler extends ElementHandler
-    {
-    	public void characters (char[] ch, int start, int length)
-    	{
-    		String str = currentEvent.get("actor");
-    		if(str != null){
-    			currentEvent.put("actor", str + " " +new String(ch, start, length));
-    		}else
-    			currentEvent.put(str, new String(ch, start, length));
-    	}
-    }
-    
-    protected class CategoryElementHandler extends ElementHandler
-    {
-    	public void characters (char[] ch, int start, int length)
-    	{
-    		currentEvent.put("category", new String(ch, start, length));
-    	}
+        @Override
+        public void characters (char[] ch, int start, int length)
+        {
+            currentEvent.put("director", new String(ch, start, length));
+        }
     }
 
-    protected class SubTitleElementHandler extends ElementHandler
+    private class ActorElementHandler extends ElementHandler
     {
+        @Override
+        public void characters (char[] ch, int start, int length)
+        {
+            String str = currentEvent.get("actor");
+            if (str != null)
+            {
+                currentEvent.put("actor", str + " " +
+                                          new String(ch, start, length));
+            }
+            else
+            {
+                currentEvent.put(str, new String(ch, start, length));
+            }
+        }
+    }
+
+    private class CategoryElementHandler extends ElementHandler
+    {
+        @Override
+        public void characters (char[] ch, int start, int length)
+        {
+            currentEvent.put("category", new String(ch, start, length));
+        }
+    }
+
+    private class SubTitleElementHandler extends ElementHandler
+    {
+        @Override
         public void characters (char[] ch, int start, int length)
         {
             String title = currentEvent.getTitle();
@@ -113,8 +126,9 @@ public class TVParserHandler extends ParserHandler
         }
     }
 
-    protected class DescriptionElementHandler extends ElementHandler
+    private class DescriptionElementHandler extends ElementHandler
     {
+        @Override
         public void characters (char[] ch, int start, int length)
         {
             currentEvent.setDescription(currentEvent.getDescription() +
@@ -125,8 +139,9 @@ public class TVParserHandler extends ParserHandler
     private String channelId = "";
     private int count = 0;
 
-    protected class ChannelElementHandler extends ElementHandler
+    private class ChannelElementHandler extends ElementHandler
     {
+        @Override
         public void startElement (Attributes attributes)
         {
             channelId = attributes.getValue("id");
@@ -134,14 +149,16 @@ public class TVParserHandler extends ParserHandler
         }
 
 
-        public void endElement (Attributes attributes)
+        @Override
+        public void endElement ()
         {
             count = 0;
         }
     }
 
-    protected class ProgrammeNameElementHandler extends ElementHandler
+    private class ProgrammeNameElementHandler extends ElementHandler
     {
+        @Override
         public void characters (char[] ch, int start, int length)
         {
             if (count == 4)
@@ -168,10 +185,4 @@ public class TVParserHandler extends ParserHandler
         cal.setTimeZone(TimeZone.getTimeZone("GMT" + sign +
                                              Integer.toString(timezone)));
     }
-
-
-	@Override
-	public HashMap<String, Class<? extends ElementHandler>> getElementHandlerMap() {
-		return elementHandlerMap;
-	}
 }

@@ -1,7 +1,6 @@
 package tivoo.input.parserHandler;
 
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.TimeZone;
@@ -11,24 +10,24 @@ import tivoo.Event;
 
 public class DukeBasketballCalHandler extends ParserHandler
 {
-    private static HashMap<String, Class<? extends ElementHandler>> elementHandlerMap = new HashMap<String, Class<? extends ElementHandler>>();
-
     private Event currentEvent;
-    private List<Event> events = new LinkedList<Event>();
+    private List<Event> events;
     private String currentDate;
     private String currentTime;
     private Calendar currentCalendar;
 
-    static
+
+    public DukeBasketballCalHandler ()
     {
-        elementHandlerMap.put("Calendar", EventElementHandler.class);
-        elementHandlerMap.put("Subject", TitleElementHandler.class);
-        elementHandlerMap.put("StartTime", StartTimeElementHandler.class);
-        elementHandlerMap.put("StartDate", StartDateElementHandler.class);
-        elementHandlerMap.put("EndTime", EndTimeElementHandler.class);
-        elementHandlerMap.put("EndDate", EndDateElementHandler.class);
-        elementHandlerMap.put("Location", LocationElementHandler.class);
-        elementHandlerMap.put("Description", DescriptionElementHandler.class);
+        addElementHandler("Calendar", new EventElementHandler());
+        addElementHandler("Subject", new TitleElementHandler());
+        addElementHandler("StartTime", new StartTimeElementHandler());
+        addElementHandler("StartDate", new StartDateElementHandler());
+        addElementHandler("EndTime", new EndTimeElementHandler());
+        addElementHandler("EndDate", new EndDateElementHandler());
+        addElementHandler("Location", new LocationElementHandler());
+        addElementHandler("Description", new DescriptionElementHandler());
+        events = new LinkedList<Event>();
     }
 
 
@@ -38,23 +37,24 @@ public class DukeBasketballCalHandler extends ParserHandler
         return events;
     }
 
-    protected class EventElementHandler extends ElementHandler
+    private class EventElementHandler extends ElementHandler
     {
+        @Override
         public void startElement (Attributes attribute)
         {
             currentEvent = new Event();
         }
 
 
+        @Override
         public void endElement ()
         {
             events.add(currentEvent);
         }
     }
 
-    protected class TitleElementHandler extends ElementHandler
+    private class TitleElementHandler extends ElementHandler
     {
-
         @Override
         public void characters (char[] ch, int start, int length)
         {
@@ -63,23 +63,25 @@ public class DukeBasketballCalHandler extends ParserHandler
 
     }
 
-    protected class DescriptionElementHandler extends ElementHandler
+    private class DescriptionElementHandler extends ElementHandler
     {
+        @Override
         public void characters (char[] ch, int start, int length)
         {
             currentEvent.setDescription(new String(ch, start, length));
         }
     }
 
-    protected class StartDateElementHandler extends ElementHandler
+    private class StartDateElementHandler extends ElementHandler
     {
-
+        @Override
         public void startElement (Attributes attributes)
         {
             currentCalendar = Calendar.getInstance();
         }
 
 
+        @Override
         public void characters (char[] ch, int start, int length)
         {
 
@@ -87,14 +89,16 @@ public class DukeBasketballCalHandler extends ParserHandler
         }
     }
 
-    protected class StartTimeElementHandler extends ElementHandler
+    private class StartTimeElementHandler extends ElementHandler
     {
+        @Override
         public void characters (char[] ch, int start, int length)
         {
             currentTime = new String(ch, start, length);
         }
 
 
+        @Override
         public void endElement ()
         {
             setTime(currentCalendar, currentTime, currentDate);
@@ -102,30 +106,32 @@ public class DukeBasketballCalHandler extends ParserHandler
         }
     }
 
-    protected class EndDateElementHandler extends ElementHandler
+    private class EndDateElementHandler extends ElementHandler
     {
-
+        @Override
         public void startElement (Attributes attributes)
         {
             currentCalendar = Calendar.getInstance();
         }
 
 
+        @Override
         public void characters (char[] ch, int start, int length)
         {
-
             currentTime = new String(ch, start, length);
         }
     }
 
-    protected class EndTimeElementHandler extends ElementHandler
+    private class EndTimeElementHandler extends ElementHandler
     {
+        @Override
         public void characters (char[] ch, int start, int length)
         {
             currentTime = new String(ch, start, length);
         }
 
 
+        @Override
         public void endElement ()
         {
             setTime(currentCalendar, currentTime, currentDate);
@@ -133,8 +139,9 @@ public class DukeBasketballCalHandler extends ParserHandler
         }
     }
 
-    protected class LocationElementHandler extends ElementHandler
+    private class LocationElementHandler extends ElementHandler
     {
+        @Override
         public void characters (char[] ch, int start, int length)
         {
             currentEvent.setLocation(new String(ch, start, length));
@@ -160,12 +167,4 @@ public class DukeBasketballCalHandler extends ParserHandler
         cal.set(year, month, day, hour, minuete, second);
         cal.setTimeZone(TimeZone.getTimeZone("UTC"));
     }
-
-
-	@Override
-	public HashMap<String, Class<? extends ElementHandler>> getElementHandlerMap() {
-		// TODO Auto-generated method stub
-		return elementHandlerMap;
-	}
-
 }

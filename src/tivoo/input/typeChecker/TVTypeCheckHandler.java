@@ -1,6 +1,5 @@
 package tivoo.input.typeChecker;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import org.xml.sax.SAXException;
 import tivoo.input.parserHandler.ElementHandler;
@@ -8,58 +7,61 @@ import tivoo.input.parserHandler.ElementHandler;
 
 public class TVTypeCheckHandler extends TypeCheckHandler
 {
-    static HashMap<String, Class<? extends ElementHandler>> elementHandlerMap =
-        new HashMap<String, Class<? extends ElementHandler>>();
-    static
+    private enum Element
     {
-        elementHandlerMap.put("programme", EventElementHandler.class);
-        elementHandlerMap.put("title", TitleElementHandler.class);
-        elementHandlerMap.put("desc", DescriptionElementHandler.class);
-        elementHandlerMap.put("sub-title", SubTitleElementHandler.class);
+        TITLE, SUBTITLE, DESCRIPTION;
     }
 
-    private HashSet<String> seen = new HashSet<String>();
+    private HashSet<Element> seen;
 
 
-    protected class EventElementHandler extends ElementHandler
+    public TVTypeCheckHandler ()
     {
+        addElementHandler("programme", new EventElementHandler());
+        addElementHandler("title", new TitleElementHandler());
+        addElementHandler("desc", new DescriptionElementHandler());
+        addElementHandler("sub-title", new SubTitleElementHandler());
+        seen = new HashSet<Element>();
+    }
+
+    private class EventElementHandler extends ElementHandler
+    {
+        @Override
         public void endElement () throws SAXException
         {
-            if (seen.contains("title") && seen.contains("subtitle") &&
-                seen.contains("description"))
+            if (seen.contains(Element.TITLE) &&
+                seen.contains(Element.SUBTITLE) &&
+                seen.contains(Element.DESCRIPTION))
             {
                 throw new TypeMatchedException();
             }
         }
     }
 
-    protected class TitleElementHandler extends ElementHandler
+    private class TitleElementHandler extends ElementHandler
     {
+        @Override
         public void endElement ()
         {
-            seen.add("title");
+            seen.add(Element.TITLE);
         }
     }
 
-    protected class SubTitleElementHandler extends ElementHandler
+    private class SubTitleElementHandler extends ElementHandler
     {
+        @Override
         public void endElement ()
         {
-            seen.add("subtitle");
+            seen.add(Element.SUBTITLE);
         }
     }
 
-    protected class DescriptionElementHandler extends ElementHandler
+    private class DescriptionElementHandler extends ElementHandler
     {
+        @Override
         public void endElement ()
         {
-            seen.add("description");
+            seen.add(Element.DESCRIPTION);
         }
     }
-
-	@Override
-	public HashMap<String, Class<? extends ElementHandler>> getElementHandlerMap() {
-		
-		return elementHandlerMap;
-	}
 }

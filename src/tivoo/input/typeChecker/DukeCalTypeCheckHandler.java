@@ -1,6 +1,5 @@
 package tivoo.input.typeChecker;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import org.xml.sax.SAXException;
 import tivoo.input.parserHandler.ElementHandler;
@@ -8,93 +7,99 @@ import tivoo.input.parserHandler.ElementHandler;
 
 public class DukeCalTypeCheckHandler extends TypeCheckHandler
 {
-    private static HashMap<String, Class<? extends ElementHandler>> elementHandlerMap =
-        new HashMap<String, Class<? extends ElementHandler>>();
-    static
+    private enum Element
     {
-        elementHandlerMap.put("event", EventElementHandler.class);
-        elementHandlerMap.put("summary", TitleElementHandler.class);
-        elementHandlerMap.put("start", StartElementHandler.class);
-        elementHandlerMap.put("end", EndElementHandler.class);
-        elementHandlerMap.put("utcdate", TimeElementHandler.class);
-        elementHandlerMap.put("address", LocationElementHandler.class);
-        elementHandlerMap.put("description", DescriptionElementHandler.class);
+        TITLE, START, END, TIME, LOCATION, DESCRIPTION;
     }
 
-    private HashSet<String> seen = new HashSet<String>();
+    private HashSet<Element> seen;
 
-    protected class EventElementHandler extends ElementHandler
+
+    public DukeCalTypeCheckHandler ()
     {
+        addElementHandler("event", new EventElementHandler());
+        addElementHandler("summary", new TitleElementHandler());
+        addElementHandler("start", new StartElementHandler());
+        addElementHandler("end", new EndElementHandler());
+        addElementHandler("utcdate", new TimeElementHandler());
+        addElementHandler("address", new LocationElementHandler());
+        addElementHandler("description", new DescriptionElementHandler());
+        seen = new HashSet<Element>();
+    }
+
+    private class EventElementHandler extends ElementHandler
+    {
+        @Override
         public void endElement () throws SAXException
         {
-            if (seen.contains("title") && seen.contains("start") &&
-                seen.contains("end") && seen.contains("location") &&
-                seen.contains("description"))
+            if (seen.contains(Element.TITLE) && seen.contains(Element.START) &&
+                seen.contains(Element.END) && seen.contains(Element.LOCATION) &&
+                seen.contains(Element.DESCRIPTION))
             {
                 throw new TypeMatchedException();
             }
         }
     }
 
-    protected class TitleElementHandler extends ElementHandler
+    private class TitleElementHandler extends ElementHandler
     {
+        @Override
         public void endElement ()
         {
-            seen.add("title");
+            seen.add(Element.TITLE);
         }
     }
 
-    protected class StartElementHandler extends ElementHandler
+    private class StartElementHandler extends ElementHandler
     {
+        @Override
         public void endElement ()
         {
-            if (seen.contains("time"))
+            if (seen.contains(Element.TIME))
             {
-                seen.add("start");
-                seen.remove("time");
+                seen.add(Element.START);
+                seen.remove(Element.TIME);
             }
         }
     }
 
-    protected class EndElementHandler extends ElementHandler
+    private class EndElementHandler extends ElementHandler
     {
+        @Override
         public void endElement ()
         {
-            if (seen.contains("time"))
+            if (seen.contains(Element.TIME))
             {
-                seen.add("end");
-                seen.remove("time");
+                seen.add(Element.END);
+                seen.remove(Element.TIME);
             }
         }
     }
 
-    protected class TimeElementHandler extends ElementHandler
+    private class TimeElementHandler extends ElementHandler
     {
+        @Override
         public void endElement ()
         {
-            seen.add("time");
+            seen.add(Element.TIME);
         }
     }
 
-    protected class LocationElementHandler extends ElementHandler
+    private class LocationElementHandler extends ElementHandler
     {
+        @Override
         public void endElement ()
         {
-            seen.add("location");
+            seen.add(Element.LOCATION);
         }
     }
 
-    protected class DescriptionElementHandler extends ElementHandler
+    private class DescriptionElementHandler extends ElementHandler
     {
+        @Override
         public void endElement ()
         {
-            seen.add("description");
+            seen.add(Element.DESCRIPTION);
         }
     }
-
-	@Override
-	public HashMap<String, Class<? extends ElementHandler>> getElementHandlerMap() {
-		
-		return elementHandlerMap;
-	}
 }

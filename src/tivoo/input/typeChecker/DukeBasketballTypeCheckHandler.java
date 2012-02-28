@@ -1,6 +1,5 @@
 package tivoo.input.typeChecker;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import org.xml.sax.SAXException;
 import tivoo.input.parserHandler.ElementHandler;
@@ -8,96 +7,110 @@ import tivoo.input.parserHandler.ElementHandler;
 
 public class DukeBasketballTypeCheckHandler extends TypeCheckHandler
 {
-    private static HashMap<String, Class<? extends ElementHandler>> elementHandlerMap =
-        new HashMap<String, Class<? extends ElementHandler>>();
-    static
+    private enum Element
     {
-        elementHandlerMap.put("Calendar", EventElementHandler.class);
-        elementHandlerMap.put("Subject", TitleElementHandler.class);
-        elementHandlerMap.put("StartDate", StartDateElementHandler.class);
-        elementHandlerMap.put("StartTime", StartTimeElementHandler.class);
-        elementHandlerMap.put("EndDate", EndDateElementHandler.class);
-        elementHandlerMap.put("EndTime", EndTimeElementHandler.class);
-        elementHandlerMap.put("Location", LocationElementHandler.class);
-        elementHandlerMap.put("Description", DescriptionElementHandler.class);
+        TITLE,
+        START_DATE,
+        START_TIME,
+        END_DATE,
+        END_TIME,
+        LOCATION,
+        DESCRIPTION;
     }
 
-    private HashSet<String> seen = new HashSet<String>();
+    private HashSet<Element> seen;
 
-    protected class EventElementHandler extends ElementHandler
+
+    public DukeBasketballTypeCheckHandler ()
+    {
+        addElementHandler("Calendar", new EventElementHandler());
+        addElementHandler("Subject", new TitleElementHandler());
+        addElementHandler("StartDate", new StartDateElementHandler());
+        addElementHandler("StartTime", new StartTimeElementHandler());
+        addElementHandler("EndDate", new EndDateElementHandler());
+        addElementHandler("EndTime", new EndTimeElementHandler());
+        addElementHandler("Location", new LocationElementHandler());
+        addElementHandler("Description", new DescriptionElementHandler());
+        seen = new HashSet<Element>();
+    }
+
+    private class EventElementHandler extends ElementHandler
     {
         public void endElement () throws SAXException
         {
-            if (seen.contains("title") && seen.contains("start date") &&
-                seen.contains("start time") && seen.contains("end date") &&
-                seen.contains("end time") && seen.contains("location") &&
-                seen.contains("description"))
+            if (seen.contains(Element.TITLE) &&
+                seen.contains(Element.START_DATE) &&
+                seen.contains(Element.START_TIME) &&
+                seen.contains(Element.END_DATE) &&
+                seen.contains(Element.END_TIME) &&
+                seen.contains(Element.LOCATION) &&
+                seen.contains(Element.DESCRIPTION))
             {
                 throw new TypeMatchedException();
             }
         }
     }
 
-    protected class TitleElementHandler extends ElementHandler
+    private class TitleElementHandler extends ElementHandler
     {
+        @Override
         public void endElement ()
         {
-            seen.add("title");
+            seen.add(Element.TITLE);
         }
     }
 
-    protected class StartDateElementHandler extends ElementHandler
+    private class StartDateElementHandler extends ElementHandler
     {
+        @Override
         public void endElement ()
         {
-            seen.add("start date");
+            seen.add(Element.START_DATE);
         }
     }
 
-    protected class StartTimeElementHandler extends ElementHandler
+    private class StartTimeElementHandler extends ElementHandler
     {
+        @Override
         public void endElement ()
         {
-            seen.add("start time");
+            seen.add(Element.START_TIME);
         }
     }
 
-    protected class EndDateElementHandler extends ElementHandler
+    private class EndDateElementHandler extends ElementHandler
     {
+        @Override
         public void endElement ()
         {
-            seen.add("end date");
+            seen.add(Element.END_DATE);
         }
     }
 
-    protected class EndTimeElementHandler extends ElementHandler
+    private class EndTimeElementHandler extends ElementHandler
     {
+        @Override
         public void endElement ()
         {
-            seen.add("end time");
+            seen.add(Element.END_TIME);
         }
     }
 
-    protected class LocationElementHandler extends ElementHandler
+    private class LocationElementHandler extends ElementHandler
     {
+        @Override
         public void endElement ()
         {
-            seen.add("location");
+            seen.add(Element.LOCATION);
         }
     }
 
-    protected class DescriptionElementHandler extends ElementHandler
+    private class DescriptionElementHandler extends ElementHandler
     {
+        @Override
         public void endElement ()
         {
-            seen.add("description");
+            seen.add(Element.DESCRIPTION);
         }
     }
-
-	@Override
-	public HashMap<String, Class<? extends ElementHandler>> getElementHandlerMap() {
-	
-		return elementHandlerMap;
-	}
-
 }

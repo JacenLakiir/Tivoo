@@ -1,64 +1,65 @@
 package tivoo.input.typeChecker;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import tivoo.input.parserHandler.ElementHandler;
 
 
 public class GoogleCalTypeCheckHandler extends TypeCheckHandler
 {
-    private static HashMap<String, Class<? extends ElementHandler>> elementHandlerMap =
-        new HashMap<String, Class<? extends ElementHandler>>();
-    static
+    private enum Element
     {
-        elementHandlerMap.put("entry", EventElementHandler.class);
-        elementHandlerMap.put("title", TitleElementHandler.class);
-        elementHandlerMap.put("content", ContentElementHandler.class);
-        elementHandlerMap.put("name", AuthorElementHanlder.class);
+        TITLE, CONTENT, AUTHOR;
     }
 
-    private HashSet<String> seen = new HashSet<String>();
+    private HashSet<Element> seen;
 
-    
-    protected class EventElementHandler extends ElementHandler
+
+    public GoogleCalTypeCheckHandler ()
     {
+        addElementHandler("entry", new EventElementHandler());
+        addElementHandler("title", new TitleElementHandler());
+        addElementHandler("content", new ContentElementHandler());
+        addElementHandler("name", new AuthorElementHanlder());
+        seen = new HashSet<Element>();
+    }
+
+    private class EventElementHandler extends ElementHandler
+    {
+        @Override
         public void endElement () throws TypeMatchedException
         {
-            if (seen.contains("title") && seen.contains("author") &&
-                seen.contains("content"))
+            if (seen.contains(Element.TITLE) && seen.contains(Element.AUTHOR) &&
+                seen.contains(Element.CONTENT))
             {
                 throw new TypeMatchedException();
             }
         }
     }
 
-    protected class TitleElementHandler extends ElementHandler
+    private class TitleElementHandler extends ElementHandler
     {
+        @Override
         public void endElement ()
         {
-            seen.add("title");
+            seen.add(Element.TITLE);
         }
     }
 
-    protected class AuthorElementHanlder extends ElementHandler
+    private class AuthorElementHanlder extends ElementHandler
     {
+        @Override
         public void endElement ()
         {
-            seen.add("author");
+            seen.add(Element.AUTHOR);
         }
     }
 
-    protected class ContentElementHandler extends ElementHandler
+    private class ContentElementHandler extends ElementHandler
     {
+        @Override
         public void endElement ()
         {
-            seen.add("content");
+            seen.add(Element.CONTENT);
         }
     }
-
-	@Override
-	public HashMap<String, Class<? extends ElementHandler>> getElementHandlerMap() {
-		// TODO Auto-generated method stub
-		return elementHandlerMap;
-	}
 }
