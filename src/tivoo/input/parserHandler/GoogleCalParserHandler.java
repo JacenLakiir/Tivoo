@@ -21,7 +21,7 @@ public class GoogleCalParserHandler extends ParserHandler
     public GoogleCalParserHandler ()
     {
         addElementHandler("entry", new EventElementHandler());
-        addElementHandler("title", new TitleElementHandler());
+        addElementHandler("title", new TitleElementHandler(this));
         addElementHandler("content", new ContentElementHandler());
         addElementHandler("name", new AuthorElementHanlder());
         events = new LinkedList<Event>();
@@ -58,15 +58,9 @@ public class GoogleCalParserHandler extends ParserHandler
         }
     }
 
-    private class TitleElementHandler extends ElementHandler
-    {
-        @Override
-        public void characters (char[] ch, int start, int length)
-        {
-            if (currentEvent != null) currentEvent.setTitle(new String(ch,
-                                                                       start,
-                                                                       length));
-        }
+    public void setTitle(String title){
+    	if(currentEvent != null)
+    	    currentEvent.setTitle(title);
     }
 
     private String recurringTime;

@@ -20,7 +20,7 @@ public class DukeBasketballCalHandler extends ParserHandler
     public DukeBasketballCalHandler ()
     {
         addElementHandler("Calendar", new EventElementHandler());
-        addElementHandler("Subject", new TitleElementHandler());
+        addElementHandler("Subject", new TitleElementHandler(this));
         addElementHandler("StartTime", new StartTimeElementHandler());
         addElementHandler("StartDate", new StartDateElementHandler());
         addElementHandler("EndTime", new EndTimeElementHandler());
@@ -53,16 +53,12 @@ public class DukeBasketballCalHandler extends ParserHandler
         }
     }
 
-    private class TitleElementHandler extends ElementHandler
+    
+    public void setTitle(String title)
     {
-        @Override
-        public void characters (char[] ch, int start, int length)
-        {
-            currentEvent.setTitle(new String(ch, start, length));
-        }
-
+    	currentEvent.setTitle(title);
     }
-
+    
     private class DescriptionElementHandler extends ElementHandler
     {
         @Override

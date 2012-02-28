@@ -18,7 +18,7 @@ public class DukeCalParserHandler extends ParserHandler
     public DukeCalParserHandler ()
     {
         addElementHandler("event", new EventElementHandler());
-        addElementHandler("summary", new TitleElementHandler());
+        addElementHandler("summary", new TitleElementHandler(this));
         addElementHandler("start", new StartElementHandler());
         addElementHandler("end", new EndElementHandler());
         addElementHandler("utcdate", new TimeElementHandler());
@@ -43,13 +43,9 @@ public class DukeCalParserHandler extends ParserHandler
         }
     }
 
-    private class TitleElementHandler extends ElementHandler
+    public void setTitle(String title)
     {
-        @Override
-        public void characters (char[] ch, int start, int length)
-        {
-            currentEvent.setTitle(new String(ch, start, length).trim());
-        }
+    	currentEvent.setTitle(title);
     }
 
     private class StartElementHandler extends ElementHandler

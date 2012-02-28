@@ -18,7 +18,7 @@ public class NFLCalParserHandler extends ParserHandler
     public NFLCalParserHandler ()
     {
         addElementHandler("row", new EventElementHandler());
-        addElementHandler("Col1", new TitleElementHandler());
+        addElementHandler("Col1", new TitleElementHandler(this));
         addElementHandler("Col8", new StartTimeElementHandler());
         addElementHandler("Col9", new EndTimeElementHandler());
         addElementHandler("Col15", new LocationElementHandler());
@@ -49,13 +49,9 @@ public class NFLCalParserHandler extends ParserHandler
         }
     }
 
-    private class TitleElementHandler extends ElementHandler
+    public void setTitle(String title)
     {
-        @Override
-        public void characters (char[] ch, int start, int length)
-        {
-            currentEvent.setTitle(new String(ch, start, length));
-        }
+    	currentEvent.setTitle(title);
     }
 
     private class StartTimeElementHandler extends ElementHandler

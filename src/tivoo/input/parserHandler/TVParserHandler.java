@@ -20,7 +20,7 @@ public class TVParserHandler extends ParserHandler
     public TVParserHandler ()
     {
         addElementHandler("programme", new EventElementHandler());
-        addElementHandler("title", new TitleElementHandler());
+        addElementHandler("title", new TitleElementHandler(this));
         addElementHandler("desc", new DescriptionElementHandler());
         addElementHandler("sub-title", new SubTitleElementHandler());
         addElementHandler("channel", new ChannelElementHandler());
@@ -70,13 +70,8 @@ public class TVParserHandler extends ParserHandler
         }
     }
 
-    private class TitleElementHandler extends ElementHandler
-    {
-        @Override
-        public void characters (char[] ch, int start, int length)
-        {
-            currentEvent.setTitle(new String(ch, start, length).trim());
-        }
+    public void setTitle(String title){
+    	currentEvent.setTitle(title);
     }
 
     private class DirectorElementHandler extends ElementHandler
