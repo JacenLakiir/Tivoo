@@ -9,10 +9,6 @@ public class TitleElementHandler extends ElementHandler
     @Override
     public void characters (char[] ch, int start, int length)
     {
-    	
-//        if (currentEvent != null) currentEvent.setTitle(new String(ch,
-//                                                                   start,
-//                                                                   length));
     	myParserHandler.setTitle(new String(ch, start, length).trim());
     }
 }
