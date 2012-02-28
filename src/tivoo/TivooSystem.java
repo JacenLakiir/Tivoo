@@ -36,22 +36,16 @@ public class TivooSystem
     }
 
 
-    public void filterByKeyword (String keyword)
+    public void filterByKeyword (String keyword, boolean inEvent)
     {
         Filter filter = new Filter();
-        events = filter.filterByKeyword(keyword, events);
+        events = filter.filterByKeyword(keyword, events, inEvent);
     }
     
     public void filterByKeyword (String attribute, String keyword)
     {
     	Filter filter = new Filter();
     	events = filter.filterByKeyword(attribute, keyword, events);
-    }
-
-    public void filterByNonKeyword (String keyword)
-    {
-    	Filter filter = new Filter();
-    	events = filter.filterByNonKeyword(keyword, events);
     }
 
     public void filterByTimeFrame (Calendar startTime, Calendar endTime)

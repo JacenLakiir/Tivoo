@@ -17,7 +17,7 @@ public class Main
         s.loadFile("data/tv.xml");
 
         System.out.println("Filtering events...");
-        s.filterByKeyword("Hollywood");
+        s.filterByKeyword("Hollywood", true);
         s.sortByTitle(false);
 
         System.out.println("Creating HTML output...");

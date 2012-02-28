@@ -9,44 +9,25 @@ import java.util.List;
 
 public class Filter {
 
-	/**
-	 * Finds all events with the given keyword in any attribute.
-	 */
-	public List<Event> filterByKeyword(String keyword, List<Event> eventList) {
-		List<Event> newEventList = new LinkedList<Event>();
-		for (Event event : eventList) {
-			if (event.getDescription().contains(keyword)
-					|| event.getTitle().contains(keyword)) {
-				newEventList.add(event);
-				continue;
-			}
-			for (String value : event.values()) {
-				if (value.contains(keyword)) {
-					newEventList.add(event);
-					break;
-				}
-			}
-		}
-		return newEventList;
-	}
+	
 	
 	/**
 	 * Finds all events without the given keyword.
 	 */
-	public List<Event> filterByNonKeyword(String keyword, List<Event> eventList) {
+	public List<Event> filterByKeyword(String keyword, List<Event> eventList, boolean inEvent) {
 		List<Event> newEventList = new LinkedList<Event>();
 		for (Event event : eventList) {
-			boolean inEvent = false;
+			boolean checkEvent = false;
 			if (event.getDescription().contains(keyword)
 					|| event.getTitle().contains(keyword)) {
-				inEvent = true;
+				checkEvent = true;
 			}
 			for (String value : event.values()) {
 				if (value.contains(keyword)) {
-					inEvent = true;
+					checkEvent= true;
 				}
 			}
-			if (!inEvent) newEventList.add(event);
+			if (checkEvent==inEvent) newEventList.add(event);
 		}
 		return newEventList;
 	}
@@ -90,14 +71,8 @@ public class Filter {
 	 * Sorts events by name in ascending order
 	 */
 	public void sortByTitle(List<Event> eventList, boolean reversed) {
-		final int coeff = reversed ? -1 : 1;
-		Collections.sort(eventList, new Comparator<Event>() {
-
-			public int compare(Event event1, Event event2) {
-				return coeff*event1.getTitle().compareTo(event2.getTitle());
-			}
-
-		});
+		AttributeComparator comp = new AttributeComparator("title",reversed);
+		Collections.sort(eventList, comp);
 
 	}
 	
@@ -105,25 +80,42 @@ public class Filter {
 	 * Sorts events by start time in ascending order 
 	 */
 	public void sortByStartTime(List<Event> eventList, boolean reversed){
-		final int coeff = reversed ? -1 : 1;
-		Collections.sort(eventList, new Comparator<Event>() {
-
-			public int compare(Event event1, Event event2) {
-				return coeff*event1.getStartTime().compareTo(event2.getStartTime());
-			}
-		});
+		AttributeComparator comp = new AttributeComparator("startTime",reversed);
+		Collections.sort(eventList, comp);
 	}
 	
 	/**
 	 * Sorts events by start time in ascending order 
 	 */
 	public void sortByEndTime(List<Event> eventList, boolean reversed){
-		final int coeff = reversed ? -1 : 1;
-		Collections.sort(eventList, new Comparator<Event>() {
+		AttributeComparator comp = new AttributeComparator("endTime",reversed);
+		Collections.sort(eventList, comp);
+	}
+	
+	private class AttributeComparator implements Comparator<Event>{
+		private final int coeff;
+		private String attribute;
+		
+		public AttributeComparator(String attribute, boolean reversed){
+			this.coeff = reversed ? -1 : 1;
+			this.attribute = attribute;
+		}
 
-			public int compare(Event event1, Event event2) {
-				return coeff*event1.getEndTime().compareTo(event2.getEndTime());
+		@Override
+		public int compare(Event o1, Event o2) {
+			Comparable attribute1 = o1.getTitle();
+			Comparable attribute2 = o2.getTitle();
+			if(attribute.equals("startTime")){
+				attribute1 = o1.getStartTime();
+				attribute2 = o2.getStartTime();
 			}
-		});
+			if(attribute.equals("endTime")){
+				attribute1 = o1.getEndTime();
+				attribute2 = o2.getEndTime();
+			}
+			return coeff*attribute1.compareTo(attribute2);
+		}
+		
+		
 	}
 }
