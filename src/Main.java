@@ -1,24 +1,17 @@
+import java.awt.Dimension;
 import tivoo.TivooSystem;
+import tivoo.view.View;
 
 
 public class Main
 {
+    private final static Dimension SIZE = new Dimension(640, 480);
+
+
     public static void main (String[] args) throws Exception
     {
-        TivooSystem s = new TivooSystem();
-
-        System.out.println("Loading XML input...");
-        s.loadFile("data/googlecal.xml");
-
-        System.out.println("Filtering events...");
-        s.filterByKeyword("Lecture", true);
-        s.sortByTitle(false);
-
-        System.out.println("Creating HTML output...");
-        s.outputSortedView("output/sorted.html");
-        s.outputConflictView("output/conflict.html");
-        s.outputCalendarView("output/calendar.html");
-
-        System.out.println("Done!");
+        TivooSystem system = new TivooSystem();
+        View view = new View(system, SIZE);
+        view.setVisible(true);
     }
 }
