@@ -2,7 +2,6 @@ package tivoo.output;
 
 import java.util.LinkedList;
 import java.util.List;
-import com.hp.gagawa.java.Document;
 import com.hp.gagawa.java.elements.*;
 import tivoo.Event;
 
@@ -18,15 +17,18 @@ public class ConflictViewHTMLBuilder extends HTMLBuilder
     }
     
     @Override
-    protected void writeSummaryPageContent (Document doc, List<Event> eventList)
+    protected Table buildView (List<Event> eventList)
     {
-        Div content = new Div().setCSSClass("content");     
-        content.appendChild(new H3().appendText(TITLE));
+        Table conflictView = new Table();
+        conflictView.setTitle("conflictView");
+        conflictView.setCellspacing("0");
         
-        Table conflictView = constructConflictView(eventList);
-        content.appendChild(conflictView);
+        Tr tableHeading = buildTableHeading();
+        conflictView.appendChild(tableHeading);
         
-        doc.body.appendChild(content);
+        findAllConflictingEvents(conflictView, eventList);
+       
+        return conflictView;
     }
 
     @Override
@@ -39,20 +41,6 @@ public class ConflictViewHTMLBuilder extends HTMLBuilder
     protected String getUniqueCSS ()
     {
         return UNIQUE_CSS;
-    }
-    
-    private Table constructConflictView (List<Event> eventList)
-    {
-        Table conflictView = new Table();
-        conflictView.setTitle("conflictView");
-        conflictView.setCellspacing("0");
-        
-        Tr tableHeading = buildTableHeading();
-        conflictView.appendChild(tableHeading);
-        
-        findAllConflictingEvents(conflictView, eventList);
-        
-        return conflictView;
     }
     
     private void findAllConflictingEvents (Table table, List<Event> eventList)

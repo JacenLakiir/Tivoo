@@ -3,7 +3,6 @@ package tivoo.output;
 import java.util.List;
 import java.util.Map;
 import tivoo.Event;
-import com.hp.gagawa.java.Document;
 import com.hp.gagawa.java.elements.*;
 
 public class HorizontalViewHTMLBuilder extends HTMLBuilder
@@ -18,15 +17,20 @@ public class HorizontalViewHTMLBuilder extends HTMLBuilder
     }
     
     @Override
-    protected void writeSummaryPageContent (Document doc, List<Event> eventList)
+    protected Table buildView (List<Event> eventList)
     {
-        Div content = new Div().setCSSClass("content");     
-        content.appendChild(new H3().appendText(getTitle()));
+        Table weekView = new Table();
+        weekView.setTitle("horizontalView");
+        weekView.setCellspacing("0");
         
-        Table horizontalView = buildWeekCalendar(eventList);
-        content.appendChild(horizontalView);
+        Tr tableHeading = buildTableHeading();
+        weekView.appendChild(tableHeading);
         
-        doc.body.appendChild(content);
+        Map<String, List<Event>> sortedEvents = sortByDayOfWeek(eventList);
+        Tr tableRow = buildTableRow(sortedEvents);
+        weekView.appendChild(tableRow);
+        
+        return weekView;
     }
 
     @Override
@@ -39,21 +43,6 @@ public class HorizontalViewHTMLBuilder extends HTMLBuilder
     protected String getUniqueCSS ()
     {
         return UNIQUE_CSS;
-    }
-    
-    private Table buildWeekCalendar (List<Event> eventList)
-    {
-        Table weekView = new Table();
-        weekView.setTitle("horizontalView");
-        weekView.setCellspacing("0");
-        
-        Tr tableHeading = buildTableHeading();
-        weekView.appendChild(tableHeading);
-        
-        Map<String, List<Event>> sortedEvents = sortByDayOfWeek(eventList);
-        Tr tableRow = buildTableRow(sortedEvents);
-        weekView.appendChild(tableRow);
-        return weekView;
     }
 
     private Tr buildTableHeading ()

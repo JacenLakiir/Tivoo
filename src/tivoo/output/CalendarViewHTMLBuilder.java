@@ -3,7 +3,7 @@ package tivoo.output;
 import java.util.Calendar;
 import java.util.Map;
 import java.util.List;
-import com.hp.gagawa.java.Document;
+import com.hp.gagawa.java.Node;
 import com.hp.gagawa.java.elements.*;
 import tivoo.Event;
 
@@ -17,7 +17,7 @@ public class CalendarViewHTMLBuilder extends HTMLBuilder
         
     private enum Type
     {
-        DAY, WEEK, MONTH
+        EMPTY, DAY, WEEK, MONTH
     }
         
     public CalendarViewHTMLBuilder (String summaryPageFileName)
@@ -26,16 +26,24 @@ public class CalendarViewHTMLBuilder extends HTMLBuilder
     }
     
     @Override
-    protected void writeSummaryPageContent (Document doc, List<Event> eventList)
+    protected Div buildView (List<Event> eventList)
     {
-        Div content = new Div().setCSSClass("content");     
-        content.appendChild(new H3().appendText(TITLE));
-        
-        Div calendarView = buildCalendar(eventList);
-        content.appendChild(calendarView);
-        doc.body.appendChild(content);
+        Div calendarView = new Div().setId("calendarView");
+        Type calendarType = determineCalendarType(eventList);
+        Node calendar = buildEmptyCalendar();
+        switch (calendarType)
+        {
+            case DAY:
+                calendar = buildDayCalendar(eventList);
+            case WEEK:
+                calendar = buildWeekCalendar(eventList);
+            case MONTH:
+                calendar = buildMonthCalendar(eventList);
+        }
+        calendarView.appendChild(calendar);
+        return calendarView;
     }
-    
+
     @Override
     protected String getTitle ()
     {
@@ -48,30 +56,10 @@ public class CalendarViewHTMLBuilder extends HTMLBuilder
         return UNIQUE_CSS;
     }
     
-    private Div buildCalendar (List<Event> eventList)
-    {
-        Div calendarView = new Div().setId("calendarView");
-        Type calendarType = determineCalendarType(eventList);
-        if (calendarType.equals(Type.MONTH))
-        {
-            Ul monthCalendar = buildMonthCalendar(eventList);
-            calendarView.appendChild(monthCalendar);
-        }
-        if (calendarType.equals(Type.WEEK))
-        {
-            Ul weekCalendar = buildWeekCalendar(eventList);
-            calendarView.appendChild(weekCalendar);
-        }
-        if (calendarType.equals(Type.DAY))
-        {
-            Ul dayCalendar = buildDayCalendar(eventList);
-            calendarView.appendChild(dayCalendar);
-        }
-        return calendarView;
-    }
-    
     private Type determineCalendarType (List<Event> eventList)
     {
+        if (eventList.size() == 0)
+            return CalendarViewHTMLBuilder.Type.EMPTY;
         Event first = eventList.get(0);
         Event last = eventList.get(0); 
         for (Event e : eventList)
@@ -88,6 +76,11 @@ public class CalendarViewHTMLBuilder extends HTMLBuilder
         if (timeframe <= WEEK_LENGTH)
             return CalendarViewHTMLBuilder.Type.WEEK;
         return CalendarViewHTMLBuilder.Type.MONTH;
+    }
+    
+    private P buildEmptyCalendar ()
+    {
+        return new P().appendText("No events to display.");
     }
 
     private Ul buildDayCalendar (List<Event> eventList)
