@@ -10,6 +10,7 @@ import java.awt.event.ItemListener;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.net.URLClassLoader;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -43,6 +44,8 @@ public class TivooViewer extends JPanel{
 	private JButton myAdd;
 	private String[] filters = {"Please select a filter","FilterByKeyWord", "SortByStartTime", "SortByTitle"};
 	private TivooSystem myModel;
+	private static final String filePath = "output/calendar.html";
+	private JButton myBack;
 	
 	public TivooViewer(TivooSystem model){
 		myModel = model;
@@ -56,8 +59,7 @@ public class TivooViewer extends JPanel{
 	private JComponent function(){
 		JPanel panel = new JPanel();
 		myLoad = new JButton("Load Files");
-		myAdd = new JButton("Add");
-		myAdd.setEnabled(false);
+		
 		myLoad.addActionListener(new ActionListener(){
 
 			@Override
@@ -68,7 +70,6 @@ public class TivooViewer extends JPanel{
 		            File file = fc.getSelectedFile();
 		            try {
 						myModel.loadFile(file.getPath());
-						myAdd.setEnabled(true);
 					} catch (SAXException | IOException
 							| ParserConfigurationException e1) {
 						e1.printStackTrace();
@@ -86,7 +87,7 @@ public class TivooViewer extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					myModel.outputCalendarView("output/calendar.html");
+					myModel.outputCalendarView(filePath);
 					showURL();
 				} catch (IOException e1) {
 					e1.printStackTrace();
@@ -105,7 +106,7 @@ public class TivooViewer extends JPanel{
 					String str = e.getItem().toString();
 					if(str.equals(filters[1])){
 						String inputValue = JOptionPane.showInputDialog("Please input a keyword");
-						myModel.filterByKeyword(inputValue);
+						myModel.filterByKeyword(inputValue, true);
 					}
 					else if(str.equals(filters[2]))
 						myModel.sortByStartTime(true);
@@ -116,12 +117,26 @@ public class TivooViewer extends JPanel{
 			
 		});
 		panel.add(myFilter);
+
+		
+		myBack = new JButton("Back");
+		myBack.setEnabled(false);
+
+		myBack.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				showURL();
+			}
+			
+		});
+		panel.add(myBack);
 		return panel;
 	}
 
 	public void showURL(){
 		try {
-			page.setPage("file:///home/ChristD/workspace/Tivoo/output/calendar.html");
+			File file = new File(filePath);
+			page.setPage("file://" + file.getAbsolutePath());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -133,13 +148,35 @@ public class TivooViewer extends JPanel{
         // displays the web page
 		page = new JEditorPane();
 		page.setPreferredSize(SIZE);
+		page.addHyperlinkListener(new LinkFollower());
 	
         // allow editor to respond to link-clicks/mouse-overs
         page.setEditable(false);
 		return new JScrollPane(page);
 	}
 	
-	
+    private class LinkFollower implements HyperlinkListener
+    {
+        public void hyperlinkUpdate (HyperlinkEvent evt)
+        {
+            if (evt.getEventType() == HyperlinkEvent.EventType.ACTIVATED)
+            {
+                // user clicked a link, load it and show it
+                try
+                {	
+                	myBack.setEnabled(true);
+                    page.setPage((evt.getURL().toString()));
+                }
+                catch (Exception e)
+                {
+                    String s = evt.getURL().toString();
+                    JOptionPane.showMessageDialog(TivooViewer.this,
+                            "loading problem for " + s + " " + e,
+                            "Load Problem", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }
+    }
 	
 	
 	public static void main(String[] args){

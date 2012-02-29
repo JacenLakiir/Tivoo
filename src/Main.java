@@ -14,10 +14,10 @@ public class Main
         TivooSystem s = new TivooSystem();
 
         System.out.println("Loading XML input...");
-        s.loadFile("data/dukecal.xml");
+        s.loadFile("data/googlecal.xml");
         
         System.out.println("Filtering events...");
-        s.filterByKeyword("Lecture", true);
+//        s.filterByKeyword("Lecture", true);
         s.sortByTitle(false);
 
         System.out.println("Creating HTML output...");
