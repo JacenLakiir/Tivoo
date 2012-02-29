@@ -30,6 +30,7 @@ public class View extends JFrame
 		setUpPage();
 		setUpControls();
         pack();
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 
 
@@ -126,7 +127,6 @@ public class Frame extends JFrame
         // add containers to Frame and show it
         getContentPane().add(myDisplay, BorderLayout.CENTER);
         getContentPane().add(new JScrollPane(myInput), BorderLayout.SOUTH);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
         setTitle(title);
         pack();
     }
