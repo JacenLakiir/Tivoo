@@ -1,8 +1,8 @@
 package tivoo.input.parserHandler;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.TimeZone;
 import org.xml.sax.Attributes;
@@ -29,7 +29,7 @@ public class TVParserHandler extends ParserHandler
         addElementHandler("actor", new ActorElementHandler());
         addElementHandler("category", new CategoryElementHandler());
         channelMap = new HashMap<String, String>();
-        events = new ArrayList<Event>();
+        events = new LinkedList<Event>();
     }
 
 

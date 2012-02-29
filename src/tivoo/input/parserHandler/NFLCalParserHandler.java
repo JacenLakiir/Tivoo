@@ -49,9 +49,10 @@ public class NFLCalParserHandler extends ParserHandler
         }
     }
 
-    public void setTitle(String title)
+
+    public void setTitle (String title)
     {
-    	currentEvent.setTitle(title);
+        currentEvent.setTitle(title);
     }
 
     private class StartTimeElementHandler extends ElementHandler

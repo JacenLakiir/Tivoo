@@ -53,12 +53,12 @@ public class DukeBasketballCalHandler extends ParserHandler
         }
     }
 
-    
-    public void setTitle(String title)
+
+    public void setTitle (String title)
     {
-    	currentEvent.setTitle(title);
+        currentEvent.setTitle(title);
     }
-    
+
     private class DescriptionElementHandler extends ElementHandler
     {
         @Override

@@ -36,68 +36,79 @@ public class TivooSystem
         Filter filter = new Filter();
         events = filter.filterByKeyword(keyword, events, inEvent);
     }
-    
+
+
     public void filterByKeyword (String attribute, String keyword)
     {
-    	Filter filter = new Filter();
-    	events = filter.filterByKeyword(attribute, keyword, events);
+        Filter filter = new Filter();
+        events = filter.filterByKeyword(attribute, keyword, events);
     }
+
 
     public void filterByTimeFrame (Calendar startTime, Calendar endTime)
     {
         Filter filter = new Filter();
         events = filter.filterByTimeFrame(startTime, endTime, events);
     }
-    
+
+
     public void sortByTitle (boolean reversed)
     {
-    	Filter filter = new Filter();
-    	filter.sortByTitle(events, reversed);
-    }
-    
-    public void sortByStartTime (boolean reversed)
-    {
-    	Filter filter = new Filter();
-    	filter.sortByStartTime(events, reversed);
-    }
-    
-    public void sortByEndTime (boolean reversed)
-    {
-    	Filter filter = new Filter();
-    	filter.sortByEndTime(events, reversed);
+        Filter filter = new Filter();
+        filter.sortByTitle(events, reversed);
     }
 
-    public void outputHorizontalView (String summaryPageFileName) throws IOException
+
+    public void sortByStartTime (boolean reversed)
+    {
+        Filter filter = new Filter();
+        filter.sortByStartTime(events, reversed);
+    }
+
+
+    public void sortByEndTime (boolean reversed)
+    {
+        Filter filter = new Filter();
+        filter.sortByEndTime(events, reversed);
+    }
+
+
+    public void outputHorizontalView (String summaryPageFileName)
+        throws IOException
     {
         HTMLBuilder output = new HorizontalViewHTMLBuilder(summaryPageFileName);
         output.buildHTML(events);
     }
-    
-    public void outputVerticalView (String summaryPageFileName) throws IOException
+
+
+    public void outputVerticalView (String summaryPageFileName)
+        throws IOException
     {
         HTMLBuilder output = new VerticalViewHTMLBuilder(summaryPageFileName);
         output.buildHTML(events);
     }
-    
+
+
     public void outputSortedView (String summaryPageFileName)
         throws IOException
     {
         HTMLBuilder output = new SortedViewHTMLBuilder(summaryPageFileName);
         output.buildHTML(events);
     }
-    
+
+
     public void outputConflictView (String summaryPageFileName)
         throws IOException
     {
         HTMLBuilder output = new ConflictViewHTMLBuilder(summaryPageFileName);
         output.buildHTML(events);
     }
-    
+
+
     public void outputCalendarView (String summaryPageFileName)
         throws IOException
     {
         HTMLBuilder output = new CalendarViewHTMLBuilder(summaryPageFileName);
         output.buildHTML(events);
     }
-
 }

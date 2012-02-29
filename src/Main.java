@@ -1,21 +1,15 @@
-import java.io.IOException;
-import javax.xml.parsers.ParserConfigurationException;
-import org.xml.sax.SAXException;
 import tivoo.TivooSystem;
 
 
 public class Main
 {
-    public static void main (String[] args)
-        throws SAXException,
-            IOException,
-            ParserConfigurationException
+    public static void main (String[] args) throws Exception
     {
         TivooSystem s = new TivooSystem();
 
         System.out.println("Loading XML input...");
-        s.loadFile("data/dukecal.xml");
-        
+        s.loadFile("data/googlecal.xml");
+
         System.out.println("Filtering events...");
         s.filterByKeyword("Lecture", true);
         s.sortByTitle(false);

@@ -4,7 +4,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 
 
-public class Event extends HashMap<String,String>
+public class Event extends HashMap<String, String>
 {
     private String title;
     private String description;
@@ -41,7 +41,7 @@ public class Event extends HashMap<String,String>
     {
         return location;
     }
-	
+
 
     public void setTitle (String title)
     {
