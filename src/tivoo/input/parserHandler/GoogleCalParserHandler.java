@@ -58,9 +58,10 @@ public class GoogleCalParserHandler extends ParserHandler
         }
     }
 
-    public void setTitle(String title){
-    	if(currentEvent != null)
-    	    currentEvent.setTitle(title);
+
+    public void setTitle (String title)
+    {
+        if (currentEvent != null) currentEvent.setTitle(title);
     }
 
     private String recurringTime;
