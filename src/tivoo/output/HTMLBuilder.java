@@ -9,11 +9,22 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import tivoo.Event;
 import com.hp.gagawa.java.Document;
 import com.hp.gagawa.java.DocumentType;
 import com.hp.gagawa.java.Node;
-import com.hp.gagawa.java.elements.*;
-import tivoo.Event;
+import com.hp.gagawa.java.elements.A;
+import com.hp.gagawa.java.elements.Br;
+import com.hp.gagawa.java.elements.Div;
+import com.hp.gagawa.java.elements.H3;
+import com.hp.gagawa.java.elements.H4;
+import com.hp.gagawa.java.elements.Link;
+import com.hp.gagawa.java.elements.P;
+import com.hp.gagawa.java.elements.Table;
+import com.hp.gagawa.java.elements.Td;
+import com.hp.gagawa.java.elements.Title;
+import com.hp.gagawa.java.elements.Tr;
+import com.hp.gagawa.java.elements.U;
 
 
 public abstract class HTMLBuilder
@@ -56,14 +67,14 @@ public abstract class HTMLBuilder
         return detailsLink;
     }
     
-    protected Div constructEventDiv (Event currentEvent)
+    protected Div constructEventDiv (Event currentEvent, String time)
     {
         Div eventInfo = new Div().setId("event");
         
         P eventP = new P();
         eventP.appendChild(linkToDetailsPage(currentEvent));
         eventP.appendChild(new Br());
-        eventP.appendText(formatDateTimespan(currentEvent));
+        eventP.appendText(formatClockTimespan(currentEvent));
         
         eventInfo.appendChild(eventP);
         return eventInfo;
@@ -74,18 +85,14 @@ public abstract class HTMLBuilder
         StringBuilder timespan = new StringBuilder();
         
         Calendar start = currentEvent.getStartTime();
-        timespan.append(formatDate(start));
+        timespan.append(formatLongDate(start));
         timespan.append(" - ");
        
         Calendar end = currentEvent.getEndTime();
         if (isAllOnOneDay(start, end))
-        {
             timespan.append(formatClockTime(end));
-        }
         else
-        {
-            timespan.append(formatDate(end));
-        }
+            timespan.append(formatLongDate(end));
             
         return timespan.toString();
     }
@@ -99,7 +106,7 @@ public abstract class HTMLBuilder
         return clockTimespan.toString();
     }    
     
-    protected String getDate (Event currentEvent)
+    protected String formatShortDate (Event currentEvent)
     {
         return String.format("%1$tm/%<te", currentEvent.getStartTime());
     }
@@ -109,7 +116,7 @@ public abstract class HTMLBuilder
         Map<String, List<Event>> sortedEvents = new TreeMap<String, List<Event>>();
         for (Event currentEvent : eventList)
         {
-            String eventDay = getDay(currentEvent);
+            String eventDay = formatDay(currentEvent);
             if (!sortedEvents.containsKey(eventDay))
                 sortedEvents.put(eventDay, new ArrayList<Event>());
             sortedEvents.get(eventDay).add(currentEvent);
@@ -122,7 +129,7 @@ public abstract class HTMLBuilder
         Map<String, List<Event>> sortedEvents = new TreeMap<String, List<Event>>();
         for (Event currentEvent : eventList)
         {
-            String eventDay = getDate(currentEvent);
+            String eventDay = formatShortDate(currentEvent);
             if (!sortedEvents.containsKey(eventDay))
                 sortedEvents.put(eventDay, new ArrayList<Event>());
             sortedEvents.get(eventDay).add(currentEvent);
@@ -247,9 +254,18 @@ public abstract class HTMLBuilder
         Div content = new Div().setCSSClass("content");
         String title = getTitle();
         content.appendChild(new H3().appendText(title));
-        Node view = buildView(eventList);
+        Node view;
+        if (eventList.size() != 0)
+            view = buildView(eventList);
+        else
+            view = displayEmptyEventListWarning();
         content.appendChild(view);
         doc.body.appendChild(content);
+    }
+    
+    private P displayEmptyEventListWarning ()
+    {
+        return new P().appendText("No events to display.");
     }
     
     private void writeDetailsPageHTML (Event currentEvent, File detailPage) throws IOException
@@ -348,7 +364,7 @@ public abstract class HTMLBuilder
         return (start.get(Calendar.DAY_OF_WEEK) == end.get(Calendar.DAY_OF_WEEK));
     }
     
-    private String formatDate (Calendar cal)
+    private String formatLongDate (Calendar cal)
     {
         return String.format("%1$ta %<tm/%<te at %<tl:%<tM %<Tp", cal);
     }
@@ -358,7 +374,7 @@ public abstract class HTMLBuilder
         return String.format("%1$tl:%<tM %<Tp", cal);
     }
     
-    private String getDay (Event currentEvent)
+    private String formatDay (Event currentEvent)
     {
         return String.format("%1$tA", currentEvent.getStartTime());
     }

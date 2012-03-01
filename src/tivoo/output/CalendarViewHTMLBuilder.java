@@ -1,11 +1,16 @@
 package tivoo.output;
 
 import java.util.Calendar;
-import java.util.Map;
 import java.util.List;
-import com.hp.gagawa.java.Node;
-import com.hp.gagawa.java.elements.*;
+import java.util.Map;
 import tivoo.Event;
+import com.hp.gagawa.java.Node;
+import com.hp.gagawa.java.elements.B;
+import com.hp.gagawa.java.elements.Br;
+import com.hp.gagawa.java.elements.Div;
+import com.hp.gagawa.java.elements.Li;
+import com.hp.gagawa.java.elements.P;
+import com.hp.gagawa.java.elements.Ul;
 
 public class CalendarViewHTMLBuilder extends HTMLBuilder
 {
@@ -30,7 +35,7 @@ public class CalendarViewHTMLBuilder extends HTMLBuilder
     {
         Div calendarView = new Div().setId("calendarView");
         Type calendarType = determineCalendarType(eventList);
-        Node calendar = buildEmptyCalendar();
+        Node calendar = null;
         switch (calendarType)
         {
             case DAY:
@@ -60,6 +65,16 @@ public class CalendarViewHTMLBuilder extends HTMLBuilder
     {
         if (eventList.size() == 0)
             return CalendarViewHTMLBuilder.Type.EMPTY;
+        long timeframe = determineTimeframe(eventList);
+        if (timeframe <= DAY_LENGTH)
+            return CalendarViewHTMLBuilder.Type.DAY;
+        if (timeframe <= WEEK_LENGTH)
+            return CalendarViewHTMLBuilder.Type.WEEK;
+        return CalendarViewHTMLBuilder.Type.MONTH;
+    }
+
+    private long determineTimeframe (List<Event> eventList)
+    {
         Event first = eventList.get(0);
         Event last = eventList.get(0); 
         for (Event e : eventList)
@@ -71,24 +86,15 @@ public class CalendarViewHTMLBuilder extends HTMLBuilder
             last = (end.getTimeInMillis() > last.getEndTime().getTimeInMillis()) ? e : last;
         }
         long timeframe = last.getEndTime().getTimeInMillis() - first.getStartTime().getTimeInMillis();
-        if (timeframe <= DAY_LENGTH)
-            return CalendarViewHTMLBuilder.Type.DAY;
-        if (timeframe <= WEEK_LENGTH)
-            return CalendarViewHTMLBuilder.Type.WEEK;
-        return CalendarViewHTMLBuilder.Type.MONTH;
-    }
-    
-    private P buildEmptyCalendar ()
-    {
-        return new P().appendText("No events to display.");
+        return timeframe;
     }
 
     private Ul buildDayCalendar (List<Event> eventList)
     {
         Ul dayCalendar = new Ul().setId("dayCal");
-        for (Event e : eventList)
+        for (Event currentEvent : eventList)
         {
-            Li eventInfo = constructEventItem(e);
+            Li eventInfo = constructEventListItem(currentEvent);
             dayCalendar.appendChild(eventInfo);
         }
         return dayCalendar;
@@ -100,20 +106,7 @@ public class CalendarViewHTMLBuilder extends HTMLBuilder
         Map<String, List<Event>> sortedEvents = sortByDayOfWeek(eventList);
         for (String day : DAYS_LIST)
         {
-            Ul dayInfo = new Ul().setId("dayInfo").appendChild(new B().appendText(day));
-            List<Event> eventsOnThisDay = sortedEvents.get(day);
-            if (eventsOnThisDay != null)
-            {
-                for (Event e : eventsOnThisDay)
-                {
-                    Li eventInfo = constructEventItem(e);
-                    dayInfo.appendChild(eventInfo);
-                }
-            }
-            else
-            {
-                dayInfo.appendChild(new Li().appendChild(new P().appendText("None")));
-            }
+            Ul dayInfo = constructUnorderedList(day, "dayInfo", sortedEvents);
             weekCalendar.appendChild(new Li().appendChild(dayInfo));
         }
         return weekCalendar;
@@ -123,29 +116,34 @@ public class CalendarViewHTMLBuilder extends HTMLBuilder
     {
         Ul monthCalendar = new Ul().setId("monthCal");
         Map<String, List<Event>> sortedEvents = sortByDate(eventList);
-        for (Event e: eventList)
+        for (String date: sortedEvents.keySet())
         {
-            String date = getDate(e);
-            Ul dateInfo = new Ul().setId("dateInfo").appendChild(new B().appendText(date));
-            List<Event> eventsOnThisDate = sortedEvents.get(date);
-            if (eventsOnThisDate != null)
-            {
-                for (Event currentEvent : eventsOnThisDate)
-                {
-                    Li eventInfo = constructEventItem(currentEvent);
-                    dateInfo.appendChild(eventInfo);
-                }
-            }
-            else
-            {
-                dateInfo.appendChild(new Li().appendChild(new P().appendText("None")));
-            }
+            Ul dateInfo = constructUnorderedList(date, "dateInfo", sortedEvents);
             monthCalendar.appendChild(new Li().appendChild(dateInfo));
         }
         return monthCalendar;
     }
+
+    private Ul constructUnorderedList (String dayOrDate, String listID, Map<String, List<Event>> sortedEvents)
+    {
+        Ul list = new Ul().setId(listID).appendChild(new B().appendText(dayOrDate));
+        List<Event> eventsOnThisDayOrDate = sortedEvents.get(dayOrDate);
+        if (eventsOnThisDayOrDate != null)
+        {
+            for (Event currentEvent : eventsOnThisDayOrDate)
+            {
+                Li eventInfo = constructEventListItem(currentEvent);
+                list.appendChild(eventInfo);
+            }
+        }
+        else
+        {
+            list.appendChild(new Li().appendChild(new P().appendText("None")));
+        }
+        return list;
+    }
     
-    private Li constructEventItem (Event currentEvent)
+    private Li constructEventListItem (Event currentEvent)
     {
         Li eventInfo = new Li().setId("event");
         
