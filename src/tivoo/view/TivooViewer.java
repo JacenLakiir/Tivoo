@@ -5,20 +5,14 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.net.URLClassLoader;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JEditorPane;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -44,6 +38,7 @@ public class TivooViewer extends JPanel{
 	private JButton myBack;
 	private JButton filterKey;
 	private JButton sortTitle;
+	private JButton sortStartTime;
 	
 	public TivooViewer(TivooSystem model){
 		myModel = model;
@@ -67,8 +62,14 @@ public class TivooViewer extends JPanel{
 		filterKey.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String inputValue = JOptionPane.showInputDialog("Please input a keyword");
-				myModel.filterByKeyword(inputValue, true);
+				try {
+					String inputValue = JOptionPane.showInputDialog("Please input a keyword");
+					if(inputValue !=null)
+						myModel.filterByKeyword(inputValue, true);
+					myModel.outputCalendarView(filePath);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
 			}
 			
 		});
@@ -77,12 +78,33 @@ public class TivooViewer extends JPanel{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				myModel.sortByTitle(true);
+				try {
+					myModel.sortByTitle(true);
+					myModel.outputCalendarView(filePath);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+	    	
+	    });
+	    
+	    sortStartTime = new JButton("SortByStartTime");
+	    sortStartTime.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					myModel.sortByStartTime(true);
+					myModel.outputCalendarView(filePath);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
 			}
 	    	
 	    });
 		panel.add(sortTitle);
 		panel.add(filterKey);
+		panel.add(sortStartTime);
 		return panel;
 	}
 	
@@ -100,6 +122,7 @@ public class TivooViewer extends JPanel{
 		            File file = fc.getSelectedFile();
 		            try {
 						myModel.loadFile(file.getPath());
+						myModel.outputCalendarView(filePath);
 					} catch (SAXException | IOException
 							| ParserConfigurationException e1) {
 						e1.printStackTrace();
@@ -116,13 +139,7 @@ public class TivooViewer extends JPanel{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				try {
-					myModel.outputCalendarView(filePath);
 					showURL();
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-				
 			}
  			
 		});
@@ -186,16 +203,6 @@ public class TivooViewer extends JPanel{
         }
     }
 	
-	
-	public static void main(String[] args){
-		TivooSystem model = new TivooSystem();
-		TivooViewer display = new TivooViewer(model);
-        JFrame frame = new JFrame("Tivoo");
-        frame.getContentPane().add(display);
-        frame.pack();
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	}
 	
 
 }
