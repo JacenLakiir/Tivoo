@@ -8,10 +8,12 @@ public class Main
         TivooSystem s = new TivooSystem();
 
         System.out.println("Loading XML input...");
-        s.loadFile("data/googlecal.xml");
+//        s.loadFile("data/googlecal.xml");
+        s.loadFile("data/tv.xml");
 
         System.out.println("Filtering events...");
-        s.filterByKeyword("Lecture", true);
+//        s.filterByKeyword("Lecture", true);
+        s.filterByKeyword("Hollywood", true);
         s.sortByTitle(false);
 
         System.out.println("Creating HTML output...");
