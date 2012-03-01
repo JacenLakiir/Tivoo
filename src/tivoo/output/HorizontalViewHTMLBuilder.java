@@ -3,7 +3,11 @@ package tivoo.output;
 import java.util.List;
 import java.util.Map;
 import tivoo.Event;
-import com.hp.gagawa.java.elements.*;
+import com.hp.gagawa.java.elements.Div;
+import com.hp.gagawa.java.elements.Table;
+import com.hp.gagawa.java.elements.Td;
+import com.hp.gagawa.java.elements.Th;
+import com.hp.gagawa.java.elements.Tr;
 
 public class HorizontalViewHTMLBuilder extends HTMLBuilder
 {
@@ -23,12 +27,18 @@ public class HorizontalViewHTMLBuilder extends HTMLBuilder
         weekView.setTitle("horizontalView");
         weekView.setCellspacing("0");
         
-        Tr tableHeading = buildTableHeading();
-        weekView.appendChild(tableHeading);
-        
-        Map<String, List<Event>> sortedEvents = sortByDayOfWeek(eventList);
-        Tr tableRow = buildTableRow(sortedEvents);
-        weekView.appendChild(tableRow);
+        if (eventList.size() != 0)
+        {   Tr tableHeading = buildHorizontalTableHeading();
+            weekView.appendChild(tableHeading);
+            
+            Map<String, List<Event>> sortedEvents = sortByDayOfWeek(eventList);
+            Tr tableRow = buildHorizontalTableRow(sortedEvents);
+            weekView.appendChild(tableRow);
+        }
+        else
+        {
+            weekView.appendChild(displayEmptyEventListWarning());
+        }
         
         return weekView;
     }
@@ -45,7 +55,7 @@ public class HorizontalViewHTMLBuilder extends HTMLBuilder
         return UNIQUE_CSS;
     }
 
-    private Tr buildTableHeading ()
+    private Tr buildHorizontalTableHeading ()
     {
         Tr headingRow = new Tr();
         for (String day : DAYS_LIST)
@@ -56,36 +66,36 @@ public class HorizontalViewHTMLBuilder extends HTMLBuilder
         return headingRow;
     }
     
-    private Tr buildTableRow (Map<String, List<Event>> sortedEvents)
+    private Tr buildHorizontalTableRow (Map<String, List<Event>> sortedEvents)
     {
         Tr tableRow = new Tr();
         for (String day : DAYS_LIST)
         {
             List<Event> eventsOnThisDay = sortedEvents.get(day);
-            Td dayCal = buildDayCalendar(day, eventsOnThisDay);
+            Td dayCal = buildHorizontalDayCalendar(day, eventsOnThisDay);
             tableRow.appendChild(dayCal);
         }
         return tableRow;
     }
 
-    private Td buildDayCalendar (String day, List<Event> eventsOnThisDay)
+    private Td buildHorizontalDayCalendar (String day, List<Event> eventsOnThisDay)
     {
         boolean columnClass = (DAYS_LIST.indexOf(day) % 2 == 0);
         Td dayCal = columnClass ? new Td().setCSSClass("gr1") : new Td().setCSSClass("gr1alt");
-        Div dayDiv = constructDayDiv(eventsOnThisDay);
+        Div dayDiv = constructHorizontalDayDiv(eventsOnThisDay);
         dayCal.appendChild(dayDiv);
         return dayCal;
     }
 
-    private Div constructDayDiv (List<Event> eventsOnThisDay)
+    private Div constructHorizontalDayDiv (List<Event> eventsOnThisDay)
     {
-        Div dayEvents = new Div();
-        dayEvents.setId("dayEvents");
+        Div dayEvents = new Div().setId("dayEvents");
         if (eventsOnThisDay != null)
         {
             for (Event currentEvent : eventsOnThisDay)
             {
-                Div eventInfo = constructEventDiv(currentEvent);
+                String time = formatClockTimespan(currentEvent);
+                Div eventInfo = constructEventDiv(currentEvent, time);
                 dayEvents.appendChild(eventInfo);
             }
         }

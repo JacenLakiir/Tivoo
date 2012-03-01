@@ -1,8 +1,9 @@
 package tivoo.output;
 
 import java.util.List;
-import com.hp.gagawa.java.elements.*;
 import tivoo.Event;
+import com.hp.gagawa.java.elements.Div;
+import com.hp.gagawa.java.elements.Hr;
 
 public class SortedViewHTMLBuilder extends HTMLBuilder
 {
@@ -19,11 +20,19 @@ public class SortedViewHTMLBuilder extends HTMLBuilder
     protected Div buildView (List<Event> eventList)
     {
         Div sortedView = new Div().setCSSClass("sortedView");
-        for (Event e : eventList)
+        if (eventList.size() != 0)
         {
-            sortedView.appendChild(new Hr());
-            Div eventInfo = constructEventDiv(e);
-            sortedView.appendChild(eventInfo);
+            for (Event currentEvent : eventList)
+            {
+                sortedView.appendChild(new Hr());
+                String time = formatDateTimespan(currentEvent);
+                Div eventInfo = constructEventDiv(currentEvent, time);
+                sortedView.appendChild(eventInfo);
+            }
+        }
+        else
+        {
+            sortedView.appendChild(displayEmptyEventListWarning());
         }
         return sortedView;
     }
