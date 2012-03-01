@@ -316,6 +316,8 @@ public abstract class HTMLBuilder
                                .replaceAll("\\s+", "_")
                                .replaceAll("[^A-z_0-9]", "")
                                .trim());
+        url.append("_");
+        url.append(currentEvent.getStartTime().getTimeInMillis());
         url.append(".html");
         return url.toString();
     }
