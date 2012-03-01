@@ -22,13 +22,13 @@ public abstract class HTMLBuilder
     private static final String TITLE = "Generic View";
     private static final String TIVOO_CSS = "../css/tivooStyle.css";
     private static final String UNIQUE_CSS = "";
-    
+    private static final String DETAIL_PAGE_FOLDER = "details_dir";
+
     protected static final List<String> DAYS_LIST = initializeDaysList();
     protected static final List<String> MONTHS_LIST = initializeMonthsList();
-    protected static final String DETAIL_PAGE_FOLDER = "details_dir";
     
-    protected String mySummaryPageFileName;
-    protected String myDetailPageDirectory;
+    private String mySummaryPageFileName;
+    private String myDetailPageDirectory;
     
     protected HTMLBuilder (String summaryPageFileName)
     {
@@ -215,8 +215,9 @@ public abstract class HTMLBuilder
         {
             String detailPageURL = createDetailsPageURL(currentEvent);
             File detailPage = new File(myDetailPageDirectory + "/" + detailPageURL);
-            detailPage.createNewFile();
-            writeDetailsPageHTML(currentEvent, detailPage);
+            boolean isNewFile = detailPage.createNewFile();
+            if (isNewFile)
+                writeDetailsPageHTML(currentEvent, detailPage);
         }
     }
     
@@ -315,6 +316,8 @@ public abstract class HTMLBuilder
                                .replaceAll("\\s+", "_")
                                .replaceAll("[^A-z_0-9]", "")
                                .trim());
+        url.append("_");
+        url.append(currentEvent.getStartTime().getTimeInMillis());
         url.append(".html");
         return url.toString();
     }
