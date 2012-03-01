@@ -13,7 +13,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
-public class GUIViewer extends JPanel {
+public class Viewer extends JPanel {
 	// constants
 	public static final Dimension SIZE = new Dimension(800, 600);
 	public static final String BLANK = " ";
@@ -31,9 +31,9 @@ public class GUIViewer extends JPanel {
 	private boolean myDisplayStatus;
 	private boolean myLoadStatus = true;
 	// the real worker
-	protected GUIModel myModel;
+	protected Model myModel;
 
-	public GUIViewer(GUIModel model) {
+	public Viewer(Model model) {
 		myModel = model;
 		// add components to frame
 		setLayout(new BorderLayout());
@@ -352,7 +352,7 @@ public class GUIViewer extends JPanel {
 					enableButtons();
 				} catch (Exception e) {
 					String s = evt.getURL().toString();
-					JOptionPane.showMessageDialog(GUIViewer.this,
+					JOptionPane.showMessageDialog(Viewer.this,
 							"loading problem for " + s + " " + e,
 							"Load Problem", JOptionPane.ERROR_MESSAGE);
 				}

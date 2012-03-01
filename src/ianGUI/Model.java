@@ -12,7 +12,7 @@ import tivoo.filtering.*;
 import tivoo.input.CalendarParser;
 import tivoo.output.*;
 
-public class GUIModel {
+public class Model {
 	private List<Event> events = new LinkedList<Event>();
 
 	public void loadFile(String fileName) throws SAXException, IOException,

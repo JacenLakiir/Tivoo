@@ -1,26 +1,18 @@
-import tivoo.TivooSystem;
+import ianGUI.*;
 
+import javax.swing.JFrame;
 
 public class Main
 {
-    public static void main (String[] args) throws Exception
-    {
-        TivooSystem s = new TivooSystem();
-
-        System.out.println("Loading XML input...");
-        s.loadFile("data/tv.xml");
-
-        System.out.println("Filtering events...");
-        s.filterByKeyword("Hollywood", true);
-        s.sortByTitle(false);
-
-        System.out.println("Creating HTML output...");
-        s.outputVerticalView("output/vert.html");
-        s.outputHorizontalView("output/horiz.html");
-        s.outputSortedView("output/sorted.html");
-        s.outputConflictView("output/conflict.html");
-        s.outputCalendarView("output/calendar.html");
-
-        System.out.println("Done!");
-    }
+	public static void main (String[] args){
+		Model model = new Model();
+		Viewer display = new Viewer(model);
+		// create container that will work with Window manager
+        JFrame frame = new JFrame("Tivoo");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        // add our user interface components to Frame and show it
+        frame.getContentPane().add(display);
+        frame.pack();
+        frame.setVisible(true);
+	}
 }
