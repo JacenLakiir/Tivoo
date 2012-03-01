@@ -2,11 +2,12 @@ package tivoo;
 
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
-import tivoo.filtering.Filter;
+import tivoo.filtering.*;
 import tivoo.input.CalendarParser;
 import tivoo.output.*;
 
@@ -55,21 +56,24 @@ public class TivooSystem
     public void sortByTitle (boolean reversed)
     {
         Filter filter = new Filter();
-        filter.sortByTitle(events, reversed);
+        Comparator<Event> comp = new TitleComparator(reversed);
+        filter.sort(events, comp);
     }
 
 
     public void sortByStartTime (boolean reversed)
     {
         Filter filter = new Filter();
-        filter.sortByStartTime(events, reversed);
+        Comparator<Event> comp = new StartTimeComparator(reversed);
+        filter.sort(events, comp);
     }
 
 
     public void sortByEndTime (boolean reversed)
     {
         Filter filter = new Filter();
-        filter.sortByEndTime(events, reversed);
+        Comparator<Event> comp = new EndTimeComparator(reversed);
+        filter.sort(events, comp);
     }
 
 
