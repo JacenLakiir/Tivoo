@@ -40,8 +40,8 @@ public class TivooViewer extends JPanel{
 	private JButton sortTitle;
 	private JButton sortStartTime;
 	
-	public TivooViewer(TivooSystem model){
-		myModel = model;
+	public TivooViewer(){
+		myModel = new TivooSystem();
 		setLayout(new BorderLayout());
 	    add(operationPanel(), BorderLayout.NORTH);
 	    add(display(), BorderLayout.CENTER);
@@ -79,7 +79,7 @@ public class TivooViewer extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					myModel.sortByTitle(true);
+			        myModel.sortByTitle(false);
 					myModel.outputCalendarView(filePath);
 				} catch (IOException e1) {
 					e1.printStackTrace();

@@ -12,7 +12,7 @@ public class Main
 
         System.out.println("Filtering events...");
         s.filterByKeyword("Hollywood", true);
-        s.sortByTitle(false);
+//        s.sortByTitle(false);
 
         System.out.println("Creating HTML output...");
         s.outputVerticalView("output/vert.html");

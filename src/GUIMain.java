@@ -1,13 +1,11 @@
 import javax.swing.JFrame;
 
-import tivoo.TivooSystem;
 import tivoo.view.TivooViewer;
 
 
 public class GUIMain {
 	public static void main(String[] args){
-		TivooSystem model = new TivooSystem();
-		TivooViewer display = new TivooViewer(model);
+		TivooViewer display = new TivooViewer();
         JFrame frame = new JFrame("Tivoo");
         frame.getContentPane().add(display);
         frame.pack();
