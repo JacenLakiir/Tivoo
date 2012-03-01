@@ -70,52 +70,8 @@ public class Filter {
 	/**
 	 * Sorts events by name in ascending order
 	 */
-	public void sortByTitle(List<Event> eventList, boolean reversed) {
-		AttributeComparator comp = new AttributeComparator("title",reversed);
-		Collections.sort(eventList, comp);
-
+	public void sort(List<Event> eventList, Comparator<Event> comp) {
+		Collections.sort(eventList,comp);
 	}
-	
-	/**
-	 * Sorts events by start time in ascending order 
-	 */
-	public void sortByStartTime(List<Event> eventList, boolean reversed){
-		AttributeComparator comp = new AttributeComparator("startTime",reversed);
-		Collections.sort(eventList, comp);
-	}
-	
-	/**
-	 * Sorts events by start time in ascending order 
-	 */
-	public void sortByEndTime(List<Event> eventList, boolean reversed){
-		AttributeComparator comp = new AttributeComparator("endTime",reversed);
-		Collections.sort(eventList, comp);
-	}
-	
-	private class AttributeComparator implements Comparator<Event>{
-		private final int coeff;
-		private String attribute;
 		
-		public AttributeComparator(String attribute, boolean reversed){
-			this.coeff = reversed ? -1 : 1;
-			this.attribute = attribute;
-		}
-
-		@Override
-		public int compare(Event o1, Event o2) {
-			Comparable attribute1 = o1.getTitle();
-			Comparable attribute2 = o2.getTitle();
-			if(attribute.equals("startTime")){
-				attribute1 = o1.getStartTime();
-				attribute2 = o2.getStartTime();
-			}
-			if(attribute.equals("endTime")){
-				attribute1 = o1.getEndTime();
-				attribute2 = o2.getEndTime();
-			}
-			return coeff*attribute1.compareTo(attribute2);
-		}
-		
-		
-	}
 }

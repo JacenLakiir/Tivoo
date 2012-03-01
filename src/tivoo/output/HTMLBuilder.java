@@ -9,10 +9,22 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import tivoo.Event;
 import com.hp.gagawa.java.Document;
 import com.hp.gagawa.java.DocumentType;
-import com.hp.gagawa.java.elements.*;
-import tivoo.Event;
+import com.hp.gagawa.java.Node;
+import com.hp.gagawa.java.elements.A;
+import com.hp.gagawa.java.elements.Br;
+import com.hp.gagawa.java.elements.Div;
+import com.hp.gagawa.java.elements.H3;
+import com.hp.gagawa.java.elements.H4;
+import com.hp.gagawa.java.elements.Link;
+import com.hp.gagawa.java.elements.P;
+import com.hp.gagawa.java.elements.Table;
+import com.hp.gagawa.java.elements.Td;
+import com.hp.gagawa.java.elements.Title;
+import com.hp.gagawa.java.elements.Tr;
+import com.hp.gagawa.java.elements.U;
 
 
 public abstract class HTMLBuilder
@@ -21,13 +33,13 @@ public abstract class HTMLBuilder
     private static final String TITLE = "Generic View";
     private static final String TIVOO_CSS = "../css/tivooStyle.css";
     private static final String UNIQUE_CSS = "";
-    
+    private static final String DETAIL_PAGE_FOLDER = "details_dir";
+
     protected static final List<String> DAYS_LIST = initializeDaysList();
     protected static final List<String> MONTHS_LIST = initializeMonthsList();
-    protected static final String DETAIL_PAGE_FOLDER = "details_dir";
     
-    protected String mySummaryPageFileName;
-    protected String myDetailPageDirectory;
+    private String mySummaryPageFileName;
+    private String myDetailPageDirectory;
     
     protected HTMLBuilder (String summaryPageFileName)
     {
@@ -41,50 +53,7 @@ public abstract class HTMLBuilder
         buildDetailPages(eventList);
     }
     
-    protected abstract void writeSummaryPageContent(Document doc, List<Event> eventList);
-    
-    protected Document initializeHTMLDocument (String title, String cssFilePathExtender)
-    {
-        Document doc = new Document(DocumentType.HTMLTransitional);
-        doc.head.appendChild(new Title().appendText(title));
-        
-        StringBuilder cssFilePath = new StringBuilder(cssFilePathExtender);
-        cssFilePath.append(TIVOO_CSS);
-        doc.head.appendChild(insertCSS(cssFilePath.toString()));
-        
-        return doc;
-    }
-    
-    protected Link insertCSS (String filePath)
-    {
-        Link tivooStyle = new Link();
-        tivooStyle.setRel("stylesheet");
-        tivooStyle.setType("text/css");
-        tivooStyle.setHref(filePath);
-        return tivooStyle;
-    }
-    
-    protected void writeHeader (Document doc)
-    {
-        Div header = new Div().setCSSClass("header");
-        Table caption = new Table();
-        Tr title = new Tr().appendChild(new Td().appendText("TiVOO"));
-        caption.appendChild(title);
-        header.appendChild(caption);
-        doc.body.appendChild(header);
-    }
-    
-    protected void writeDetailsPageContent (Event currentEvent, Document doc)
-    {
-        Div content = new Div().setCSSClass("content");
-        content.appendChild(new H4().appendText(currentEvent.getTitle()));
-
-        createParagraphTag(content, "Time", formatDateTimespan(currentEvent));
-        createParagraphTag(content, "Location", currentEvent.getLocation());
-        createParagraphTag(content, "Description", currentEvent.getDescription());
-        
-        doc.body.appendChild(content);
-    }
+    protected abstract Node buildView (List<Event> eventList);
     
     protected A linkToDetailsPage (Event currentEvent)
     {
@@ -98,54 +67,17 @@ public abstract class HTMLBuilder
         return detailsLink;
     }
     
-    protected String createDetailsPageURL (Event currentEvent)
-    {
-        StringBuilder url = new StringBuilder();
-        url.append(currentEvent.getTitle()
-                               .replaceAll("\\s+", "_")
-                               .replaceAll("[^A-z_0-9]", "")
-                               .trim());
-        url.append(".html");
-        return url.toString();
-    }
-    
-    protected void createParagraphTag (Div div, String category, String contents)
-    {
-        P paragraph = new P();
-        if (category != null)
-        {
-            paragraph.appendChild(new U().appendText(category));
-            paragraph.appendText(": ");
-        }
-        paragraph.appendText(contents);
-        div.appendChild(paragraph);
-    }
-    
-    protected Div constructEventDiv (Event currentEvent)
+    protected Div constructEventDiv (Event currentEvent, String time)
     {
         Div eventInfo = new Div().setId("event");
         
         P eventP = new P();
         eventP.appendChild(linkToDetailsPage(currentEvent));
         eventP.appendChild(new Br());
-        eventP.appendText(formatDateTimespan(currentEvent));
+        eventP.appendText(formatClockTimespan(currentEvent));
         
         eventInfo.appendChild(eventP);
         return eventInfo;
-    }
-    
-    protected void writeFooter (Document doc)
-    {
-        Div footer = new Div().setCSSClass("footer");
-        footer.appendText("Designed by Siyang, Hui, Ian, & Eric");
-        footer.appendChild(new Br());
-        footer.appendText("&copy; 2012");
-        doc.body.appendChild(footer);
-    }
-    
-    protected boolean isAllOnOneDay(Calendar start, Calendar end)
-    {
-        return (start.get(Calendar.DAY_OF_WEEK) == end.get(Calendar.DAY_OF_WEEK));
     }
     
     protected String formatDateTimespan (Event currentEvent)
@@ -153,18 +85,14 @@ public abstract class HTMLBuilder
         StringBuilder timespan = new StringBuilder();
         
         Calendar start = currentEvent.getStartTime();
-        timespan.append(formatDate(start));
+        timespan.append(formatLongDate(start));
         timespan.append(" - ");
        
         Calendar end = currentEvent.getEndTime();
         if (isAllOnOneDay(start, end))
-        {
             timespan.append(formatClockTime(end));
-        }
         else
-        {
-            timespan.append(formatDate(end));
-        }
+            timespan.append(formatLongDate(end));
             
         return timespan.toString();
     }
@@ -178,22 +106,7 @@ public abstract class HTMLBuilder
         return clockTimespan.toString();
     }    
     
-    protected String formatDate (Calendar cal)
-    {
-        return String.format("%1$ta %<tm/%<te at %<tl:%<tM %<Tp", cal);
-    }
-    
-    protected String formatClockTime (Calendar cal)
-    {
-        return String.format("%1$tl:%<tM %<Tp", cal);
-    }
-    
-    protected String getDay (Event currentEvent)
-    {
-        return String.format("%1$tA", currentEvent.getStartTime());
-    }
-    
-    protected String getDate (Event currentEvent)
+    protected String formatShortDate (Event currentEvent)
     {
         return String.format("%1$tm/%<te", currentEvent.getStartTime());
     }
@@ -203,7 +116,7 @@ public abstract class HTMLBuilder
         Map<String, List<Event>> sortedEvents = new TreeMap<String, List<Event>>();
         for (Event currentEvent : eventList)
         {
-            String eventDay = getDay(currentEvent);
+            String eventDay = formatDay(currentEvent);
             if (!sortedEvents.containsKey(eventDay))
                 sortedEvents.put(eventDay, new ArrayList<Event>());
             sortedEvents.get(eventDay).add(currentEvent);
@@ -216,7 +129,7 @@ public abstract class HTMLBuilder
         Map<String, List<Event>> sortedEvents = new TreeMap<String, List<Event>>();
         for (Event currentEvent : eventList)
         {
-            String eventDay = getDate(currentEvent);
+            String eventDay = formatShortDate(currentEvent);
             if (!sortedEvents.containsKey(eventDay))
                 sortedEvents.put(eventDay, new ArrayList<Event>());
             sortedEvents.get(eventDay).add(currentEvent);
@@ -309,8 +222,9 @@ public abstract class HTMLBuilder
         {
             String detailPageURL = createDetailsPageURL(currentEvent);
             File detailPage = new File(myDetailPageDirectory + "/" + detailPageURL);
-            detailPage.createNewFile();
-            writeDetailsPageHTML(currentEvent, detailPage);
+            boolean isNewFile = detailPage.createNewFile();
+            if (isNewFile)
+                writeDetailsPageHTML(currentEvent, detailPage);
         }
     }
     
@@ -335,6 +249,25 @@ public abstract class HTMLBuilder
         out.close();
     }
     
+    private void writeSummaryPageContent(Document doc, List<Event> eventList)
+    {
+        Div content = new Div().setCSSClass("content");
+        String title = getTitle();
+        content.appendChild(new H3().appendText(title));
+        Node view;
+        if (eventList.size() != 0)
+            view = buildView(eventList);
+        else
+            view = displayEmptyEventListWarning();
+        content.appendChild(view);
+        doc.body.appendChild(content);
+    }
+    
+    private P displayEmptyEventListWarning ()
+    {
+        return new P().appendText("No events to display.");
+    }
+    
     private void writeDetailsPageHTML (Event currentEvent, File detailPage) throws IOException
     {
         FileOutputStream fos = new FileOutputStream(detailPage);
@@ -347,6 +280,103 @@ public abstract class HTMLBuilder
         
         out.write(doc.write());
         out.close();
+    }
+    
+    private void writeDetailsPageContent (Event currentEvent, Document doc)
+    {
+        Div content = new Div().setCSSClass("content");
+        content.appendChild(new H4().appendText(currentEvent.getTitle()));
+
+        createParagraphTag(content, "Time", formatDateTimespan(currentEvent));
+        createParagraphTag(content, "Location", currentEvent.getLocation());
+        createParagraphTag(content, "Description", currentEvent.getDescription());
+        
+        doc.body.appendChild(content);
+    }
+    
+    private Document initializeHTMLDocument (String title, String cssFilePathExtender)
+    {
+        Document doc = new Document(DocumentType.HTMLTransitional);
+        doc.head.appendChild(new Title().appendText(title));
+        
+        StringBuilder cssFilePath = new StringBuilder(cssFilePathExtender);
+        cssFilePath.append(TIVOO_CSS);
+        doc.head.appendChild(insertCSS(cssFilePath.toString()));
+        
+        return doc;
+    }
+    
+    private Link insertCSS (String filePath)
+    {
+        Link tivooStyle = new Link();
+        tivooStyle.setRel("stylesheet");
+        tivooStyle.setType("text/css");
+        tivooStyle.setHref(filePath);
+        return tivooStyle;
+    }
+    
+    private void writeHeader (Document doc)
+    {
+        Div header = new Div().setCSSClass("header");
+        Table caption = new Table();
+        Tr title = new Tr().appendChild(new Td().appendText("TiVOO"));
+        caption.appendChild(title);
+        header.appendChild(caption);
+        doc.body.appendChild(header);
+    }
+
+    private String createDetailsPageURL (Event currentEvent)
+    {
+        StringBuilder url = new StringBuilder();
+        url.append(currentEvent.getTitle()
+                               .replaceAll("\\s+", "_")
+                               .replaceAll("[^A-z_0-9]", "")
+                               .trim());
+        url.append("_");
+        url.append(currentEvent.getStartTime().getTimeInMillis());
+        url.append(".html");
+        return url.toString();
+    }
+    
+    private void createParagraphTag (Div div, String category, String contents)
+    {
+        P paragraph = new P();
+        if (category != null)
+        {
+            paragraph.appendChild(new U().appendText(category));
+            paragraph.appendText(": ");
+        }
+        paragraph.appendText(contents);
+        div.appendChild(paragraph);
+    }
+    
+    private void writeFooter (Document doc)
+    {
+        Div footer = new Div().setCSSClass("footer");
+        footer.appendText("Designed by Siyang, Hui, Ian, & Eric");
+        footer.appendChild(new Br());
+        footer.appendText("&copy; 2012");
+        doc.body.appendChild(footer);
+    }
+    
+    private boolean isAllOnOneDay(Calendar start, Calendar end)
+    {
+        return (start.get(Calendar.DAY_OF_WEEK) == end.get(Calendar.DAY_OF_WEEK));
+    }
+    
+    private String formatLongDate (Calendar cal)
+    {
+        return String.format("%1$ta %<tm/%<te at %<tl:%<tM %<Tp", cal);
+    }
+    
+    private String formatClockTime (Calendar cal)
+    {
+        return String.format("%1$tl:%<tM %<Tp", cal);
+    }
+    
+    private String formatDay (Event currentEvent)
+    {
+        return String.format("%1$tA", currentEvent.getStartTime());
     }
     
 }

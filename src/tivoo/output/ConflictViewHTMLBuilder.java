@@ -2,9 +2,14 @@ package tivoo.output;
 
 import java.util.LinkedList;
 import java.util.List;
-import com.hp.gagawa.java.Document;
-import com.hp.gagawa.java.elements.*;
 import tivoo.Event;
+import com.hp.gagawa.java.elements.A;
+import com.hp.gagawa.java.elements.Br;
+import com.hp.gagawa.java.elements.Div;
+import com.hp.gagawa.java.elements.Table;
+import com.hp.gagawa.java.elements.Td;
+import com.hp.gagawa.java.elements.Th;
+import com.hp.gagawa.java.elements.Tr;
 
 public class ConflictViewHTMLBuilder extends HTMLBuilder
 {
@@ -18,15 +23,17 @@ public class ConflictViewHTMLBuilder extends HTMLBuilder
     }
     
     @Override
-    protected void writeSummaryPageContent (Document doc, List<Event> eventList)
+    protected Table buildView (List<Event> eventList)
     {
-        Div content = new Div().setCSSClass("content");     
-        content.appendChild(new H3().appendText(TITLE));
+        Table conflictView = new Table();
+        conflictView.setTitle("conflictView");
+        conflictView.setCellspacing("0");
         
-        Table conflictView = constructConflictView(eventList);
-        content.appendChild(conflictView);
+        Tr tableHeading = buildConflictTableHeading();
+        conflictView.appendChild(tableHeading);
+        findAllConflictingEvents(conflictView, eventList);
         
-        doc.body.appendChild(content);
+        return conflictView;
     }
 
     @Override
@@ -41,20 +48,6 @@ public class ConflictViewHTMLBuilder extends HTMLBuilder
         return UNIQUE_CSS;
     }
     
-    private Table constructConflictView (List<Event> eventList)
-    {
-        Table conflictView = new Table();
-        conflictView.setTitle("conflictView");
-        conflictView.setCellspacing("0");
-        
-        Tr tableHeading = buildTableHeading();
-        conflictView.appendChild(tableHeading);
-        
-        findAllConflictingEvents(conflictView, eventList);
-        
-        return conflictView;
-    }
-    
     private void findAllConflictingEvents (Table table, List<Event> eventList)
     {
         for (Event a : eventList)
@@ -64,7 +57,7 @@ public class ConflictViewHTMLBuilder extends HTMLBuilder
             {
                 if (isConflicting(a, b)) conflicts.add(b);
             }
-            Tr tableRow = buildTableRow(a, conflicts);
+            Tr tableRow = buildConflictTableRow(a, conflicts);
             table.appendChild(tableRow);
         }
     }
@@ -77,7 +70,7 @@ public class ConflictViewHTMLBuilder extends HTMLBuilder
                 a.getStartTime().getTimeInMillis() < b.getEndTime().getTimeInMillis());
     }
     
-    private Tr buildTableHeading ()
+    private Tr buildConflictTableHeading ()
     {
         Tr headingRow = new Tr().setCSSClass("row");
         headingRow.appendChild(new Th().setCSSClass("heading").appendText("Event"));
@@ -86,7 +79,7 @@ public class ConflictViewHTMLBuilder extends HTMLBuilder
         return headingRow;
     }
     
-    private Tr buildTableRow (Event a, List<Event> conflicts)
+    private Tr buildConflictTableRow (Event a, List<Event> conflicts)
     {
         Tr tableRow = new Tr();
         
@@ -105,9 +98,9 @@ public class ConflictViewHTMLBuilder extends HTMLBuilder
     private Div constructConflictingEventsDiv (List<Event> conflicts)
     {
         Div conflictingEvents = new Div();
-        for (Event e : conflicts)
+        for (Event conflictingEvent : conflicts)
         {
-            A detailsLink = linkToDetailsPage(e);
+            A detailsLink = linkToDetailsPage(conflictingEvent);
             conflictingEvents.appendChild(detailsLink);
             conflictingEvents.appendChild(new Br());
         }

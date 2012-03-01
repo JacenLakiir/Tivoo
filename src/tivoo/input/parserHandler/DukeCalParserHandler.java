@@ -1,8 +1,8 @@
 package tivoo.input.parserHandler;
 
 import java.util.Calendar;
-import java.util.List;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.TimeZone;
 import org.xml.sax.Attributes;
 import tivoo.Event;
@@ -43,9 +43,10 @@ public class DukeCalParserHandler extends ParserHandler
         }
     }
 
-    public void setTitle(String title)
+
+    public void setTitle (String title)
     {
-    	currentEvent.setTitle(title);
+        currentEvent.setTitle(title);
     }
 
     private class StartElementHandler extends ElementHandler
