@@ -35,7 +35,7 @@ public class CalendarViewHTMLBuilder extends HTMLBuilder
     {
         Div calendarView = new Div().setId("calendarView");
         Type calendarType = determineCalendarType(eventList);
-        Node calendar = displayEmptyEventListWarning();
+        Node calendar = null;
         switch (calendarType)
         {
             case DAY:

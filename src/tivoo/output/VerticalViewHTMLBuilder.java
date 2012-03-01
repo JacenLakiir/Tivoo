@@ -23,19 +23,12 @@ public class VerticalViewHTMLBuilder extends HTMLBuilder
     protected Div buildView (List<Event> eventList)
     {
         Div weekView = new Div().setId("verticalView");
-        if (eventList.size() != 0)
+        Map<String, List<Event>> sortedEvents = sortByDayOfWeek(eventList);
+        for (String day : DAYS_LIST)
         {
-            Map<String, List<Event>> sortedEvents = sortByDayOfWeek(eventList);
-            for (String day : DAYS_LIST)
-            {
-                List<Event> eventsOnThisDay = sortedEvents.get(day);
-                Div dayInfo = constructVerticalDayDiv(day, eventsOnThisDay);
-                weekView.appendChild(dayInfo);
-            }
-        }
-        else
-        {
-            weekView.appendChild(displayEmptyEventListWarning());
+            List<Event> eventsOnThisDay = sortedEvents.get(day);
+            Div dayInfo = constructVerticalDayDiv(day, eventsOnThisDay);
+            weekView.appendChild(dayInfo);
         }
         return weekView;
     }

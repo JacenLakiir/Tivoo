@@ -20,19 +20,12 @@ public class SortedViewHTMLBuilder extends HTMLBuilder
     protected Div buildView (List<Event> eventList)
     {
         Div sortedView = new Div().setCSSClass("sortedView");
-        if (eventList.size() != 0)
+        for (Event currentEvent : eventList)
         {
-            for (Event currentEvent : eventList)
-            {
-                sortedView.appendChild(new Hr());
-                String time = formatDateTimespan(currentEvent);
-                Div eventInfo = constructEventDiv(currentEvent, time);
-                sortedView.appendChild(eventInfo);
-            }
-        }
-        else
-        {
-            sortedView.appendChild(displayEmptyEventListWarning());
+            sortedView.appendChild(new Hr());
+            String time = formatDateTimespan(currentEvent);
+            Div eventInfo = constructEventDiv(currentEvent, time);
+            sortedView.appendChild(eventInfo);
         }
         return sortedView;
     }

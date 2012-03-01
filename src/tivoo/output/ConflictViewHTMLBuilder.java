@@ -29,16 +29,10 @@ public class ConflictViewHTMLBuilder extends HTMLBuilder
         conflictView.setTitle("conflictView");
         conflictView.setCellspacing("0");
         
-        if (eventList.size() != 0)
-        {   Tr tableHeading = buildConflictTableHeading();
-            conflictView.appendChild(tableHeading);
-            findAllConflictingEvents(conflictView, eventList);
-        }
-        else
-        {
-            conflictView.appendChild(displayEmptyEventListWarning());
-        }
-       
+        Tr tableHeading = buildConflictTableHeading();
+        conflictView.appendChild(tableHeading);
+        findAllConflictingEvents(conflictView, eventList);
+        
         return conflictView;
     }
 

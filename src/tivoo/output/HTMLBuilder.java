@@ -80,11 +80,6 @@ public abstract class HTMLBuilder
         return eventInfo;
     }
     
-    protected P displayEmptyEventListWarning ()
-    {
-        return new P().appendText("No events to display.");
-    }
-    
     protected String formatDateTimespan (Event currentEvent)
     {
         StringBuilder timespan = new StringBuilder();
@@ -259,9 +254,18 @@ public abstract class HTMLBuilder
         Div content = new Div().setCSSClass("content");
         String title = getTitle();
         content.appendChild(new H3().appendText(title));
-        Node view = buildView(eventList);
+        Node view;
+        if (eventList.size() != 0)
+            view = buildView(eventList);
+        else
+            view = displayEmptyEventListWarning();
         content.appendChild(view);
         doc.body.appendChild(content);
+    }
+    
+    private P displayEmptyEventListWarning ()
+    {
+        return new P().appendText("No events to display.");
     }
     
     private void writeDetailsPageHTML (Event currentEvent, File detailPage) throws IOException

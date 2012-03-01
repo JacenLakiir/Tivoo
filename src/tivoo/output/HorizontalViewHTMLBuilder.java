@@ -27,18 +27,12 @@ public class HorizontalViewHTMLBuilder extends HTMLBuilder
         weekView.setTitle("horizontalView");
         weekView.setCellspacing("0");
         
-        if (eventList.size() != 0)
-        {   Tr tableHeading = buildHorizontalTableHeading();
-            weekView.appendChild(tableHeading);
-            
-            Map<String, List<Event>> sortedEvents = sortByDayOfWeek(eventList);
-            Tr tableRow = buildHorizontalTableRow(sortedEvents);
-            weekView.appendChild(tableRow);
-        }
-        else
-        {
-            weekView.appendChild(displayEmptyEventListWarning());
-        }
+        Tr tableHeading = buildHorizontalTableHeading();
+        weekView.appendChild(tableHeading);
+        
+        Map<String, List<Event>> sortedEvents = sortByDayOfWeek(eventList);
+        Tr tableRow = buildHorizontalTableRow(sortedEvents);
+        weekView.appendChild(tableRow);
         
         return weekView;
     }
