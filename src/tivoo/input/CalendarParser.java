@@ -55,7 +55,7 @@ public class CalendarParser
     public static List<Event> parse (String fileName)
         throws SAXException,
             IOException,
-            ParserConfigurationException
+            ParserConfigurationException, InstantiationException, IllegalAccessException
     {
 
         SAXParser parser = SAX_PARSER_FACTORY.newSAXParser();
@@ -76,12 +76,7 @@ public class CalendarParser
                 parser.parse(getInputSource(fileName), parserHandler);
                 return parserHandler.getEvents();
             }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
         }
-        System.err.println("Invalid File Type");
         return new LinkedList<Event>();
     }
 }

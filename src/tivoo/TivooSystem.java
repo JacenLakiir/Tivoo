@@ -20,7 +20,7 @@ public class TivooSystem
     public void loadFile (String fileName)
         throws SAXException,
             IOException,
-            ParserConfigurationException
+            ParserConfigurationException, InstantiationException, IllegalAccessException
     {
         events.addAll(CalendarParser.parse(fileName));
     }
