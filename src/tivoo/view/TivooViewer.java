@@ -66,7 +66,7 @@ public class TivooViewer extends JPanel{
 					String inputValue = JOptionPane.showInputDialog("Please input a keyword");
 					if(inputValue !=null)
 						myModel.filterByKeyword(inputValue, true);
-					myModel.outputCalendarView(filePath);
+					myModel.outputHorizontalView(filePath);
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
@@ -80,7 +80,7 @@ public class TivooViewer extends JPanel{
 			public void actionPerformed(ActionEvent e) {
 				try {
 			        myModel.sortByTitle(false);
-					myModel.outputCalendarView(filePath);
+					myModel.outputHorizontalView(filePath);
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
@@ -94,8 +94,8 @@ public class TivooViewer extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					myModel.sortByStartTime(true);
-					myModel.outputCalendarView(filePath);
+					myModel.sortByStartTime(false);
+					myModel.outputHorizontalView(filePath);
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
@@ -122,7 +122,7 @@ public class TivooViewer extends JPanel{
 		            File file = fc.getSelectedFile();
 		            try {
 						myModel.loadFile(file.getPath());
-						myModel.outputCalendarView(filePath);
+						myModel.outputHorizontalView(filePath);
 					} catch (SAXException | IOException
 							| ParserConfigurationException e1) {
 						e1.printStackTrace();
