@@ -9,6 +9,7 @@ Names:
 - Eric Mercer (ewm10)
 
 
+
 ========================================
 Prototype
 ========================================
@@ -95,7 +96,6 @@ Allowing for events to be shown on the summary page sorted by weekday took a fai
 
 
 
-
 ========================================
 Part 2
 ========================================
@@ -136,3 +136,40 @@ Filtering was almost identical to part 1, and sorting was fairly simple, as both
 Output portion:
 Adding sorted view was incredibly straightforward while implementing the algorithm for finding conflicting events took a fair amount of work. Checking the type of content to be created and keeping track of list tags for the calendar view were tedious.
 	-Eric
+	
+	
+	
+========================================
+Part 3 [Eric]
+========================================
+
+Started:  Mar 3
+Finished: Mar 4
+
+Project Length:
+- [Actual] 10 hours
+- [Estimated] 10 hours
+- [How good my estimate was] Very accurate
+
+Discussed with:
+- no one
+
+Resources:
+- Gagawa library (http://code.google.com/p/gagawa/)
+
+Files Used to Start and Test:
+- spring12_cps108_06_NanoBrowser (ideas for how to create a basic browser for viewing Tivoo output)
+
+Data / Resource Files Required:
+- various XML files (included in the data folder)
+- gagawa-1.0.1 JAR (included in the lib folder)
+
+Impressions:
+
+Building a GUI for Tivoo was a very fun experience. I've never built a GUI in Java before so it took some experimenting to figure out how to design a visually appealing interface and learn how the various java.awt and javax.swing parts work together, but I'm very pleased with the end-result considering this is meant to be a very bare-bones GUI implementation.
+
+NOTE: I've included a pop-up dialog for when 'Run' is selected so that the user is aware that even though the Tivoo window will freeze / lock-up momentarily stuff is still happening, it's just being done behind-the-scenes. Please wait for the processing to finish (this is dependent on how large the input is; for example, loading "tv.xml" may take a few moments depending on your hardware and Eclipse/Java run-time configuration), at which time a new browser window should automatically pop up showing one of the selected output views for the current run.
+
+NOTE: The program can be exited at any time by closing the currently displayed window.
+
+NOTE: Not all of my CSS formatting works in the basic browser used by the GUI, but it is still very much readable, and when the output is loaded in a professionally developed browser (e.g. Google Chrome) all of the CSS formatting works as intended.
