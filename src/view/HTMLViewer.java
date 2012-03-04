@@ -38,7 +38,7 @@ public class HTMLViewer extends JFrame
     private JButton myBackButton;
     private JButton myNextButton;
     private JButton myGoButton;
-    private JButton myResetButton;
+    private JButton myRestartButton;
     private JComboBox mySwitchViewComboBox;
     
     private Controller myController = Controller.getInstance();
@@ -177,9 +177,9 @@ public class HTMLViewer extends JFrame
         mySwitchViewComboBox.addActionListener(new SwitchViewAction());
         panel.add(mySwitchViewComboBox);
         
-        myResetButton = new JButton("Reset");
-        myResetButton.addActionListener(new RestartAction());
-        panel.add(myResetButton);
+        myRestartButton = new JButton("Restart");
+        myRestartButton.addActionListener(new RestartAction());
+        panel.add(myRestartButton);
 
         return panel;
     }

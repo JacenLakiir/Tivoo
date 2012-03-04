@@ -172,4 +172,4 @@ NOTE: I've included a pop-up dialog for when 'Run' is selected so that the user 
 
 NOTE: The program can be exited at any time by closing the currently displayed window.
 
-NOTE: Not all of my CSS formatting works in the basic browser used by the GUI, but it is still very much readable, and when the output is loaded in a professionally developed browser (e.g. Google Chrome) all of the CSS formatting works as intended.
+NOTE: Not all of my CSS formatting works in the basic browser used by the GUI, but the output is still very much readable, and when the output is loaded in a professionally developed browser (e.g. Google Chrome) all of the CSS formatting works as intended.
